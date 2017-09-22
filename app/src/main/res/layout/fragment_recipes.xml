@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical" android:layout_width="match_parent"
+              android:layout_marginTop="56dp"
+              android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp">
+
+        <ImageView
+            android:id="@+id/recipeImage1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginRight="20dp"
+            app:srcCompat="@drawable/cake"/>
+
+        <TextView
+            android:id="@+id/recipeTitle1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/recipeImage1"
+            android:text="Recipe Title"
+            android:textSize="24sp"/>
+
+        <TextView
+            android:id="@+id/recipeCaption1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/recipeTitle1"
+            android:layout_toRightOf="@id/recipeImage1"
+            android:text="Some sentenses about the recipe."/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp">
+
+        <ImageView
+            android:id="@+id/recipeImage2"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginRight="20dp"
+            app:srcCompat="@drawable/soup"/>
+
+        <TextView
+            android:id="@+id/recipeTitle2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/recipeImage2"
+            android:text="Recipe Title"
+            android:textSize="24sp"/>
+
+        <TextView
+            android:id="@+id/recipeCaption2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/recipeTitle2"
+            android:layout_toRightOf="@id/recipeImage2"
+            android:text="Some sentenses about the recipe."/>
+    </RelativeLayout>
+
+</LinearLayout>
