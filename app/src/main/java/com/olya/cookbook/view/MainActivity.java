@@ -1,4 +1,4 @@
-package com.olya.cookbook;
+package com.olya.cookbook.view;
 
 import android.content.Intent;
 import android.support.v4.widget.DrawerLayout;

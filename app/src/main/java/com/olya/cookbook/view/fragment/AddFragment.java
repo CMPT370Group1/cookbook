@@ -1,4 +1,4 @@
-package com.olya.cookbook.fragment;
+package com.olya.cookbook.view.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

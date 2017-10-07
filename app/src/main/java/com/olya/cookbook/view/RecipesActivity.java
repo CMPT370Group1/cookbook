@@ -1,7 +1,6 @@
-package com.olya.cookbook;
+package com.olya.cookbook.view;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,10 +12,10 @@ import android.view.View;
 import android.widget.Button;
 
 import android.support.design.widget.TabLayout;
-import android.widget.ImageButton;
 
-import com.olya.cookbook.fragment.RecipesFragment;
-import com.olya.cookbook.tab.MyAdapter;
+import com.olya.cookbook.R;
+import com.olya.cookbook.view.fragment.RecipesFragment;
+import com.olya.cookbook.view.tab.MyAdapter;
 
 public class RecipesActivity extends AppCompatActivity {
 

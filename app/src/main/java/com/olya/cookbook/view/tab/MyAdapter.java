@@ -1,4 +1,4 @@
-package com.olya.cookbook.tab;
+package com.olya.cookbook.view.tab;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -6,12 +6,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.olya.cookbook.fragment.AddFragment;
-import com.olya.cookbook.fragment.AllRecipesFragment;
-import com.olya.cookbook.fragment.CategoriesFragment;
-import com.olya.cookbook.fragment.LinksFragment;
-import com.olya.cookbook.fragment.RecipesFragment;
-import com.olya.cookbook.fragment.SearchFragment;
+import com.olya.cookbook.view.fragment.AddFragment;
+import com.olya.cookbook.view.fragment.AllRecipesFragment;
+import com.olya.cookbook.view.fragment.CategoriesFragment;
+import com.olya.cookbook.view.fragment.LinksFragment;
+import com.olya.cookbook.view.fragment.RecipesFragment;
+import com.olya.cookbook.view.fragment.SearchFragment;
 
 /**
  * Created by Olya on 2017-09-21.

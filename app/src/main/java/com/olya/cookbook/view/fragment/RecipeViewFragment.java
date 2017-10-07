@@ -1,4 +1,4 @@
-package com.olya.cookbook.fragment;
+package com.olya.cookbook.view.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,9 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.Button;
 
 import com.olya.cookbook.R;
 
@@ -16,33 +14,33 @@ import com.olya.cookbook.R;
  * Created by Olya on 2017-09-21.
  */
 
-public class RecipesFragment extends Fragment{
+public class RecipeViewFragment extends Fragment{
 
-    private RelativeLayout rl;
+    private Button btnCategory;
 
-    public RecipesFragment() {
+    public RecipeViewFragment() {
         // Required empty public constructor
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        container.removeAllViews();
-        View view = inflater.inflate(R.layout.fragment_recipes, container, false);
+        //container.removeAllViews();
+        View view = inflater.inflate(R.layout.fragment_recipe_view, container, false);
 
-        rl = (RelativeLayout) view.findViewById(R.id.recipe1_layout);
-        rl.setOnClickListener(new View.OnClickListener() {
+        btnCategory = (Button) view.findViewById(R.id.buttonCategory);
+        btnCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                enterNextFragment();
+                enterRecipesFragment();
             }
         });
 
         return view ;
     }
 
-    private void enterNextFragment() {
-        CategoriesFragment a2Fragment = new CategoriesFragment();
+    private void enterRecipesFragment() {
+        RecipesFragment a2Fragment = new RecipesFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
         // Store the Fragment in stack
