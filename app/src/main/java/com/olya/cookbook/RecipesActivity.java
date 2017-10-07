@@ -1,6 +1,7 @@
 package com.olya.cookbook;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,12 +15,13 @@ import android.widget.Button;
 import android.support.design.widget.TabLayout;
 import android.widget.ImageButton;
 
+import com.olya.cookbook.fragment.RecipesFragment;
 import com.olya.cookbook.tab.MyAdapter;
 
 public class RecipesActivity extends AppCompatActivity {
 
     private TabLayout mTabLayout;
-    private ViewPager mViewPager;
+    public static ViewPager mViewPager;
     protected MyAdapter mPageAdapter;
     private DrawerLayout mDrawer;
     private Toolbar mToolbar;
@@ -28,7 +30,7 @@ public class RecipesActivity extends AppCompatActivity {
     private Button btnDiscover;
     private Button btnTools;
 
-    private ImageButton btnBreakfast;
+
 
     private static final String TAG = "RecipeActivity";
 
@@ -58,9 +60,12 @@ public class RecipesActivity extends AppCompatActivity {
         /*
 
          */
-        mViewPager=(ViewPager)findViewById(R.id.vp_tabs);
+        mViewPager = (ViewPager) findViewById(R.id.vp_tabs);
         mViewPager.setAdapter(new MyAdapter(getSupportFragmentManager(), this));
-
+        //FragmentManager fragmentManager = getSupportFragmentManager();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.vp_tabs, new RecipesFragment())
+                .commit();
 
         mTabLayout = (TabLayout) findViewById(R.id.stl_tabs);
         mTabLayout.setupWithViewPager(mViewPager);

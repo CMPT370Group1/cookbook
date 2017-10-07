@@ -7,8 +7,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.olya.cookbook.fragment.AddFragment;
+import com.olya.cookbook.fragment.AllRecipesFragment;
 import com.olya.cookbook.fragment.CategoriesFragment;
 import com.olya.cookbook.fragment.LinksFragment;
+import com.olya.cookbook.fragment.RecipesFragment;
 import com.olya.cookbook.fragment.SearchFragment;
 
 /**
