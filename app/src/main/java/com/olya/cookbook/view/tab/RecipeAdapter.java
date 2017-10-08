@@ -6,20 +6,20 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.olya.cookbook.view.fragment.AddFragment;
-import com.olya.cookbook.view.fragment.CategoriesFragment;
-import com.olya.cookbook.view.fragment.LinksFragment;
-import com.olya.cookbook.view.fragment.SearchFragment;
+import com.olya.cookbook.view.fragment.RecipeAddFragment;
+import com.olya.cookbook.view.fragment.RecipeCategoriesFragment;
+import com.olya.cookbook.view.fragment.RecipeLinksFragment;
+import com.olya.cookbook.view.fragment.RecipeSearchFragment;
 
 /**
  * Created by Olya on 2017-09-21.
  */
 
-public class MyRecipesAdapter extends FragmentPagerAdapter {
+public class RecipeAdapter extends FragmentPagerAdapter {
     private Context mContext;
     private String[] titles ={"ALL","ADD","SEARCH","LINKS"};
 
-    public MyRecipesAdapter(FragmentManager fm, Context c){
+    public RecipeAdapter(FragmentManager fm, Context c){
         super(fm);
     }
 
@@ -28,13 +28,13 @@ public class MyRecipesAdapter extends FragmentPagerAdapter {
         Fragment frag= null;
 
         if(position ==0){
-            frag = new CategoriesFragment();
+            frag = new RecipeCategoriesFragment();
         }else if(position == 1){
-            frag = new AddFragment();
+            frag = new RecipeAddFragment();
         }else if(position == 2){
-            frag = new SearchFragment();
+            frag = new RecipeSearchFragment();
         }else if(position == 3){
-            frag = new LinksFragment();
+            frag = new RecipeLinksFragment();
         }
 
         Bundle b = new Bundle();

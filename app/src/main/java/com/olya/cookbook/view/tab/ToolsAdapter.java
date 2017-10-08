@@ -6,10 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.olya.cookbook.view.fragment.AddFragment;
-import com.olya.cookbook.view.fragment.CategoriesFragment;
-import com.olya.cookbook.view.fragment.LinksFragment;
-import com.olya.cookbook.view.fragment.SearchFragment;
 import com.olya.cookbook.view.fragment.ToolsAccountFragment;
 import com.olya.cookbook.view.fragment.ToolsMassFragment;
 import com.olya.cookbook.view.fragment.ToolsMassVolumeFragment;

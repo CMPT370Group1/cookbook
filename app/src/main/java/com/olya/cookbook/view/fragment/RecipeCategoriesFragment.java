@@ -14,7 +14,7 @@ import com.olya.cookbook.R;
  * Created by Olya on 2017-09-21.
  */
 
-public class CategoriesFragment extends Fragment{
+public class RecipeCategoriesFragment extends Fragment{
 
     private ImageButton btnBreakfast;
     private ImageButton btnSnack;
@@ -31,7 +31,7 @@ public class CategoriesFragment extends Fragment{
 
     private View.OnClickListener categoyOnClickListener;
 
-    public CategoriesFragment() {
+    public RecipeCategoriesFragment() {
         // Required empty public constructor
     }
     @Override

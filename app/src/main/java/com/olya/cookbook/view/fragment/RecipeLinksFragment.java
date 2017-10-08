@@ -12,9 +12,9 @@ import com.olya.cookbook.R;
  * Created by Olya on 2017-09-21.
  */
 
-public class LinksFragment extends Fragment {
+public class RecipeLinksFragment extends Fragment {
 
-    public LinksFragment() {
+    public RecipeLinksFragment() {
         // Required empty public constructor
     }
 

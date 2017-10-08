@@ -59,7 +59,7 @@ public class DiscoverRecipesFragment extends Fragment{
     }
 
     private void enterAllCategoriesFragment() {
-        CategoriesFragment a2Fragment = new CategoriesFragment();
+        RecipeCategoriesFragment a2Fragment = new RecipeCategoriesFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
         // Store the Fragment in stack

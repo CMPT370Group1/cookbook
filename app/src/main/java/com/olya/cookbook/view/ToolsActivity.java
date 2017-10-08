@@ -87,13 +87,13 @@ public class ToolsActivity extends AppCompatActivity {
 //            @Override
 //            public void onTabSelected(@IdRes int tabId) {
 //                if (tabId == R.id.tab_home){
-//                    fragment = new CategoriesFragment();
+//                    fragment = new RecipeCategoriesFragment();
 //                }else if (tabId == R.id.tab_explore){
-//                    fragment = new AddFragment();
+//                    fragment = new RecipeAddFragment();
 //                }else if (tabId ==R.id.tab_chat){
-//                    fragment = new SearchFragment();
+//                    fragment = new RecipeSearchFragment();
 //                }else if (tabId==R.id.tab_friends){
-//                    fragment = new LinksFragment();
+//                    fragment = new RecipeLinksFragment();
 //                }
 //                getSupportFragmentManager()
 //                        .beginTransaction()
@@ -104,7 +104,7 @@ public class ToolsActivity extends AppCompatActivity {
 
  /*       btnBreakfast =(ImageButton) findViewById(R.id.ib_breakfast);
         btnBreakfast.setOnClickListener(new View.OnClickListener() {
-            Fragment fragment = new AddFragment();
+            Fragment fragment = new RecipeAddFragment();
             @Override
             public void onClick(View view) {
                 getSupportFragmentManager()
