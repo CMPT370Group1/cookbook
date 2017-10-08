@@ -12,9 +12,9 @@ import com.olya.cookbook.R;
  * Created by Olya on 2017-09-21.
  */
 
-public class SearchFragment extends Fragment {
+public class DiscoverWebsearchFragment extends Fragment {
 
-    public SearchFragment() {
+    public DiscoverWebsearchFragment() {
         // Required empty public constructor
     }
     @Override
@@ -22,7 +22,7 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View view = inflater.inflate(R.layout.fragment_res_search, container, false);
+        View view = inflater.inflate(R.layout.fragment_dis_websearch, container, false);
         return view ;
     }
 }

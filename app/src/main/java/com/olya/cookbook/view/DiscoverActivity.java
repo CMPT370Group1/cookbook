@@ -2,6 +2,7 @@ package com.olya.cookbook.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,17 +13,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import android.support.design.widget.TabLayout;
-
 import com.olya.cookbook.R;
 import com.olya.cookbook.view.fragment.RecipesFragment;
+import com.olya.cookbook.view.tab.DiscoverAdapter;
 import com.olya.cookbook.view.tab.MyRecipesAdapter;
 
-public class RecipesActivity extends AppCompatActivity {
+public class DiscoverActivity extends AppCompatActivity {
 
     private TabLayout mTabLayout;
     public static ViewPager mViewPager;
-    protected MyRecipesAdapter mPageAdapter;
+    protected DiscoverAdapter mPageAdapter;
     private DrawerLayout mDrawer;
     private Toolbar mToolbar;
 
@@ -32,14 +32,14 @@ public class RecipesActivity extends AppCompatActivity {
 
 
 
-    private static final String TAG = "RecipesActivity";
+    private static final String TAG = "DiscoverActivity";
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recipes);
+        setContentView(R.layout.activity_discover);
 
         /*
 
@@ -61,7 +61,7 @@ public class RecipesActivity extends AppCompatActivity {
 
          */
         mViewPager = (ViewPager) findViewById(R.id.vp_tabs);
-        mViewPager.setAdapter(new MyRecipesAdapter(getSupportFragmentManager(), this));
+        mViewPager.setAdapter(new DiscoverAdapter(getSupportFragmentManager(), this));
 
         mTabLayout = (TabLayout) findViewById(R.id.stl_tabs);
         mTabLayout.setupWithViewPager(mViewPager);
@@ -145,15 +145,15 @@ public class RecipesActivity extends AppCompatActivity {
         btnRecipes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(getApplicationContext(), RecipesActivity.class);
-                //startActivity(intent);
+                Intent intent = new Intent(getApplicationContext(), RecipesActivity.class);
+                startActivity(intent);
             }
         });
         btnDiscover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), DiscoverActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(getApplicationContext(), DiscoverActivity.class);
+                //startActivity(intent);
             }
         });
         btnTools.setOnClickListener(new View.OnClickListener() {

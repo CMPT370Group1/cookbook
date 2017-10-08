@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:orientation="vertical" android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/categories_main_layout">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/background_light"
+        >
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="30dp">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/ib_breakfast"
+                        android:layout_width="@dimen/category_icon_side"
+                        android:layout_height="@dimen/category_icon_side"
+                        android:layout_margin="10dp"
+                        android:contentDescription="Breakfast"
+                        app:srcCompat="@drawable/soup"/>
+
+                    <TextView
+                        android:id="@+id/lbl_breakfast"
+                        android:layout_width="@dimen/category_icon_side"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:paddingBottom="5dp"
+                        android:text="Breakfast"
+                        android:textAlignment="center"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/ib_snack"
+                        android:layout_width="@dimen/category_icon_side"
+                        android:layout_height="@dimen/category_icon_side"
+                        android:layout_margin="10dp"
+                        android:contentDescription="Breakfast"
+                        app:srcCompat="@drawable/cake"/>
+
+                    <TextView
+                        android:id="@+id/lbl_snack"
+                        android:layout_width="@dimen/category_icon_side"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:paddingBottom="5dp"
+                        android:text="Snacks"
+                        android:textAlignment="center"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingBottom="5dp">
+
+                    <ImageButton
+                        android:id="@+id/ib_soup"
+                        android:layout_width="@dimen/category_icon_side"
+                        android:layout_height="@dimen/category_icon_side"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:contentDescription="Breakfast"
+                        app:srcCompat="@drawable/soup"/>
+
+                    <TextView
+                        android:id="@+id/lbl_soup"
+                        android:layout_width="@dimen/category_icon_side"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:paddingBottom="5dp"
+                        android:text="Soups"
+                        android:textAlignment="center"
+                        android:textSize="14sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingBottom="5dp">
+
+                    <ImageButton
+                        android:id="@+id/ib_appetizer"
+                        android:layout_width="@dimen/category_icon_side"
+                        android:layout_height="@dimen/category_icon_side"
+                        android:layout_margin="10dp"
+                        android:contentDescription="Breakfast"
+                        app:srcCompat="@drawable/cake"/>
+
+                    <TextView
+                        android:id="@+id/lbl_appetizer"
+                        android:layout_width="@dimen/category_icon_side"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:paddingBottom="5dp"
+                        android:text="Appetizers"
+                        android:textAlignment="center"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/ib_salad"
+                        android:layout_width="@dimen/category_icon_side"
+                        android:layout_height="@dimen/category_icon_side"
+                        android:layout_margin="10dp"
+                        android:contentDescription="Breakfast"
+                        app:srcCompat="@drawable/cake"/>
+
+                    <TextView
+                        android:id="@+id/lbl_salad"
+                        android:layout_width="@dimen/category_icon_side"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:paddingBottom="5dp"
+                        android:text="Salads"
+                        android:textAlignment="center"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/ib_bread"
+                        android:layout_width="@dimen/category_icon_side"
+                        android:layout_height="@dimen/category_icon_side"
+                        android:layout_margin="10dp"
+                        android:contentDescription="Breakfast"
+                        app:srcCompat="@drawable/soup"/>
+
+                    <TextView
+                        android:id="@+id/lbl_bread"
+                        android:layout_width="@dimen/category_icon_side"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:paddingBottom="5dp"
+                        android:text="Breads"
+                        android:textAlignment="center"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/ib_beverage"
+                        android:layout_width="@dimen/category_icon_side"
+                        android:layout_height="@dimen/category_icon_side"
+                        android:layout_margin="10dp"
+                        android:contentDescription="Breakfast"
+                        app:srcCompat="@drawable/soup"/>
+
+                    <TextView
+                        android:id="@+id/lbl_bevarage"
+                        android:layout_width="@dimen/category_icon_side"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:paddingBottom="5dp"
+                        android:text="Beverages"
+                        android:textAlignment="center"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/ib_dessert"
+                        android:layout_width="@dimen/category_icon_side"
+                        android:layout_height="@dimen/category_icon_side"
+                        android:layout_margin="10dp"
+                        android:contentDescription="Breakfast"
+                        app:srcCompat="@drawable/cake"/>
+
+                    <TextView
+                        android:id="@+id/lbl_dessert"
+                        android:layout_width="@dimen/category_icon_side"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:paddingBottom="5dp"
+                        android:text="Desserts"
+                        android:textAlignment="center"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/ib_main_dish"
+                        android:layout_width="@dimen/category_icon_side"
+                        android:layout_height="@dimen/category_icon_side"
+                        android:layout_margin="10dp"
+                        android:contentDescription="Breakfast"
+                        app:srcCompat="@drawable/soup"/>
+
+                    <TextView
+                        android:id="@+id/lbl_main_dish"
+                        android:layout_width="@dimen/category_icon_side"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:paddingBottom="5dp"
+                        android:text="Main dishes"
+                        android:textAlignment="center"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/ib_side_dish"
+                        android:layout_width="@dimen/category_icon_side"
+                        android:layout_height="@dimen/category_icon_side"
+                        android:layout_margin="10dp"
+                        android:contentDescription="Breakfast"
+                        app:srcCompat="@drawable/cake"/>
+
+                    <TextView
+                        android:id="@+id/lbl_side_dish"
+                        android:layout_width="@dimen/category_icon_side"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:paddingBottom="5dp"
+                        android:text="Side dishes"
+                        android:textAlignment="center"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/ib_sauce"
+                        android:layout_width="@dimen/category_icon_side"
+                        android:layout_height="@dimen/category_icon_side"
+                        android:layout_margin="10dp"
+                        android:contentDescription="Breakfast"
+                        app:srcCompat="@drawable/soup"/>
+
+                    <TextView
+                        android:id="@+id/lbl_sauce"
+                        android:layout_width="@dimen/category_icon_side"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:paddingBottom="5dp"
+                        android:text="Sauces"
+                        android:textAlignment="center"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/ib_vegetable"
+                        android:layout_width="@dimen/category_icon_side"
+                        android:layout_height="@dimen/category_icon_side"
+                        android:layout_margin="10dp"
+                        android:contentDescription="Breakfast"
+                        app:srcCompat="@drawable/cake"/>
+
+                    <TextView
+                        android:id="@+id/lbl_vegetable"
+                        android:layout_width="@dimen/category_icon_side"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:paddingBottom="5dp"
+                        android:text="Vegetables"
+                        android:textAlignment="center"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+            </TableRow>
+        </TableLayout>
+
+    </ScrollView>
+    <!--include layout="@layout/content_recipes"/-->
+</FrameLayout>

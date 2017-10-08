@@ -15,12 +15,12 @@ import com.olya.cookbook.R;
  * Created by Olya on 2017-09-21.
  */
 
-public class RecipesFragment extends Fragment{
+public class DiscoverRecipesFragment extends Fragment{
 
     private RelativeLayout rl;
     private Button btnAllCategories;
 
-    public RecipesFragment() {
+    public DiscoverRecipesFragment() {
         // Required empty public constructor
     }
     @Override

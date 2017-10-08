@@ -84,8 +84,8 @@ public class MainActivity extends AppCompatActivity {
         btnDiscover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(getApplicationContext(), DiscoverActivity.class);
-                //startActivity(intent);
+                Intent intent = new Intent(getApplicationContext(), DiscoverActivity.class);
+                startActivity(intent);
             }
         });
         btnTools.setOnClickListener(new View.OnClickListener() {

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:weightSum="1">
+
+
+        <TextView
+            android:id="@+id/textTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Title"/>
+
+        <EditText
+            android:id="@+id/recipeTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            />
+
+
+        <TextView
+            android:id="@+id/textCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Category"/>
+        <Spinner
+            android:id="@+id/recipeCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+        <TextView
+            android:id="@+id/textImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Image"/>
+        <Button
+            android:id="@+id/buttonRecipeImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Choose From Gallery"/>
+
+
+        <TextView
+            android:id="@+id/textIngredients"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ingredients"/>
+        <LinearLayout
+            android:id="@+id/listRecipeIngredients"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:id="@+id/recipeIngredient0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/ingredientName0"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="text"
+                    android:selectAllOnFocus="true"
+                    android:text="Name"/>
+
+                <EditText
+                    android:id="@+id/ingredientQuantity0"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/ingredientName0"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    android:selectAllOnFocus="true"
+                    android:text="#"/>
+
+                <Spinner
+                    android:id="@+id/ingredientUnit0"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignTop="@id/ingredientQuantity0"
+                    android:layout_toRightOf="@id/ingredientQuantity0"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+        <Button
+            android:id="@+id/buttonAddIngredient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/listRecipeIngredients"
+            android:text="Add Ingredient"/>
+
+
+        <TextView
+            android:id="@+id/textDirections"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Directions"/>
+        <EditText
+            android:id="@+id/recipeDirections"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            android:layout_weight="1.66"/>
+
+
+        <TextView
+            android:id="@+id/textDuration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Duration"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <EditText
+                android:id="@+id/recipeDurationHour"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"/>
+            <TextView
+                android:id="@+id/textDurationHour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/recipeDurationHour"
+                android:layout_toRightOf="@id/recipeDurationHour"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="h"/>
+            <EditText
+                android:id="@+id/recipeDurationMin"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/textDurationHour"
+                android:ems="10"
+                android:inputType="number"/>
+            <TextView
+                android:id="@+id/textDurationMin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/recipeDurationMin"
+                android:layout_toRightOf="@id/recipeDurationMin"
+                android:paddingLeft="10dp"
+                android:text="min"/>
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/textTags"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tags"/>
+        <RelativeLayout
+            android:id="@+id/recipeTags"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ListView
+                android:id="@+id/listRecipeTags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <Button
+                android:id="@+id/buttonAddTag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/listRecipeTags"
+                android:text="Add Tag"/>
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</ScrollView>

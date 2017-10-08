@@ -46,6 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/recipeTitle1"
                 android:layout_toRightOf="@id/recipeImage1"
+                android:maxLines="1"
                 android:text="www.cakes.ru/awesomecake"/>
 
             <Button
@@ -91,6 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/recipeTitle2"
                 android:layout_toRightOf="@id/recipeImage2"
+                android:maxLines="1"
                 android:text="homecooking.com/recipes/soup"/>
 
             <Button

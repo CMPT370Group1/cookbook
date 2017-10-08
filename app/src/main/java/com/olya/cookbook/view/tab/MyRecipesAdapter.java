@@ -7,21 +7,19 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.olya.cookbook.view.fragment.AddFragment;
-import com.olya.cookbook.view.fragment.AllRecipesFragment;
 import com.olya.cookbook.view.fragment.CategoriesFragment;
 import com.olya.cookbook.view.fragment.LinksFragment;
-import com.olya.cookbook.view.fragment.RecipesFragment;
 import com.olya.cookbook.view.fragment.SearchFragment;
 
 /**
  * Created by Olya on 2017-09-21.
  */
 
-public class MyAdapter extends FragmentPagerAdapter {
+public class MyRecipesAdapter extends FragmentPagerAdapter {
     private Context mContext;
     private String[] titles ={"ALL","ADD","SEARCH","LINKS"};
 
-    public MyAdapter(FragmentManager fm, Context c){
+    public MyRecipesAdapter(FragmentManager fm, Context c){
         super(fm);
     }
 

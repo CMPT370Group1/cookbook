@@ -19,6 +19,9 @@
         <activity android:name="com.olya.cookbook.view.RecipesActivity"
                   android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity android:name="com.olya.cookbook.view.DiscoverActivity"
+                  android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>
