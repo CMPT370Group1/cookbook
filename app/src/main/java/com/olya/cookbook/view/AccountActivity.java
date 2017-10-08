@@ -2,8 +2,6 @@ package com.olya.cookbook.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,72 +12,39 @@ import android.view.View;
 import android.widget.Button;
 
 import com.olya.cookbook.R;
-import com.olya.cookbook.view.tab.ToolsAdapter;
 
-public class ToolsActivity extends AppCompatActivity {
+public class AccountActivity extends AppCompatActivity {
 
-    private TabLayout mTabLayout;
-    public static ViewPager mViewPager;
-    protected ToolsAdapter mPageAdapter;
-    private DrawerLayout mDrawer;
+    Button btnRecipes;
+    Button btnDiscover;
+    Button btnTools;
+    DrawerLayout drawer;
     private Toolbar mToolbar;
 
-    private Button btnRecipes;
-    private Button btnDiscover;
-    private Button btnTools;
-
-
-
-    private static final String TAG = "ToolsActivity";
-
-
+    private static final String TAG = "AccountActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tools);
+        setContentView(R.layout.activity_account);
 
         /*
 
          */
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+        setTitle("");
 
         /*
 
          */
-        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawer.setDrawerListener(toggle);
+                this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-
-        /*
-
-         */
-        mViewPager = (ViewPager) findViewById(R.id.vp_tabs);
-        mViewPager.setAdapter(new ToolsAdapter(getSupportFragmentManager(), this));
-
-        mTabLayout = (TabLayout) findViewById(R.id.stl_tabs);
-        mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        mTabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
-        mTabLayout.setupWithViewPager(mViewPager);
-        mTabLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        mTabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.colorAccent));
-        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {}
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {}
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {}
-        });
-
         setButtons();
-
     }
 
     @Override
@@ -126,8 +91,8 @@ public class ToolsActivity extends AppCompatActivity {
         btnTools.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(getApplicationContext(), ToolsActivity.class);
-                //startActivity(intent);
+                Intent intent = new Intent(getApplicationContext(), ToolsActivity.class);
+                startActivity(intent);
             }
         });
 

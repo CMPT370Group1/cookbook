@@ -79,39 +79,6 @@ public class RecipesActivity extends AppCompatActivity {
 
         setButtons();
 
-//=======================================================================================================
-//        bottomBar =(BottomBar)findViewById(R.id.bottombar);
-//        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
-//            Fragment fragment = null;
-//            @Override
-//            public void onTabSelected(@IdRes int tabId) {
-//                if (tabId == R.id.tab_home){
-//                    fragment = new RecipeCategoriesFragment();
-//                }else if (tabId == R.id.tab_explore){
-//                    fragment = new RecipeAddFragment();
-//                }else if (tabId ==R.id.tab_chat){
-//                    fragment = new RecipeSearchFragment();
-//                }else if (tabId==R.id.tab_friends){
-//                    fragment = new RecipeLinksFragment();
-//                }
-//                getSupportFragmentManager()
-//                        .beginTransaction()
-//                        .replace(R.id.content, fragment)
-//                        .commit();
-//            }
-//        });
-
- /*       btnBreakfast =(ImageButton) findViewById(R.id.ib_breakfast);
-        btnBreakfast.setOnClickListener(new View.OnClickListener() {
-            Fragment fragment = new RecipeAddFragment();
-            @Override
-            public void onClick(View view) {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content, fragment)
-                        .commit();
-            }
-        });*/
     }
 
     @Override
@@ -129,7 +96,7 @@ public class RecipesActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_info) {
             return true;
         }
 

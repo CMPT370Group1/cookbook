@@ -38,7 +38,7 @@
         <Spinner
             android:id="@+id/massVolumeList1"
             android:layout_width="wrap_content" android:layout_height="50dp"
-            android:entries="@array/mass_units"
+            android:entries="@array/mass_volume_units"
             android:layout_alignBottom="@+id/massVolumeNum1" android:layout_toRightOf="@+id/massVolumeNum1"
             android:layout_toEndOf="@+id/massVolumeNum1"/>
         <EditText
@@ -53,7 +53,7 @@
         <Spinner
             android:id="@+id/massVolumeList2"
             android:layout_width="wrap_content" android:layout_height="50dp"
-            android:entries="@array/volume_units"
+            android:entries="@array/mass_volume_units"
             android:layout_alignBottom="@+id/massVolumeNum2" android:layout_toRightOf="@+id/massVolumeNum2"
             android:layout_toEndOf="@+id/massVolumeNum2"/>
 

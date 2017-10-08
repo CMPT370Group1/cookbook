@@ -25,6 +25,9 @@
         <activity android:name="com.olya.cookbook.view.ToolsActivity"
                   android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity android:name="com.olya.cookbook.view.AccountActivity"
+                  android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

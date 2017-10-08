@@ -1,6 +1,7 @@
 package com.olya.cookbook.view;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
     Button btnRecipes;
     Button btnDiscover;
     Button btnTools;
+    FloatingActionButton btnFab;
+
     DrawerLayout drawer;
     private Toolbar mToolbar;
 
@@ -62,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_info) {
             return true;
         }
 
@@ -73,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         btnRecipes = (Button) findViewById(R.id.button1);
         btnDiscover = (Button) findViewById(R.id.button2);
         btnTools = (Button) findViewById(R.id.button3);
+        btnFab = (FloatingActionButton) findViewById(R.id.fab);
 
         btnRecipes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +96,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), ToolsActivity.class);
+                startActivity(intent);
+            }
+        });
+        btnFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), AccountActivity.class);
                 startActivity(intent);
             }
         });

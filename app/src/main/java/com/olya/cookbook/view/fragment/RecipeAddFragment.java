@@ -42,10 +42,7 @@ public class RecipeAddFragment extends Fragment {
         recipeImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(
-                        Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+                pickImage();
             }
         });
 
@@ -53,10 +50,10 @@ public class RecipeAddFragment extends Fragment {
     }
 
     public void pickImage() {
-        Intent intent = new Intent(
+        /*Intent intent = new Intent(
                 Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);*/
     }
 /*
     @Override
