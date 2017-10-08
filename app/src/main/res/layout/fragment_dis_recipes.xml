@@ -37,7 +37,8 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginRight="20dp"
-                    app:srcCompat="@drawable/cake"/>
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/dessert"/>
 
                 <TextView
                     android:id="@+id/recipeTitle1"
@@ -66,6 +67,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginRight="20dp"
+                    android:scaleType="centerCrop"
                     app:srcCompat="@drawable/soup"/>
 
                 <TextView

@@ -7,4 +7,44 @@
     <string name="action_settings">Settings</string>
     <string name="action_info">Info</string>
 
+    <string-array name="volume_units">
+        <item>US l. gal</item>
+        <item>US l. qt</item>
+        <item>US l. pt</item>
+        <item>US cup</item>
+        <item>US fl. oz</item>
+        <item>US tbsp</item>
+        <item>US tsp</item>
+        <item>Imp. gal</item>
+        <item>Imp. qt</item>
+        <item>Imp. pt</item>
+        <item>Imp. cup</item>
+        <item>Imp. fl. oz</item>
+        <item>Imp. tbsp</item>
+        <item>Imp. tsp</item>
+        <item>L</item>
+        <item>ml</item>
+    </string-array>
+
+    <string-array name="mass_units">
+        <item>kg</item>
+        <item>g</item>
+        <item>mg</item>
+        <item>lb</item>
+        <item>oz</item>
+    </string-array>
+
+    <string-array name="temperature_units">
+        <item>C</item>
+        <item>F</item>
+    </string-array>
+
+    <string-array name="ingredients">
+        <item>Add New</item>
+        <item>Butter</item>
+        <item>Canola oil</item>
+        <item>Flour</item>
+        <item>Cream</item>
+    </string-array>
+
 </resources>

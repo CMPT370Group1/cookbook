@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:orientation="vertical" android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/categories_main_layout">
+
+    <RelativeLayout
+        android:layout_width="match_parent" android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/massVolumeImageView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/mass_volume"/>
+
+        <Spinner
+            android:id="@+id/massVolumeIngredient"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/massVolumeImageView"
+            android:layout_marginEnd="30dp"
+            android:layout_marginStart="30dp" android:layout_marginTop="15dp"
+            android:entries="@array/ingredients"/>
+
+        <EditText
+            android:id="@+id/massVolumeNum1"
+            android:layout_width="180dp" android:layout_height="wrap_content"
+            android:layout_below="@id/massVolumeIngredient"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="30dp" android:layout_marginTop="15dp"
+            android:ems="10" android:gravity="end" android:textAlignment="textEnd"
+            android:inputType="numberDecimal" android:imeOptions="actionDone"
+            android:selectAllOnFocus="true" android:text="0" />
+        <Spinner
+            android:id="@+id/massVolumeList1"
+            android:layout_width="wrap_content" android:layout_height="50dp"
+            android:entries="@array/mass_units"
+            android:layout_alignBottom="@+id/massVolumeNum1" android:layout_toRightOf="@+id/massVolumeNum1"
+            android:layout_toEndOf="@+id/massVolumeNum1"/>
+        <EditText
+            android:id="@+id/massVolumeNum2"
+            android:layout_width="180dp" android:layout_height="wrap_content"
+            android:layout_below="@id/massVolumeNum1"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="30dp" android:layout_marginTop="15dp"
+            android:editable="false" android:textIsSelectable="true"
+            android:ems="10" android:gravity="end" android:textAlignment="textEnd"
+            android:text="0"/>
+        <Spinner
+            android:id="@+id/massVolumeList2"
+            android:layout_width="wrap_content" android:layout_height="50dp"
+            android:entries="@array/volume_units"
+            android:layout_alignBottom="@+id/massVolumeNum2" android:layout_toRightOf="@+id/massVolumeNum2"
+            android:layout_toEndOf="@+id/massVolumeNum2"/>
+
+        <Button
+            android:id="@+id/buttonAddConversion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="30dp"
+            android:layout_marginStart="30dp" android:layout_marginTop="15dp"
+            android:layout_below="@id/massVolumeList2"
+            android:layout_alignParentRight="true"
+            android:text="Add"/>
+    </RelativeLayout>
+
+</FrameLayout>

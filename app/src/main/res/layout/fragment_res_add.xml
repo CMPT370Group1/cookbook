@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
               android:layout_height="match_parent">
 
     <LinearLayout
@@ -10,6 +11,33 @@
         android:padding="20dp"
         android:weightSum="1">
 
+
+        <RelativeLayout
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content">
+        <ImageView
+            android:id="@+id/recipeImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginBottom="20dp"
+            android:contextClickable="true"
+            app:srcCompat="@android:color/darker_gray"/>
+
+            <TextView
+                android:id="@+id/myImageViewText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/recipeImage"
+                android:layout_alignLeft="@+id/recipeImage"
+                android:layout_alignRight="@+id/recipeImage"
+                android:layout_alignTop="@+id/recipeImage"
+                android:layout_margin="1dp"
+                android:gravity="center"
+                android:text="CLICK TO CHOOSE IMAGE\nFROM GALLERY"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/textTitle"
@@ -22,8 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
-            />
+            android:inputType="text"/>
 
 
         <TextView
@@ -35,18 +62,6 @@
             android:id="@+id/recipeCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-
-
-        <TextView
-            android:id="@+id/textImage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Image"/>
-        <Button
-            android:id="@+id/buttonRecipeImage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Choose From Gallery"/>
 
 
         <TextView

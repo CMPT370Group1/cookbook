@@ -33,7 +33,8 @@
                         android:layout_height="@dimen/category_icon_side"
                         android:layout_margin="10dp"
                         android:contentDescription="Breakfast"
-                        app:srcCompat="@drawable/soup"/>
+                        android:scaleType="centerCrop"
+                        app:srcCompat="@drawable/breakfast"/>
 
                     <TextView
                         android:id="@+id/lbl_breakfast"
@@ -58,7 +59,8 @@
                         android:layout_height="@dimen/category_icon_side"
                         android:layout_margin="10dp"
                         android:contentDescription="Breakfast"
-                        app:srcCompat="@drawable/cake"/>
+                        android:scaleType="centerCrop"
+                        app:srcCompat="@drawable/snack"/>
 
                     <TextView
                         android:id="@+id/lbl_snack"
@@ -92,6 +94,7 @@
                         android:layout_margin="10dp"
                         android:layout_weight="1"
                         android:contentDescription="Breakfast"
+                        android:scaleType="centerCrop"
                         app:srcCompat="@drawable/soup"/>
 
                     <TextView
@@ -120,7 +123,8 @@
                         android:layout_height="@dimen/category_icon_side"
                         android:layout_margin="10dp"
                         android:contentDescription="Breakfast"
-                        app:srcCompat="@drawable/cake"/>
+                        android:scaleType="centerCrop"
+                        app:srcCompat="@drawable/appetizer"/>
 
                     <TextView
                         android:id="@+id/lbl_appetizer"
@@ -152,7 +156,8 @@
                         android:layout_height="@dimen/category_icon_side"
                         android:layout_margin="10dp"
                         android:contentDescription="Breakfast"
-                        app:srcCompat="@drawable/cake"/>
+                        android:scaleType="centerCrop"
+                        app:srcCompat="@drawable/salad"/>
 
                     <TextView
                         android:id="@+id/lbl_salad"
@@ -177,7 +182,8 @@
                         android:layout_height="@dimen/category_icon_side"
                         android:layout_margin="10dp"
                         android:contentDescription="Breakfast"
-                        app:srcCompat="@drawable/soup"/>
+                        android:scaleType="centerCrop"
+                        app:srcCompat="@drawable/bread"/>
 
                     <TextView
                         android:id="@+id/lbl_bread"
@@ -209,7 +215,8 @@
                         android:layout_height="@dimen/category_icon_side"
                         android:layout_margin="10dp"
                         android:contentDescription="Breakfast"
-                        app:srcCompat="@drawable/soup"/>
+                        android:scaleType="centerCrop"
+                        app:srcCompat="@drawable/beverage"/>
 
                     <TextView
                         android:id="@+id/lbl_bevarage"
@@ -234,7 +241,8 @@
                         android:layout_height="@dimen/category_icon_side"
                         android:layout_margin="10dp"
                         android:contentDescription="Breakfast"
-                        app:srcCompat="@drawable/cake"/>
+                        android:scaleType="centerCrop"
+                        app:srcCompat="@drawable/dessert"/>
 
                     <TextView
                         android:id="@+id/lbl_dessert"
@@ -266,7 +274,8 @@
                         android:layout_height="@dimen/category_icon_side"
                         android:layout_margin="10dp"
                         android:contentDescription="Breakfast"
-                        app:srcCompat="@drawable/soup"/>
+                        android:scaleType="centerCrop"
+                        app:srcCompat="@drawable/main_dish"/>
 
                     <TextView
                         android:id="@+id/lbl_main_dish"
@@ -291,7 +300,8 @@
                         android:layout_height="@dimen/category_icon_side"
                         android:layout_margin="10dp"
                         android:contentDescription="Breakfast"
-                        app:srcCompat="@drawable/cake"/>
+                        android:scaleType="centerCrop"
+                        app:srcCompat="@drawable/side_dish"/>
 
                     <TextView
                         android:id="@+id/lbl_side_dish"
@@ -323,7 +333,8 @@
                         android:layout_height="@dimen/category_icon_side"
                         android:layout_margin="10dp"
                         android:contentDescription="Breakfast"
-                        app:srcCompat="@drawable/soup"/>
+                        android:scaleType="centerCrop"
+                        app:srcCompat="@drawable/sauce"/>
 
                     <TextView
                         android:id="@+id/lbl_sauce"
@@ -348,7 +359,8 @@
                         android:layout_height="@dimen/category_icon_side"
                         android:layout_margin="10dp"
                         android:contentDescription="Breakfast"
-                        app:srcCompat="@drawable/cake"/>
+                        android:scaleType="centerCrop"
+                        app:srcCompat="@drawable/vegetable"/>
 
                     <TextView
                         android:id="@+id/lbl_vegetable"

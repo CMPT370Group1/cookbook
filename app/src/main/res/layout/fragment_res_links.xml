@@ -30,7 +30,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginRight="20dp"
-                app:srcCompat="@drawable/cake"/>
+                app:srcCompat="@drawable/dessert"/>
 
             <TextView
                 android:id="@+id/recipeTitle1"
