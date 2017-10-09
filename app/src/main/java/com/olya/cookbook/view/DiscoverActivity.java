@@ -16,124 +16,48 @@ import android.widget.Button;
 import com.olya.cookbook.R;
 import com.olya.cookbook.model.Application;
 import com.olya.cookbook.view.tab.DiscoverAdapter;
+import com.olya.cookbook.view.tab.ToolsAdapter;
 
-public class DiscoverActivity extends AppCompatActivity {
-
-    private TabLayout mTabLayout;
-    public static ViewPager mViewPager;
-    protected DiscoverAdapter mPageAdapter;
-    private DrawerLayout mDrawer;
-    private Toolbar mToolbar;
-
-    private Button btnRecipes;
-    private Button btnDiscover;
-    private Button btnTools;
-
-
+public class DiscoverActivity extends ActivityMenuTabs {
 
     private static final String TAG = "DiscoverActivity";
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discover);
+        initializeActivity();
+    }
 
-        /*
+    public void initializeActivity() {
+        initializeDrawer();
 
-         */
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-
-        /*
-
-         */
-        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-
-        /*
-
-         */
         mViewPager = (ViewPager) findViewById(R.id.vp_tabs);
         mViewPager.setAdapter(new DiscoverAdapter(getSupportFragmentManager(), this));
 
-        mTabLayout = (TabLayout) findViewById(R.id.stl_tabs);
-        mTabLayout.setupWithViewPager(mViewPager);
-        mTabLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        mTabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.colorAccent));
-        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {}
+        initializeTabs();
+    }
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {}
+    public void initializeDrawer() {
+        super.initializeDrawer();
+    }
 
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {}
-        });
-
-        setButtons();
-
+    public void initializeTabs() {
+        super.initializeTabs();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_info) {
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
     public void setButtons() {
-        btnRecipes = (Button) findViewById(R.id.button1);
-        btnDiscover = (Button) findViewById(R.id.button2);
-        btnTools = (Button) findViewById(R.id.button3);
-
-        if (!Application.isUserSignedIn()) {
-            btnRecipes.setEnabled(false);
-            btnRecipes.setBackground(getDrawable(R.drawable.button_recipes_inactive));
-        }
-
-        btnRecipes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), RecipesActivity.class);
-                startActivity(intent);
-            }
-        });
-        btnDiscover.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Intent intent = new Intent(getApplicationContext(), DiscoverActivity.class);
-                //startActivity(intent);
-            }
-        });
-        btnTools.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ToolsActivity.class);
-                startActivity(intent);
-            }
-        });
-
+        super.setButtons();
+        btnDiscover.setEnabled(false);
     }
 }

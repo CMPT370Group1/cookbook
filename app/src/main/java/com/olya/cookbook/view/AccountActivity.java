@@ -14,13 +14,7 @@ import android.widget.Button;
 import com.olya.cookbook.R;
 import com.olya.cookbook.model.Application;
 
-public class AccountActivity extends AppCompatActivity {
-
-    private Button btnRecipes;
-    private Button btnDiscover;
-    private Button btnTools;
-    private DrawerLayout drawer;
-    private Toolbar mToolbar;
+public class AccountActivity extends ActivityMenu {
 
     private static final String TAG = "AccountActivity";
 
@@ -28,79 +22,25 @@ public class AccountActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
+        initializeActivity();
 
-        /*
+    }
 
-         */
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        setTitle("");
-
-        /*
-
-         */
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        setButtons();
+    public void initializeActivity() {
+        super.initializeActivity();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_info) {
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
     public void setButtons() {
-        btnRecipes = (Button) findViewById(R.id.button1);
-        btnDiscover = (Button) findViewById(R.id.button2);
-        btnTools = (Button) findViewById(R.id.button3);
-
-        if (!Application.isUserSignedIn()) {
-            btnRecipes.setEnabled(false);
-            btnRecipes.setBackground(getDrawable(R.drawable.button_recipes_inactive));
-        }
-
-        btnRecipes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), RecipesActivity.class);
-                startActivity(intent);
-            }
-        });
-        btnDiscover.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), DiscoverActivity.class);
-                startActivity(intent);
-            }
-        });
-        btnTools.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ToolsActivity.class);
-                startActivity(intent);
-            }
-        });
-
+        super.setButtons();
     }
 }
