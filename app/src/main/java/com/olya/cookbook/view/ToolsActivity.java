@@ -60,6 +60,11 @@ public class ToolsActivity extends ActivityMenuTabs {
 
     public void setButtons() {
         super.setButtons();
-        btnTools.setEnabled(false);
+        btnTools.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDrawer.closeDrawers();
+            }
+        });
     }
 }

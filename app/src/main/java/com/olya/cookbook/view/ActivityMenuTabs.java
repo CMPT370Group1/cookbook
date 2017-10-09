@@ -25,6 +25,7 @@ public abstract class ActivityMenuTabs extends AppCompatActivity {
 
     protected TabLayout mTabLayout;
     public static ViewPager mViewPager;
+
     protected DrawerLayout mDrawer;
     protected Toolbar mToolbar;
 

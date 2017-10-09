@@ -58,6 +58,11 @@ public class RecipesActivity extends ActivityMenuTabs {
 
     public void setButtons() {
         super.setButtons();
-        btnRecipes.setEnabled(false);
+        btnRecipes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDrawer.closeDrawers();
+            }
+        });
     }
 }

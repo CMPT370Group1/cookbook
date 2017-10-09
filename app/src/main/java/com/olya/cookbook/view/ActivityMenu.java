@@ -22,12 +22,12 @@ import com.olya.cookbook.model.Application;
 
 public abstract class ActivityMenu extends AppCompatActivity {
 
-    private Button btnRecipes;
-    private Button btnDiscover;
-    private Button btnTools;
+    protected Button btnRecipes;
+    protected Button btnDiscover;
+    protected Button btnTools;
 
-    DrawerLayout drawer;
-    private Toolbar mToolbar;
+    protected DrawerLayout mDrawer;
+    protected Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +45,10 @@ public abstract class ActivityMenu extends AppCompatActivity {
         /*
 
          */
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+                this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawer.setDrawerListener(toggle);
         toggle.syncState();
 
         setButtons();

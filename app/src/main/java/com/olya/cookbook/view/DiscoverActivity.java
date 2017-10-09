@@ -58,6 +58,11 @@ public class DiscoverActivity extends ActivityMenuTabs {
 
     public void setButtons() {
         super.setButtons();
-        btnDiscover.setEnabled(false);
+        btnDiscover.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDrawer.closeDrawers();
+            }
+        });
     }
 }
