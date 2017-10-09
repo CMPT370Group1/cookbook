@@ -23,8 +23,7 @@
             android:layout_height="50dp"
             android:layout_below="@+id/massVolumeImageView"
             android:layout_marginEnd="30dp"
-            android:layout_marginStart="30dp" android:layout_marginTop="15dp"
-            android:entries="@array/ingredients"/>
+            android:layout_marginStart="30dp" android:layout_marginTop="15dp"/>
 
         <EditText
             android:id="@+id/massVolumeNum1"
@@ -47,9 +46,19 @@
             android:layout_below="@id/massVolumeNum1"
             android:layout_marginEnd="15dp"
             android:layout_marginStart="30dp" android:layout_marginTop="15dp"
-            android:editable="false" android:textIsSelectable="true"
             android:ems="10" android:gravity="end" android:textAlignment="textEnd"
-            android:text="0"/>
+            android:editable="false" android:textIsSelectable="true"
+            android:selectAllOnFocus="true" android:text="0"/>
+        <EditText
+            android:id="@+id/massVolumeNum2Editable"
+            android:layout_width="180dp" android:layout_height="wrap_content"
+            android:layout_below="@id/massVolumeNum1"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="30dp" android:layout_marginTop="15dp"
+            android:ems="10" android:gravity="end" android:textAlignment="textEnd"
+            android:inputType="numberDecimal" android:imeOptions="actionDone"
+            android:visibility="gone"
+            android:selectAllOnFocus="true" android:text="0"/>
         <Spinner
             android:id="@+id/massVolumeList2"
             android:layout_width="wrap_content" android:layout_height="50dp"
@@ -66,6 +75,19 @@
             android:layout_below="@id/massVolumeList2"
             android:layout_alignParentRight="true"
             android:text="Add"/>
+
+        <EditText
+            android:id="@+id/massVolumeNewIngredient"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/buttonAddConversion"
+            android:layout_alignStart="@+id/massVolumeNum2"
+            android:layout_toLeftOf="@id/buttonAddConversion"
+            android:ems="10"
+            android:hint="New Ingredient"
+            android:inputType="textPersonName"
+            />
+
     </RelativeLayout>
 
 </FrameLayout>

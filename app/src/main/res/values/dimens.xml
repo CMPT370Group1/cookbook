@@ -5,4 +5,14 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="category_icon_side">150dp</dimen>
+
+    <dimen name="line_height">50dp</dimen>
+    <dimen name="tiny_margin">10dp</dimen>
+    <dimen name="small_margin">20dp</dimen>
+    <dimen name="medium_margin">30dp</dimen>
+    <dimen name="big_margin">40dp</dimen>
+    <dimen name="huge_margin">60dp</dimen>
+
+    <dimen name="nav_view_width">59dp</dimen>
+    <dimen name="nav_view_btn_height">156dp</dimen>
 </resources>

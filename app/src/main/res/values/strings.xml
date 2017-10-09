@@ -64,11 +64,11 @@
     </string-array>
 
     <string-array name="ingredients">
-        <item>Add New</item>
         <item>Butter</item>
         <item>Canola oil</item>
         <item>Flour</item>
         <item>Cream</item>
+        <item>Add New</item>
     </string-array>
 
 </resources>

@@ -7,7 +7,7 @@
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 tools:context="com.olya.cookbook.view.ToolsActivity"
-                tools:showIn="@layout/activity_tools">
+                tools:showIn="@layout/app_bar_tools">
 
     <FrameLayout
         android:id="@+id/content"

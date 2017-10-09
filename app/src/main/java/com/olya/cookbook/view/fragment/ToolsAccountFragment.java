@@ -57,6 +57,8 @@ public class ToolsAccountFragment extends Fragment {
             oldPassword = view.findViewById(R.id.userOldPassword);
             newPassword = view.findViewById(R.id.userNewPassword);
 
+            avUserName.setText(Application.getUserName());
+            avUserEmail.setText(Application.getUserEmail());
             avUserName.setEnabled(false);
             avUserEmail.setEnabled(false);
 
@@ -80,6 +82,7 @@ public class ToolsAccountFragment extends Fragment {
                         changePassword.setVisibility(View.VISIBLE);
                         oldPassword.setVisibility(View.VISIBLE);
                         newPassword.setVisibility(View.VISIBLE);
+                        btnSignOut.setVisibility(View.GONE);
                         isAccountEdited = true;
 
 
@@ -94,6 +97,9 @@ public class ToolsAccountFragment extends Fragment {
                         changePassword.setVisibility(View.GONE);
                         oldPassword.setVisibility(View.GONE);
                         newPassword.setVisibility(View.GONE);
+                        oldPassword.setText("");
+                        newPassword.setText("");
+                        btnSignOut.setVisibility(View.VISIBLE);
                         isAccountEdited = false;
                     }
                 }

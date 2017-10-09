@@ -18,6 +18,18 @@ public class Application {
      */
     private Application() {}
 
+    public static UserAccount getUser() {
+        return user;
+    }
+
+    public static String getUserName() {
+        return "user_name";
+    }
+
+    public static String getUserEmail() {
+        return "user_name@domain.com";
+    }
+
     /**
      * Sign in an existing user
      * @param username the username of the existing user

@@ -14,54 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="59dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="@android:color/transparent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:orientation="vertical">
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/button1"
-                android:layout_width="match_parent"
-                android:layout_height="156dp"
-                android:layout_marginTop="10dp"
-                android:height="156dp"
-                android:background="@drawable/button_recipes"
-                />
-
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:height="156dp"
-                android:background="@drawable/button_discover"
-                />
-
-            <Button
-                android:id="@+id/button3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:height="156dp"
-                android:background="@drawable/button_tools"
-                />
-        </LinearLayout>
-
-
-    </android.support.design.widget.NavigationView>
-
+    <include layout="@layout/nav_view"/>
 
 </android.support.v4.widget.DrawerLayout>
