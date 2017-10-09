@@ -58,8 +58,6 @@ public abstract class ActivityMenuTabs extends AppCompatActivity {
 
     public void initializeTabs() {
         mTabLayout = (TabLayout) findViewById(R.id.stl_tabs);
-        mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        mTabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         mTabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.colorAccent));

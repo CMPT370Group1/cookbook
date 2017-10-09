@@ -44,6 +44,8 @@ public class ToolsActivity extends ActivityMenuTabs {
 
     public void initializeTabs() {
         super.initializeTabs();
+        mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        mTabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
     }
 
     @Override
