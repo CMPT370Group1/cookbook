@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.olya.cookbook.R;
+import com.olya.cookbook.model.Application;
 import com.olya.cookbook.view.tab.DiscoverAdapter;
 
 public class DiscoverActivity extends AppCompatActivity {
@@ -106,6 +107,11 @@ public class DiscoverActivity extends AppCompatActivity {
         btnRecipes = (Button) findViewById(R.id.button1);
         btnDiscover = (Button) findViewById(R.id.button2);
         btnTools = (Button) findViewById(R.id.button3);
+
+        if (!Application.isUserSignedIn()) {
+            btnRecipes.setEnabled(false);
+            btnRecipes.setBackground(getDrawable(R.drawable.button_recipes_inactive));
+        }
 
         btnRecipes.setOnClickListener(new View.OnClickListener() {
             @Override

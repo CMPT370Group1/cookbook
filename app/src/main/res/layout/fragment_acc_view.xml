@@ -88,7 +88,16 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/userNewPassword"
             android:layout_centerInParent="true"
+            android:layout_marginBottom="10dp"
             android:text="Edit Account"/>
+
+        <Button
+            android:id="@+id/buttonSignOut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/buttonEditAccount"
+            android:text="Sign Out"/>
 
     </RelativeLayout>
 </FrameLayout>

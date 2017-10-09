@@ -2,6 +2,7 @@ package com.olya.cookbook.view;
 
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,13 +14,14 @@ import android.view.View;
 import android.widget.Button;
 
 import com.olya.cookbook.R;
+import com.olya.cookbook.model.Application;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnRecipes;
-    Button btnDiscover;
-    Button btnTools;
-    FloatingActionButton btnFab;
+    private Button btnRecipes;
+    private Button btnDiscover;
+    private Button btnTools;
+    private FloatingActionButton btnFab;
 
     DrawerLayout drawer;
     private Toolbar mToolbar;
@@ -77,6 +79,15 @@ public class MainActivity extends AppCompatActivity {
         btnDiscover = (Button) findViewById(R.id.button2);
         btnTools = (Button) findViewById(R.id.button3);
         btnFab = (FloatingActionButton) findViewById(R.id.fab);
+
+        if (!Application.isUserSignedIn()) {
+            btnRecipes.setEnabled(false);
+            btnRecipes.setBackground(getDrawable(R.drawable.button_recipes_inactive));
+        }
+        else {
+            btnFab.setEnabled(false);
+            btnFab.setBackgroundTintList(getResources().getColorStateList(R.color.colorButtonInactive));
+        }
 
         btnRecipes.setOnClickListener(new View.OnClickListener() {
             @Override
