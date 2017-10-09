@@ -22,7 +22,7 @@ public class ToolsAccountFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View view = inflater.inflate(R.layout.fragment_tool_account, container, false);
+        View view = inflater.inflate(R.layout.fragment_acc_sign_register, container, false);
         return view ;
     }
 }
