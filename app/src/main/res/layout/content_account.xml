@@ -11,6 +11,8 @@
     tools:showIn="@layout/app_bar_account">
 
 
-    <include layout="@layout/fragment_acc_sign_register"/>
+    <fragment android:name="com.olya.cookbook.view.fragment.AccountSignRegisterFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </android.support.constraint.ConstraintLayout>
