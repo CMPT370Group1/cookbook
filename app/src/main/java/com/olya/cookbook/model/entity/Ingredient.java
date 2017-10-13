@@ -1,4 +1,4 @@
-package com.olya.cookbook.model;
+package com.olya.cookbook.model.entity;
 
 /**
  * Created by Olya on 2017-10-08.

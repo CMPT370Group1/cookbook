@@ -46,7 +46,6 @@ public class ToolsMassVolumeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tool_mass_volume, container, false);
 
-
         massVolumeNum1 = view.findViewById(R.id.massVolumeNum1);
         massVolumeNum2 = view.findViewById(R.id.massVolumeNum2);
         massVolumeNum2Editable = view.findViewById(R.id.massVolumeNum2Editable);
@@ -56,6 +55,7 @@ public class ToolsMassVolumeFragment extends Fragment {
         massVolumeNewIngredient = view.findViewById(R.id.massVolumeNewIngredient);
         btnMassVolumeAdd = view.findViewById(R.id.buttonAddConversion);
 
+        // TODO: build list from saved conversions from the database
         ArrayAdapter<String> adp1 = new ArrayAdapter<String>(view.getContext(),
                 android.R.layout.simple_list_item_1, list);
         adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -73,6 +73,7 @@ public class ToolsMassVolumeFragment extends Fragment {
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 // add the new ingredient to the list
                 list.add(massVolumeNewIngredient.getText().toString());
+                // TODO: Application.AddNewMassVolumeConversion(5 parameters);
                 // convert
 
                 // set selection on the new ingredient

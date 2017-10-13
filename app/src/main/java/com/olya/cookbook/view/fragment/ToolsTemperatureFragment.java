@@ -35,6 +35,11 @@ public class ToolsTemperatureFragment extends Fragment {
         tempUnit1 = view.findViewById(R.id.temperatureList1);
         tempUnit2 = view.findViewById(R.id.temperatureList2);
 
+        // TODO: create TextWatcher for Num1 and AdapterView.OnItemSelectedListener Unit1 and Unit2
+        // and then do massNum1.addTextChangedListener(that TextWatcher);
+        // massUnit1.setOnItemSelectedListener(that listener);
+        // massUnit2.setOnItemSelectedListener(that listener);
+
         return view ;
     }
 }

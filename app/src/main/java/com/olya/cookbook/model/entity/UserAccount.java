@@ -1,4 +1,4 @@
-package com.olya.cookbook.model;
+package com.olya.cookbook.model.entity;
 
 import java.util.List;
 

@@ -1,4 +1,6 @@
-package com.olya.cookbook.model;
+package com.olya.cookbook.model.entity;
+
+import android.graphics.Bitmap;
 
 import java.util.List;
 
@@ -32,6 +34,10 @@ public class Recipe {
      * The recipe's tags
      */
     private List<String> tags;
+    /**
+     * The recipe's image
+     */
+    private Bitmap image;
 
     /**
      * A public constructor that initializes all recipe's attributes
@@ -42,14 +48,20 @@ public class Recipe {
      * @param duration
      * @param tags
      */
-    public Recipe(String title, int category, List<Ingredient> ingredients, String directions, int duration, List<String> tags) {
+    public Recipe(String title, int category, List<Ingredient> ingredients, String directions, int duration, List<String> tags, Bitmap image) {
         this.title = title;
         this.category = category;
         this.ingredients = ingredients;
         this.directions = directions;
         this.duration = duration;
         this.tags = tags;
+        this.image = image;
     }
+
+    /**
+     * A public empty constructor
+     */
+    public Recipe() {}
 
     /**
      * Get the recipe's title
@@ -145,6 +157,22 @@ public class Recipe {
      */
     public void addTag(String tag) {
         this.tags.add(tag);
+    }
+
+    /**
+     * Get recipe's image
+     * @return image
+     */
+    public Bitmap getImage() {
+        return image;
+    }
+
+    /**
+     * Set recipe's image
+     * @param image
+     */
+    public void setImage(Bitmap image) {
+        this.image = image;
     }
 
     @Override

@@ -1,5 +1,11 @@
 package com.olya.cookbook.model;
 
+import com.olya.cookbook.model.entity.DiscoverCollection;
+import com.olya.cookbook.model.entity.Recipe;
+import com.olya.cookbook.model.entity.RecipeShortInfo;
+import com.olya.cookbook.model.entity.UserAccount;
+import com.olya.cookbook.model.entity.UserCollection;
+
 import java.util.List;
 
 /**
@@ -12,6 +18,14 @@ public class Application {
      * The user of the application, a single user can exist in the application
      */
     private static UserAccount user = null;
+    /**
+     * User's collection of recipes, a single one can exist in the application
+     */
+    private static UserCollection userCollection = null;
+    /**
+     * Other users' collection of recipes, a single one can exist in the application
+     */
+    private static DiscoverCollection discoverCollection = null;
 
     /**
      * Private constructor, because there could not be an Application object
@@ -41,6 +55,8 @@ public class Application {
         int userID = 0;
         List<Integer> recipeIDs = null;
         user = new UserAccount(userID, recipeIDs);
+        userCollection = new UserCollection();
+        discoverCollection = new DiscoverCollection();
     }
 
     /**
@@ -52,6 +68,8 @@ public class Application {
         int userID = 0;
         List<Integer> recipeIDs = null;
         user = new UserAccount(userID, recipeIDs);
+        userCollection = new UserCollection();
+        discoverCollection = new DiscoverCollection();
     }
 
     /**
@@ -59,6 +77,8 @@ public class Application {
      */
     public static void userSignOut(){
         user = null;
+        userCollection = null;
+        discoverCollection = null;
     }
 
     /**
@@ -108,5 +128,69 @@ public class Application {
      */
     public static boolean isUserSignedIn() {
         return (user != null);
+    }
+
+    /**
+     *
+     * @param recipes
+     */
+    public static void setUserCollectionRecipes(List<RecipeShortInfo> recipes) {
+        userCollection.setRecipes(recipes);
+    }
+
+    /**
+     *
+     * @param recipe
+     */
+    public static void setUserCurrentRecipe(Recipe recipe) {
+        userCollection.setCurRecipe(recipe);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static List<RecipeShortInfo> getUserCollectionRecipes() {
+        return userCollection.getRecipes();
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static Recipe getUserCurrentRecipe() {
+        return userCollection.getCurRecipe();
+    }
+
+    /**
+     *
+     * @param recipes
+     */
+    public static void setDiscoverCollectionRecipes(List<RecipeShortInfo> recipes) {
+        discoverCollection.setRecipes(recipes);
+    }
+
+    /**
+     *
+     * @param recipe
+     */
+    public static void setDiscoverCurrentRecipe(Recipe recipe) {
+        discoverCollection.setCurRecipe(recipe);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static List<RecipeShortInfo> getDiscoverCollectionRecipes() {
+        return discoverCollection.getRecipes();
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static Recipe getDiscoverCurrentRecipe() {
+        return discoverCollection.getCurRecipe();
     }
 }
