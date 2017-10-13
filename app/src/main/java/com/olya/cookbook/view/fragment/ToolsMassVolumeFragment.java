@@ -35,10 +35,10 @@ public class ToolsMassVolumeFragment extends Fragment {
     private EditText massVolumeNewIngredient;
     private Button btnMassVolumeAdd;
 
-    final List<String> list = new ArrayList<>();
+    private List<String> list = new ArrayList<>();
 
     public ToolsMassVolumeFragment() {
-        // Required empty public constructor
+        list.add("Add New");
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,7 +56,6 @@ public class ToolsMassVolumeFragment extends Fragment {
         massVolumeNewIngredient = view.findViewById(R.id.massVolumeNewIngredient);
         btnMassVolumeAdd = view.findViewById(R.id.buttonAddConversion);
 
-        list.add("Add New");
         ArrayAdapter<String> adp1 = new ArrayAdapter<String>(view.getContext(),
                 android.R.layout.simple_list_item_1, list);
         adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

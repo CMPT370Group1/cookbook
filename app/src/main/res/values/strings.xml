@@ -8,54 +8,40 @@
     <string name="action_info">Info</string>
 
     <string-array name="volume_units">
-        <item>US l. gal</item>
-        <item>US l. qt</item>
-        <item>US l. pt</item>
-        <item>US cup</item>
-        <item>US fl. oz</item>
-        <item>US tbsp</item>
-        <item>US tsp</item>
-        <item>Imp. gal</item>
-        <item>Imp. qt</item>
-        <item>Imp. pt</item>
-        <item>Imp. cup</item>
-        <item>Imp. fl. oz</item>
-        <item>Imp. tbsp</item>
-        <item>Imp. tsp</item>
-        <item>L</item>
+        <item>tsp</item>
+        <item>tbsp</item>
+        <item>cup</item>
+        <item>qt</item>
+        <item>l</item>
         <item>ml</item>
+        <item>fl.oz</item>
+        <item>pt</item>
+        <item>gal</item>
     </string-array>
 
     <string-array name="mass_units">
-        <item>kg</item>
-        <item>g</item>
         <item>mg</item>
-        <item>lb</item>
+        <item>g</item>
+        <item>kg</item>
         <item>oz</item>
+        <item>lb</item>
     </string-array>
 
     <string-array name="mass_volume_units">
-        <item>kg</item>
-        <item>g</item>
         <item>mg</item>
-        <item>lb</item>
+        <item>g</item>
+        <item>kg</item>
         <item>oz</item>
-        <item>US l. gal</item>
-        <item>US l. qt</item>
-        <item>US l. pt</item>
-        <item>US cup</item>
-        <item>US fl. oz</item>
-        <item>US tbsp</item>
-        <item>US tsp</item>
-        <item>Imp. gal</item>
-        <item>Imp. qt</item>
-        <item>Imp. pt</item>
-        <item>Imp. cup</item>
-        <item>Imp. fl. oz</item>
-        <item>Imp. tbsp</item>
-        <item>Imp. tsp</item>
-        <item>L</item>
+        <item>lb</item>
+        <item>tsp</item>
+        <item>tbsp</item>
+        <item>cup</item>
+        <item>qt</item>
+        <item>l</item>
         <item>ml</item>
+        <item>fl.oz</item>
+        <item>pt</item>
+        <item>gal</item>
     </string-array>
 
     <string-array name="temperature_units">
