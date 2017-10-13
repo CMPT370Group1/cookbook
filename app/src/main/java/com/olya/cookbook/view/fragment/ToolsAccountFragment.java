@@ -24,11 +24,13 @@ public class ToolsAccountFragment extends Fragment {
 
     boolean isAccountEdited = false;
 
+    // variables for sign/register fragment
     EditText rsUserName;
     EditText rsUserPassword;
     Button btnSignIn;
     Button btnRegister;
 
+    // variables for account view/edit fragment
     Button btnEditAccount;
     Button btnSignOut;
     EditText avUserName;
@@ -40,12 +42,14 @@ public class ToolsAccountFragment extends Fragment {
     public ToolsAccountFragment() {
         // Required empty public constructor
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        // the layout for this fragment
         View view;
 
+        // if user is signed in, show account's info with possibility to edit it
         if (Application.isUserSignedIn()) {
             view = inflater.inflate(R.layout.fragment_acc_view, container, false);
 
@@ -57,11 +61,13 @@ public class ToolsAccountFragment extends Fragment {
             oldPassword = view.findViewById(R.id.userOldPassword);
             newPassword = view.findViewById(R.id.userNewPassword);
 
+            // show user's username and email, but make it not modifiable
             avUserName.setText(Application.getUserName());
             avUserEmail.setText(Application.getUserEmail());
             avUserName.setEnabled(false);
             avUserEmail.setEnabled(false);
 
+            // sign out
             btnSignOut.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -72,9 +78,12 @@ public class ToolsAccountFragment extends Fragment {
                 }
             });
 
+            // edit account
             btnEditAccount.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    // change layout depending if the user is viewing or modifying the account info
+                    // user is modifying
                     if (!isAccountEdited) {
                         btnEditAccount.setText("Done");
                         avUserName.setEnabled(true);
@@ -85,11 +94,12 @@ public class ToolsAccountFragment extends Fragment {
                         btnSignOut.setVisibility(View.GONE);
                         isAccountEdited = true;
 
-
+                        // save changes the user has made
                         Application.userEditAccount(avUserName.getText().toString(),
                                 oldPassword.getText().toString(), avUserEmail.getText().toString(),
                                 newPassword.getText().toString());
                     }
+                    // user is viewing account info
                     else {
                         btnEditAccount.setText("Edit Account");
                         avUserName.setEnabled(false);
@@ -105,6 +115,7 @@ public class ToolsAccountFragment extends Fragment {
                 }
             });
         }
+        // if user is not signed in, show sign/register form
         else {
             view = inflater.inflate(R.layout.fragment_acc_sign_register, container, false);
 
@@ -113,6 +124,7 @@ public class ToolsAccountFragment extends Fragment {
             rsUserName = (EditText) view.findViewById(R.id.userName);
             rsUserPassword = (EditText) view.findViewById(R.id.userPassword);
 
+            // sign in
             btnSignIn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -124,6 +136,7 @@ public class ToolsAccountFragment extends Fragment {
                 }
             });
 
+            // register
             btnRegister.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

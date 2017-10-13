@@ -27,7 +27,6 @@ public class RecipesFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        //container.removeAllViews();
         View view = inflater.inflate(R.layout.fragment_res_recipes, container, false);
 
         btnAllCategories = (Button) view.findViewById(R.id.buttonAllCategories);

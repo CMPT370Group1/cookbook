@@ -40,7 +40,6 @@ public class AccountSignRegisterFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        //container.removeAllViews();
         View view = inflater.inflate(R.layout.fragment_acc_sign_register, container, false);
 
         btnSignIn = (Button) view.findViewById(R.id.buttonSignin);
@@ -48,6 +47,7 @@ public class AccountSignRegisterFragment extends Fragment{
         rsUserName = (EditText) view.findViewById(R.id.userName);
         rsUserPassword = (EditText) view.findViewById(R.id.userPassword);
 
+        // sign in
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,6 +59,7 @@ public class AccountSignRegisterFragment extends Fragment{
             }
         });
 
+        // register
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
