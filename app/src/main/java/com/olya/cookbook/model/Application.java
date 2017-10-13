@@ -51,8 +51,9 @@ public class Application {
      */
     public static void userSignIn(String username, String password){
         // verify that a user with username and password exists
-        // get the userID and recipes from database
+        // get the userID and recipes from database(not for this milestone)
         int userID = 0;
+
         List<Integer> recipeIDs = null;
         user = new UserAccount(userID, recipeIDs);
         userCollection = new UserCollection();
@@ -65,7 +66,10 @@ public class Application {
      * @param password the password of the new user
      */
     public static void userRegister(String username, String password){
+        // check that username is not in db
+        // create new user and get his/her userID
         int userID = 0;
+
         List<Integer> recipeIDs = null;
         user = new UserAccount(userID, recipeIDs);
         userCollection = new UserCollection();
