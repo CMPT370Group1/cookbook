@@ -50,6 +50,7 @@ public class Application {
      * @param password the password of the existing user
      */
     public static void userSignIn(String username, String password){
+        // TODO: implement it!
         // verify that a user with username and password exists
         // get the userID and recipes from database(not for this milestone)
         int userID = 0;
@@ -66,6 +67,7 @@ public class Application {
      * @param password the password of the new user
      */
     public static void userRegister(String username, String password){
+        // TODO: implement it!
         // check that username is not in db
         // create new user and get his/her userID
         int userID = 0;
@@ -94,7 +96,7 @@ public class Application {
      */
     public static void userEditAccount(String userName, String userEmail, String oldPassword,
                                        String newPassword){
-        // check the return values
+        // TODO: check the return values
         userChangeInfo(userName, userEmail);
         userChangePassword(oldPassword, newPassword);
 
@@ -109,6 +111,7 @@ public class Application {
      * @return true if the new account info is set successfully, false otherwise
      */
     private static boolean userChangeInfo(String userName, String userEmail){
+        // TODO: implement it!
         // if we choose to verify email address, send an email message and somehow accept
         // verification
         return false;
@@ -121,6 +124,7 @@ public class Application {
      * @return true if the new password is set successfully, false otherwise
      */
     private static boolean userChangePassword(String oldPassword, String newPassword){
+        // TODO: implement it!
         // verify old password, if not right return false
         // set the new one, return true
         return false;
