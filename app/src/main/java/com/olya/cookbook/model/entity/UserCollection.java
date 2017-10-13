@@ -31,4 +31,13 @@ public class UserCollection {
     public void setCurRecipe(Recipe curRecipe) {
         this.curRecipe = curRecipe;
     }
+
+    public void addNewRecipe(RecipeShortInfo recipeInfo) {
+        this.recipes.add(recipeInfo);
+    }
+
+    public boolean removeRecipe(RecipeShortInfo recipeInfo) {
+        return this.recipes.remove(recipeInfo);
+    }
+
 }

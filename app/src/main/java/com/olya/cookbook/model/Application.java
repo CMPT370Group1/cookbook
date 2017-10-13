@@ -164,6 +164,23 @@ public class Application {
 
     /**
      *
+     * @param recipeInfo
+     */
+    public static void addUserRecipe(RecipeShortInfo recipeInfo) {
+        userCollection.addNewRecipe(recipeInfo);
+    }
+
+    /**
+     *
+     * @param recipeInfo
+     * @return
+     */
+    public static boolean removeUserRecipe(RecipeShortInfo recipeInfo) {
+        return userCollection.removeRecipe(recipeInfo);
+    }
+
+    /**
+     *
      * @param recipes
      */
     public static void setDiscoverCollectionRecipes(List<RecipeShortInfo> recipes) {
@@ -184,6 +201,23 @@ public class Application {
      */
     public static List<RecipeShortInfo> getDiscoverCollectionRecipes() {
         return discoverCollection.getRecipes();
+    }
+
+    /**
+     *
+     * @param recipeInfo
+     */
+    public static void addDiscoverRecipe(RecipeShortInfo recipeInfo) {
+        discoverCollection.addNewRecipe(recipeInfo);
+    }
+
+    /**
+     *
+     * @param recipeInfo
+     * @return
+     */
+    public static boolean removeDiscoverRecipe(RecipeShortInfo recipeInfo) {
+        return discoverCollection.removeRecipe(recipeInfo);
     }
 
     /**
