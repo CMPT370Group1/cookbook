@@ -5,6 +5,7 @@ import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,23 +68,29 @@ public class ToolsMassVolumeFragment extends Fragment {
         btnMassVolumeAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // hide keyboard
-                massVolumeNewIngredient.clearFocus();
-                InputMethodManager imm = (InputMethodManager)view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                // add the new ingredient to the list
-                list.add(massVolumeNewIngredient.getText().toString());
-                // TODO: Application.AddNewMassVolumeConversion(5 parameters);
-                // convert
+                if (isNewConversionEntered()) {
+                    // hide keyboard
+                    massVolumeNewIngredient.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    // add the new ingredient to the list
+                    // use massVolumeNum2Editable instead of massVolumeNum2
+                    list.add(massVolumeNewIngredient.getText().toString());
+                    // TODO: Application.AddNewMassVolumeConversion(5 parameters);
+                    // convert
 
-                // set selection on the new ingredient
-                massVolumeIngredient.setSelection(list.size() - 1);
+                    // set selection on the new ingredient
+                    massVolumeIngredient.setSelection(list.size() - 1);
+                    massVolumeNum1.setText("0");
+                    massVolumeNum2.setText("0");
+                }
             }
         });
 
         massVolumeIngredient.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                // user adds new ingredient
                 if (massVolumeIngredient.getItemAtPosition(i).equals("Add New")) {
                     massVolumeNum2.setVisibility(View.INVISIBLE);
                     massVolumeNum2Editable.setVisibility(View.VISIBLE);
@@ -92,7 +99,11 @@ public class ToolsMassVolumeFragment extends Fragment {
                     massVolumeNewIngredient.setEnabled(true);
                     btnMassVolumeAdd.setEnabled(true);
                 }
+                // user views existing ingredient
                 else {
+                    // TODO: make another layout with buttons Modify and Delete instead the one with
+                    // massVolumeNewIngredient and btnMassVolumeAdd and make that layout visible
+                    // in the first if, make the other layout visible instead
                     massVolumeNum2.setVisibility(View.VISIBLE);
                     massVolumeNum2Editable.setVisibility(View.INVISIBLE);
                     massVolumeNewIngredient.setText("");
@@ -102,11 +113,17 @@ public class ToolsMassVolumeFragment extends Fragment {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
+            public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
         return view ;
+    }
+
+    private boolean isNewConversionEntered() {
+        Log.println(Log.INFO,"isNewConversionEntered", massVolumeNewIngredient.getText().toString()
+                + ", " + massVolumeNum1.getText().toString() + ", " + massVolumeNum2Editable.getText().toString());
+        return ((massVolumeNewIngredient.getText().toString().trim().length() != 0) &&
+                (!massVolumeNum1.getText().toString().equals("0")) &&
+                (!massVolumeNum2Editable.getText().toString().equals("0")));
     }
 }
