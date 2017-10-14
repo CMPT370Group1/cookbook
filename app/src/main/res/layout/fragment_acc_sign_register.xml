@@ -32,23 +32,21 @@
             android:inputType="textPassword"
             android:hint="Password"/>
 
-        <EditText
+        <TextView
             android:id="@+id/regErrorText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
             android:text="This username is already taken"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@android:color/holo_red_light"
             android:visibility="gone"/>
 
-        <EditText
+        <TextView
             android:id="@+id/signInErrorText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
             android:text="Username or password is incorrect"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@android:color/holo_red_light"
