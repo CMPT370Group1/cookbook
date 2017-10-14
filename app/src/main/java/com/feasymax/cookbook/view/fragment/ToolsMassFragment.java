@@ -15,6 +15,8 @@ import android.widget.Spinner;
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.util.UnitConverters;
 
+import java.text.DecimalFormat;
+
 /**
  * Created by Olya on 2017-09-21.
  */
@@ -25,6 +27,8 @@ public class ToolsMassFragment extends Fragment {
     private EditText massNum2;
     private Spinner massUnit1;
     private Spinner massUnit2;
+
+    final DecimalFormat DF = new DecimalFormat("#.############");
 
     public ToolsMassFragment() {
         // Required empty public constructor
@@ -80,10 +84,10 @@ public class ToolsMassFragment extends Fragment {
     }
 
     private void ConvertNumber() {
-        int num1 = Integer.parseInt(massNum1.getText().toString());
+        double num1 = Double.parseDouble(massNum1.getText().toString());
         int unit1 = massUnit1.getSelectedItemPosition();
         int unit2 = massUnit2.getSelectedItemPosition();
         Log.println(Log.INFO, "ConvertNumber", num1 + " " + unit1 + " " + unit2);
-        massNum2.setText(String.valueOf(UnitConverters.MassToMass(num1, unit1, unit2)));
+        massNum2.setText(DF.format(UnitConverters.MassToMass(num1, unit1, unit2)));
     }
 }

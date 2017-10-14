@@ -15,6 +15,8 @@ import android.widget.Spinner;
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.util.UnitConverters;
 
+import java.text.DecimalFormat;
+
 /**
  * Created by Olya on 2017-09-21.
  */
@@ -25,6 +27,8 @@ public class ToolsTemperatureFragment extends Fragment {
     private EditText tempNum2;
     private Spinner tempUnit1;
     private Spinner tempUnit2;
+
+    final DecimalFormat DF = new DecimalFormat("#.############");
 
     public ToolsTemperatureFragment() {
         // Required empty public constructor
@@ -87,10 +91,10 @@ public class ToolsTemperatureFragment extends Fragment {
     }
 
     private void ConvertNumber() {
-        int num1 = Integer.parseInt(tempNum1.getText().toString());
+        double num1 = Double.parseDouble(tempNum1.getText().toString());
         int unit1 = tempUnit1.getSelectedItemPosition();
         int unit2 = tempUnit2.getSelectedItemPosition();
         Log.println(Log.INFO, "ConvertNumber", num1 + " " + unit1 + " " + unit2);
-        tempNum2.setText(String.valueOf(UnitConverters.TempToTemp(num1, unit1)));
+        tempNum2.setText(DF.format(UnitConverters.TempToTemp(num1, unit1)));
     }
 }

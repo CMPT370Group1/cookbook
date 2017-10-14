@@ -15,6 +15,8 @@ import android.widget.Spinner;
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.util.UnitConverters;
 
+import java.text.DecimalFormat;
+
 /**
  * Created by Olya on 2017-09-21.
  */
@@ -25,6 +27,8 @@ public class ToolsVolumeFragment extends Fragment {
     private EditText volumeNum2;
     private Spinner volumeUnit1;
     private Spinner volumeUnit2;
+
+    final DecimalFormat DF = new DecimalFormat("#.############");
 
     public ToolsVolumeFragment() {
         // Required empty public constructor
@@ -81,10 +85,10 @@ public class ToolsVolumeFragment extends Fragment {
     }
 
     private void ConvertNumber() {
-        int num1 = Integer.parseInt(volumeNum1.getText().toString());
+        double num1 = Double.parseDouble(volumeNum1.getText().toString());
         int unit1 = volumeUnit1.getSelectedItemPosition();
         int unit2 = volumeUnit2.getSelectedItemPosition();
         Log.println(Log.INFO, "ConvertNumber", num1 + " " + unit1 + " " + unit2);
-        volumeNum2.setText(String.valueOf(UnitConverters.VolumeToVolume(num1, unit1, unit2)));
+        volumeNum2.setText(DF.format(UnitConverters.VolumeToVolume(num1, unit1, unit2)));
     }
 }

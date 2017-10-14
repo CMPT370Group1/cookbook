@@ -16,6 +16,7 @@ import android.widget.Spinner;
 
 import com.feasymax.cookbook.R;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
