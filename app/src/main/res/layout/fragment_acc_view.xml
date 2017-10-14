@@ -25,7 +25,7 @@
             android:layout_marginLeft="20dp"
             android:layout_toRightOf="@id/textUsername"
             android:ems="10"
-            android:inputType="none" />
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/userEmail"
@@ -35,7 +35,7 @@
             android:layout_below="@id/userName"
             android:layout_marginBottom="40dp"
             android:ems="10"
-            android:inputType="none" />
+            android:inputType="textEmailAddress" />
 
         <TextView
             android:id="@+id/textEmail"
