@@ -20,26 +20,31 @@ for cooking.
 
 The software will cover the following functions:
 
-CookBook has 3 main tabs on the first page which are “My recipes”, “Discover”, and “Tool”. 
-Within each tab, they also contain some simple functions: 
+CookBook has 3 main pages on the first page which are “My recipes”, “Discover”, and “Tool”:
 
-“My recipes”: in this tab, the software will display all categories such as “BreakFast”, 
+“My recipes”: in this page, there are four tabs: "ALL" recipes, "ADD" new recipe, "SEARCH" and "LINKS".
+In "ALL", all categories of recipes will be displayed such as “BreakFast”,
 “Snacks”, “Soups”, etc. The users can choose a specific category, for example “Breakfast”,
-then they will see a collection of recipes and they can also “Add” any recipes into their 
-personal storage; The customer can use “Search” function to look up for a recipe, it can 
-be completed by a basic search or an advanced search which is contained personal restriction 
-for different attributes; “Links” will display all saved web-link for the users.
+then they will see a collection of recipes and they can also “ADD” new recipes into their
+personal collection. The user can use “SEARCH” function to look up a recipe, it can
+be completed by a basic search or an advanced search which will search recipes by different attributes
+(such as Title, Category, Duration, etc.). “LINKS” will display all saved web-link for the user.
 
-“Discover”: The users can perform google-search in here and save either the full recipes or
- the web-link into your saved-link for future use. 
+“Discover”: in this page, there are three tabs: "ALL" recipes, "SEARCH" and "WEB-SEARCH". In "ALL",
+the user can access other users' recipes, and in "SEARCH", the user can search other users' collections.
+The user can also perform web-search in "WEB_SEARCH" tab and save either the full recipe or
+the web-link into his/her collection for future use.
 
-“Tool”: The function provides a “Unit converter”, a “Mass-to-volume converter”,
+“Tool”: in this page, there are the following tabs: "ACCOUNT", "MASS", "VOLUME", "TEMPERATURE" and
+"MASS-VOLUME". The first one lets the user access his/ her account and modify it. If the user is not
+signed in, the sign/register form will be displayed there. The next three tabs are unit converters
+that let the user convert different mass, volume and temperature units. The last tab is
+“Mass-to-volume converter” for the most common ingredients. The user can add, modify and delete
+conversion rules for ingredients.
 
-THINGS WE HAVE COMPLETED
+THINGS WE HAVE COMPLETED:
 
 BASIC UNIT CONVERSION TOOLS such as Mass,Volume and Temperature. 
-
-
 
 Users have the ability to convert to different masses 
 Users have a huge range of volume metric units to convert from and to such as tablespoon to pint and the like.
@@ -48,20 +53,19 @@ Users have the ability to change from mass to volume metrics
 
 USER INTERFACE
 
-It's semi-functional since we have completed some of them.
+It's semi-functional, and some layouts have not been created yet.
 
 MainActivity is a main screen with the application title and login/register button that calls 
 another activity, AccountActivity.
-
-
 AccountActivity has user registration and signin.
-
 RecipesActivity is essentially user’s collection of recipes, in which the user can view all his/her recipes
- arranged by category, search for, modify or delete recipes.
- 
+arranged by category, search for, modify or delete recipes.
 DiscoverActivity is where user can view, search and save recipes created by other users. There will be also a web-search
 option with possibility to save a web-page link or a full recipe from that page.
- 
- 
 ToolsActivity gives the user possibility to view and modify his/her account and use unit converters. If the user has not 
 registered or logged in, there will be signin/register page instead of account information.
+
+ACCOUNT REGISTRATION AND SIGN IN
+
+Users can register and log in into their accounts and the system makes all appropriate checks for
+these functions and displays an error message on failure.
