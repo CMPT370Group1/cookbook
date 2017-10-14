@@ -5,6 +5,7 @@ import com.olya.cookbook.model.entity.Recipe;
 import com.olya.cookbook.model.entity.RecipeShortInfo;
 import com.olya.cookbook.model.entity.UserAccount;
 import com.olya.cookbook.model.entity.UserCollection;
+import com.olya.cookbook.model.util.UserDao;
 
 import java.util.List;
 
@@ -37,11 +38,17 @@ public class Application {
     }
 
     public static String getUserName() {
-        return "user_name";
+        return getUser().getUsername();
     }
 
     public static String getUserEmail() {
-        return "user_name@domain.com";
+        UserDao userDao = new UserDao();
+        String email = userDao.getEmail(getUser().getUserID());
+        if (email == null) {
+            return "user_name@domain.com";
+        } else {
+            return email;
+        }
     }
 
     /**
@@ -49,16 +56,19 @@ public class Application {
      * @param username the username of the existing user
      * @param password the password of the existing user
      */
-    public static void userSignIn(String username, String password){
-        // TODO: implement it!
+    public static boolean userSignIn(String username, String password){
         // verify that a user with username and password exists
-        // get the userID and recipes from database(not for this milestone)
-        int userID = 0;
-
-        List<Integer> recipeIDs = null;
-        user = new UserAccount(userID, recipeIDs);
-        userCollection = new UserCollection();
-        discoverCollection = new DiscoverCollection();
+        // get the userID and recipes from database
+        UserDao userDao = new UserDao();
+        int userID = userDao.getUserID(username, password);
+        if (userID != 0) {
+            user = new UserAccount(userID, username);
+            userCollection = new UserCollection();
+            discoverCollection = new DiscoverCollection();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -66,22 +76,24 @@ public class Application {
      * @param username the username of the new user
      * @param password the password of the new user
      */
-    public static void userRegister(String username, String password){
-        // TODO: implement it!
-        // check that username is not in db
-        // create new user and get his/her userID
-        int userID = 0;
-
-        List<Integer> recipeIDs = null;
-        user = new UserAccount(userID, recipeIDs);
-        userCollection = new UserCollection();
-        discoverCollection = new DiscoverCollection();
+    public static boolean userRegister(String username, String password){
+        UserDao userDao = new UserDao();
+        int userID = userDao.regUser(username, password);
+        if (userID != 0) {
+            user = new UserAccount(userID, username);
+            userCollection = new UserCollection();
+            discoverCollection = new DiscoverCollection();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
      * When the user signs out, set the user object to null
      */
     public static void userSignOut(){
+        // TODO
         user = null;
         userCollection = null;
         discoverCollection = null;
@@ -89,16 +101,27 @@ public class Application {
 
     /**
      * Edit user account info
-     * @param userName
+     * @param username
      * @param userEmail
      * @param oldPassword
      * @param newPassword
      */
-    public static void userEditAccount(String userName, String userEmail, String oldPassword,
+    public static String userEditAccount(String username, String userEmail, String oldPassword,
                                        String newPassword){
-        // TODO: check the return values
-        userChangeInfo(userName, userEmail);
-        userChangePassword(oldPassword, newPassword);
+        // check the return values
+
+        UserDao userDao = new UserDao();
+        int userID = getUser().getUserID();
+        String res = userDao.update(userID, username, userEmail, oldPassword, newPassword);
+        if (res.contains("USERNAME")) {
+            user = new UserAccount(userID, username, userEmail);
+        } else {
+            user = new UserAccount(userID, getUser().getUsername(), userEmail);
+        }
+        return res;
+
+//        userChangeInfo(userName, userEmail);
+//        userChangePassword(oldPassword, newPassword);
 
     }
 
@@ -106,12 +129,13 @@ public class Application {
 
     /**
      * Change account information for the user
-     * @param userName the new username
+     * @param username the new username
      * @param userEmail the new email address
      * @return true if the new account info is set successfully, false otherwise
      */
-    private static boolean userChangeInfo(String userName, String userEmail){
-        // TODO: implement it!
+    private static boolean userChangeInfo(String username, String userEmail){
+
+
         // if we choose to verify email address, send an email message and somehow accept
         // verification
         return false;
@@ -124,7 +148,6 @@ public class Application {
      * @return true if the new password is set successfully, false otherwise
      */
     private static boolean userChangePassword(String oldPassword, String newPassword){
-        // TODO: implement it!
         // verify old password, if not right return false
         // set the new one, return true
         return false;

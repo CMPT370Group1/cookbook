@@ -2,18 +2,13 @@ package com.olya.cookbook.view.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.olya.cookbook.R;
-import com.olya.cookbook.model.util.UnitConverters;
 
 /**
  * Created by Olya on 2017-09-21.
@@ -40,57 +35,11 @@ public class ToolsTemperatureFragment extends Fragment {
         tempUnit1 = view.findViewById(R.id.temperatureList1);
         tempUnit2 = view.findViewById(R.id.temperatureList2);
 
-        tempNum1.clearFocus();
-        tempUnit2.setSelection(1);
-
-        setupConversion();
+        // TODO: create TextWatcher for Num1 and AdapterView.OnItemSelectedListener Unit1 and Unit2
+        // and then do massNum1.addTextChangedListener(that TextWatcher);
+        // massUnit1.setOnItemSelectedListener(that listener);
+        // massUnit2.setOnItemSelectedListener(that listener);
 
         return view ;
-    }
-
-    private void setupConversion() {
-        TextWatcher convertListener = new TextWatcher()  {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (editable.length() != 0) {
-                    ConvertNumber();
-                }
-            }
-        };
-
-        AdapterView.OnItemSelectedListener unitListener = new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (adapterView.getId() == R.id.temperatureList1) {
-                    tempUnit2.setSelection(1 - i);
-                }
-                else {
-                    tempUnit1.setSelection(1 - i);
-                }
-                ConvertNumber();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                adapterView.setSelection(1);
-            }
-        };
-        tempNum1.addTextChangedListener(convertListener);
-        tempUnit1.setOnItemSelectedListener(unitListener);
-        tempUnit2.setOnItemSelectedListener(unitListener);
-    }
-
-    private void ConvertNumber() {
-        int num1 = Integer.parseInt(tempNum1.getText().toString());
-        int unit1 = tempUnit1.getSelectedItemPosition();
-        int unit2 = tempUnit2.getSelectedItemPosition();
-        Log.println(Log.INFO, "ConvertNumber", num1 + " " + unit1 + " " + unit2);
-        tempNum2.setText(String.valueOf(UnitConverters.TempToTemp(num1, unit1)));
     }
 }

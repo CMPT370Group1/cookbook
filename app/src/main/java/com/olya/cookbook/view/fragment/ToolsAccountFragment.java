@@ -14,8 +14,6 @@ import com.olya.cookbook.R;
 import com.olya.cookbook.model.Application;
 import com.olya.cookbook.view.MainActivity;
 
-import java.util.List;
-
 /**
  * Created by Olya on 2017-09-21.
  */
@@ -29,6 +27,8 @@ public class ToolsAccountFragment extends Fragment {
     EditText rsUserPassword;
     Button btnSignIn;
     Button btnRegister;
+    TextView signInErrorText;
+    TextView regErrorText;
 
     // variables for account view/edit fragment
     Button btnEditAccount;
@@ -38,6 +38,8 @@ public class ToolsAccountFragment extends Fragment {
     TextView changePassword;
     EditText oldPassword;
     EditText newPassword;
+    TextView oldPassErrorText;
+    TextView userTakenErrorText;
 
     public ToolsAccountFragment() {
         // Required empty public constructor
@@ -60,6 +62,8 @@ public class ToolsAccountFragment extends Fragment {
             changePassword = view.findViewById(R.id.textChangePassword);
             oldPassword = view.findViewById(R.id.userOldPassword);
             newPassword = view.findViewById(R.id.userNewPassword);
+            oldPassErrorText = view.findViewById(R.id.oldPassErrorText);
+            userTakenErrorText = view.findViewById(R.id.userTakenErrorText);
 
             // show user's username and email, but make it not modifiable
             avUserName.setText(Application.getUserName());
@@ -82,9 +86,15 @@ public class ToolsAccountFragment extends Fragment {
             btnEditAccount.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    // TODO
+
                     // change layout depending if the user is viewing or modifying the account info
                     // user is modifying
                     if (!isAccountEdited) {
+
+                        oldPassErrorText.setVisibility(View.GONE);
+                        userTakenErrorText.setVisibility(View.GONE);
                         btnEditAccount.setText("Done");
                         avUserName.setEnabled(true);
                         avUserEmail.setEnabled(true);
@@ -94,13 +104,23 @@ public class ToolsAccountFragment extends Fragment {
                         btnSignOut.setVisibility(View.GONE);
                         isAccountEdited = true;
 
-                        // save changes the user has made
-                        Application.userEditAccount(avUserName.getText().toString(),
-                                oldPassword.getText().toString(), avUserEmail.getText().toString(),
-                                newPassword.getText().toString());
+
                     }
                     // user is viewing account info
                     else {
+                        // save changes the user has made
+                        String res = Application.userEditAccount(avUserName.getText().toString(),
+                                avUserEmail.getText().toString(), oldPassword.getText().toString(),
+                                newPassword.getText().toString());
+                        if (!newPassword.getText().toString().isEmpty() && !res.contains("PASS")) {
+                            // old password is incorrect
+                            oldPassErrorText.setVisibility(View.VISIBLE);
+                        }
+                        if (!res.contains("USERNAME")) {
+                            // username is already taken
+                            userTakenErrorText.setVisibility(View.VISIBLE);
+                        }
+
                         btnEditAccount.setText("Edit Account");
                         avUserName.setEnabled(false);
                         avUserEmail.setEnabled(false);
@@ -118,21 +138,25 @@ public class ToolsAccountFragment extends Fragment {
         // if user is not signed in, show sign/register form
         else {
             view = inflater.inflate(R.layout.fragment_acc_sign_register, container, false);
-
             btnSignIn = (Button) view.findViewById(R.id.buttonSignin);
             btnRegister = (Button) view.findViewById(R.id.buttonRegister);
             rsUserName = (EditText) view.findViewById(R.id.userName);
             rsUserPassword = (EditText) view.findViewById(R.id.userPassword);
+            signInErrorText = view.findViewById(R.id.signInErrorText);
+            regErrorText = view.findViewById(R.id.regErrorText);
 
             // sign in
             btnSignIn.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-                    Application.userSignIn(rsUserName.getText().toString(),
-                            rsUserPassword.getText().toString());
-
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    startActivity(intent);
+                public void onClick(View view3) {
+                    regErrorText.setVisibility(View.GONE);
+                    if (!Application.userSignIn(rsUserName.getText().toString(),
+                            rsUserPassword.getText().toString())) {
+                        signInErrorText.setVisibility(View.VISIBLE);
+                    } else {
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        startActivity(intent);
+                    }
                 }
             });
 
@@ -140,11 +164,14 @@ public class ToolsAccountFragment extends Fragment {
             btnRegister.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Application.userRegister(rsUserName.getText().toString(),
-                            rsUserPassword.getText().toString());
-
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    startActivity(intent);
+                    signInErrorText.setVisibility(View.GONE);
+                    if (!Application.userRegister(rsUserName.getText().toString(),
+                            rsUserPassword.getText().toString())) {
+                        regErrorText.setVisibility(View.VISIBLE);
+                    } else {
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        startActivity(intent);
+                    }
                 }
             });
         }

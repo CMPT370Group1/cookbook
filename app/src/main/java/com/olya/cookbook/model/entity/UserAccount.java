@@ -18,6 +18,15 @@ public class UserAccount {
     private List<Integer> recipeIDs;
 
     /**
+     * Username from the database
+     */
+    private String username;
+    /**
+     * User email from the database
+     */
+    private String email;
+
+    /**
      * A public constructor that initializes all user's attributes
      * @param userID
      * @param recipeIDs
@@ -25,6 +34,17 @@ public class UserAccount {
     public UserAccount(int userID, List<Integer> recipeIDs) {
         this.userID = userID;
         this.recipeIDs = recipeIDs;
+    }
+
+    public UserAccount(int userID, String username) {
+        this.userID = userID;
+        this.username = username;
+    }
+
+    public UserAccount(int userID, String username, String email) {
+        this.userID = userID;
+        this.username = username;
+        this.email = email;
     }
 
     /**
@@ -65,5 +85,13 @@ public class UserAccount {
                 "userID=" + userID +
                 ", recipeIDs=" + recipeIDs +
                 '}';
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }
