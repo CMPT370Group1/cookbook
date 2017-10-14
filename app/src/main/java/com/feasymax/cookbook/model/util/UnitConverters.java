@@ -1,5 +1,7 @@
 package com.feasymax.cookbook.model.util;
 
+import android.util.Log;
+
 /**
  * Created by Chase on 2017-10-12.
  */
@@ -71,11 +73,12 @@ public class UnitConverters {
                 quanB = quanA * (9.0/5.0) + 32;
                 break;
             case 1: //Farenheit to Celsius
-                quanB = (quanA - 32) * (5/9);
+                quanB = (quanA - 32) * (5.0/9.0);
                 break;
             default:
                 throw new RuntimeException("ERROR: UnitConverters - Temperature. Unit integer must be either 0 or 1");
         }
+        Log.println(Log.INFO, "TempToTemp", quanA + " " + quanB + " " + unitA);
         return quanB;
     }
 }
