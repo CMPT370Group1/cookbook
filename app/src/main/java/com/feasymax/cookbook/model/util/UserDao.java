@@ -10,6 +10,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import static android.R.attr.description;
+import static android.R.attr.id;
+import static android.R.attr.password;
+import static java.util.jar.Pack200.Packer.PASS;
+
 public class UserDao {
 
     private Connection conn = null;
@@ -143,8 +148,63 @@ public class UserDao {
         return userID;
     }
 
+    public int regUser(final String user, final String password, final String email, final String firstName, final String lastName) {
+        userID = 0;
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try  {
+                    connect();
+                    Statement stmt = null;
+                    ResultSet rs = null;
+                    try {
+                        String query = "SELECT * FROM users u WHERE u.username = '"
+                                + user + "'";
+                        stmt = conn.createStatement();
+                        rs = stmt.executeQuery(query);
+                        // if the username is not already taken
+                        if (!rs.next()) {
+                            rs = stmt.executeQuery("SELECT MAX(id) AS id FROM users");
+                            int autoID = 1;
+                            if (rs.next()) {
+                                autoID = rs.getInt("id") + 1;
+                            }
+                            query = "INSERT INTO users (id, username, passwords, email_add, first_name, last_name) VALUES ("
+                                    + autoID + ", '" + user + "', '" + password + "', '"
+                                    + email + "', '" + firstName + "', '" + lastName + "')";
+                            stmt = conn.createStatement();
+                            stmt.execute(query);
+                            userID = autoID;
+                        }
+                    } catch(SQLException e) {
+                        System.out.println("SQL error");
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            if (conn != null)
+                                conn.close();
+                        }
+                        catch(SQLException e) {
+
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
+        try {
+            Thread.sleep(1800);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return userID;
+    }
+
     public String update(final int userID, final String user, final String userEmail,
-                      final String oldPassword, final String newPassword) {
+                         final String oldPassword, final String newPassword) {
         updateRes = "";
         Thread thread = new Thread(new Runnable() {
             @Override

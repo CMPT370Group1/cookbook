@@ -89,6 +89,20 @@ public class Application {
         }
     }
 
+    public static boolean userRegister(String username, String password, String email,
+                                       String firstName, String lastName){
+        UserDao userDao = new UserDao();
+        int userID = userDao.regUser(username, password, email, firstName, lastName);
+        if (userID != 0) {
+            user = new UserAccount(userID, username);
+            userCollection = new UserCollection();
+            discoverCollection = new DiscoverCollection();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * When the user signs out, set the user object to null
      */
@@ -107,7 +121,7 @@ public class Application {
      * @param newPassword
      */
     public static String userEditAccount(String username, String userEmail, String oldPassword,
-                                       String newPassword){
+                                         String newPassword){
         // check the return values
 
         UserDao userDao = new UserDao();

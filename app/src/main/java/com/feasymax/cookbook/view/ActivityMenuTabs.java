@@ -15,6 +15,7 @@ import android.widget.Button;
 
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
+import com.feasymax.cookbook.view.tab.ToolsAdapter;
 
 /**
  * Created by Olya on 2017-10-08.

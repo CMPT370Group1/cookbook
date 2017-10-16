@@ -13,6 +13,9 @@ import android.widget.TextView;
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
 import com.feasymax.cookbook.view.MainActivity;
+import com.feasymax.cookbook.view.RegisterActivity;
+
+import static com.feasymax.cookbook.R.id.signInErrorText;
 
 /**
  * Created by Olya on 2017-09-21.
@@ -25,7 +28,6 @@ public class AccountSignRegisterFragment extends Fragment{
     private Button btnSignIn;
     private Button btnRegister;
     private TextView signInErrorText;
-    private TextView regErrorText;
 
     public AccountSignRegisterFragment() {
         // Required empty public constructor
@@ -41,13 +43,11 @@ public class AccountSignRegisterFragment extends Fragment{
         rsUserName = (EditText) view.findViewById(R.id.userName);
         rsUserPassword = (EditText) view.findViewById(R.id.userPassword);
         signInErrorText = view.findViewById(R.id.signInErrorText);
-        regErrorText = view.findViewById(R.id.regErrorText);
 
         // sign in
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view2) {
-                regErrorText.setVisibility(View.GONE);
                 if (!Application.userSignIn(rsUserName.getText().toString(),
                         rsUserPassword.getText().toString())) {
                     signInErrorText.setVisibility(View.VISIBLE);
@@ -62,14 +62,8 @@ public class AccountSignRegisterFragment extends Fragment{
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view2) {
-                signInErrorText.setVisibility(View.GONE);
-                if (!Application.userRegister(rsUserName.getText().toString(),
-                        rsUserPassword.getText().toString())) {
-                    regErrorText.setVisibility(View.VISIBLE);
-                } else {
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    startActivity(intent);
-                }
+                Intent intent = new Intent(getActivity(), RegisterActivity.class);
+                startActivity(intent);
             }
         });
 
