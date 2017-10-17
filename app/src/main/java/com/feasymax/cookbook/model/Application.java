@@ -45,7 +45,7 @@ public class Application {
         UserDao userDao = new UserDao();
         String email = userDao.getEmail(getUser().getUserID());
         if (email == null) {
-            return "user_name@domain.com";
+            return "";
         } else {
             return email;
         }
@@ -55,14 +55,16 @@ public class Application {
      * Sign in an existing user
      * @param username the username of the existing user
      * @param password the password of the existing user
+     * @return true on success, false on failure to sign in
      */
     public static boolean userSignIn(String username, String password){
         // verify that a user with username and password exists
         // get the userID and recipes from database
         UserDao userDao = new UserDao();
         int userID = userDao.getUserID(username, password);
+        String email = userDao.getEmail(userID);
         if (userID != 0) {
-            user = new UserAccount(userID, username);
+            user = new UserAccount(userID, username, email);
             userCollection = new UserCollection();
             discoverCollection = new DiscoverCollection();
             return true;
@@ -72,9 +74,10 @@ public class Application {
     }
 
     /**
-     * Register a new user
+     * Register a new user with given username and password
      * @param username the username of the new user
      * @param password the password of the new user
+     * @return true on success, false on failure to register
      */
     public static boolean userRegister(String username, String password){
         UserDao userDao = new UserDao();
@@ -89,12 +92,21 @@ public class Application {
         }
     }
 
+    /**
+     * Register a new user with given username, password, email and first and last names
+     * @param username the username of the new user
+     * @param password the password of the new user
+     * @param email the email address of the new user
+     * @param firstName the first name of the new user
+     * @param lastName the last name of the new user
+     * @return true on success, false on failure to register
+     */
     public static boolean userRegister(String username, String password, String email,
                                        String firstName, String lastName){
         UserDao userDao = new UserDao();
         int userID = userDao.regUser(username, password, email, firstName, lastName);
         if (userID != 0) {
-            user = new UserAccount(userID, username);
+            user = new UserAccount(userID, username, email);
             userCollection = new UserCollection();
             discoverCollection = new DiscoverCollection();
             return true;
@@ -122,49 +134,20 @@ public class Application {
      */
     public static String userEditAccount(String username, String userEmail, String oldPassword,
                                          String newPassword){
-        // check the return values
-
         UserDao userDao = new UserDao();
         int userID = getUser().getUserID();
         String res = userDao.update(userID, username, userEmail, oldPassword, newPassword);
         if (res.contains("USERNAME")) {
-            user = new UserAccount(userID, username, userEmail);
+            user.setUsername(username);
+            user.setEmail(userEmail);
+            // commented the following out because we don't need to create a new user
+            //user = new UserAccount(userID, username, userEmail);
         } else {
-            user = new UserAccount(userID, getUser().getUsername(), userEmail);
+            user.setEmail(userEmail);
+            // commented the following out because we don't need to create a new user
+            //user = new UserAccount(userID, getUser().getUsername(), userEmail);
         }
         return res;
-
-//        userChangeInfo(userName, userEmail);
-//        userChangePassword(oldPassword, newPassword);
-
-    }
-
-    // maybe make it boolean
-
-    /**
-     * Change account information for the user
-     * @param username the new username
-     * @param userEmail the new email address
-     * @return true if the new account info is set successfully, false otherwise
-     */
-    private static boolean userChangeInfo(String username, String userEmail){
-
-
-        // if we choose to verify email address, send an email message and somehow accept
-        // verification
-        return false;
-    }
-
-    /**
-     * Change password for the user
-     * @param oldPassword the existing password that must be verified in order to set the new one
-     * @param newPassword the new password
-     * @return true if the new password is set successfully, false otherwise
-     */
-    private static boolean userChangePassword(String oldPassword, String newPassword){
-        // verify old password, if not right return false
-        // set the new one, return true
-        return false;
     }
 
     /**

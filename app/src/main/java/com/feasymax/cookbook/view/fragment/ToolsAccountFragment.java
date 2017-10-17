@@ -66,8 +66,8 @@ public class ToolsAccountFragment extends Fragment {
             userTakenErrorText = view.findViewById(R.id.userTakenErrorText);
 
             // show user's username and email, but make it not modifiable
-            avUserName.setText(Application.getUserName());
-            avUserEmail.setText(Application.getUserEmail());
+            avUserName.setText(Application.getUser().getUsername());
+            avUserEmail.setText(Application.getUser().getEmail());
             avUserName.setEnabled(false);
             avUserEmail.setEnabled(false);
 
