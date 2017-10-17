@@ -18,9 +18,10 @@ import com.feasymax.cookbook.view.tab.ToolsAdapter;
 import static com.feasymax.cookbook.R.id.signInErrorText;
 import static com.feasymax.cookbook.R.id.textEmail;
 
-public class RegisterActivity extends ActivityMenuTabs {
+public class RegisterActivity extends ActivityMenu {
 
     private static final String TAG = "RegisterActivity";
+
     private TextView regErrorText;
     private Button btnRegister;
     private EditText rsUserName;
@@ -41,24 +42,11 @@ public class RegisterActivity extends ActivityMenuTabs {
         firstName = (EditText) findViewById(R.id.firstName);
         lastName = (EditText) findViewById(R.id.lastName);
         email = (EditText) findViewById(R.id.email);
+
         initializeActivity();
     }
 
-    public void initializeActivity() {
-        initializeDrawer();
-
-        //initializeTabs();
-    }
-
-    public void initializeDrawer() {
-        super.initializeDrawer();
-    }
-
-//    public void initializeTabs() {
-//        super.initializeTabs();
-//        mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-//        mTabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
-//    }
+    public void initializeActivity() { super.initializeActivity(); }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -72,6 +60,7 @@ public class RegisterActivity extends ActivityMenuTabs {
 
     public void setButtons() {
         super.setButtons();
+        
         // register
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
