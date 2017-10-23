@@ -91,7 +91,7 @@ public class ToolsTemperatureFragment extends Fragment {
     }
 
     private void ConvertNumber() {
-        double num1 = Double.parseDouble(tempNum1.getText().toString());
+        double num1 = UnitConverters.ParseFraction(tempNum1.getText().toString());
         int unit1 = tempUnit1.getSelectedItemPosition();
         int unit2 = tempUnit2.getSelectedItemPosition();
         Log.println(Log.INFO, "ConvertNumber", num1 + " " + unit1 + " " + unit2);

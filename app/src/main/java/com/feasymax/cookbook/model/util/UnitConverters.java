@@ -81,4 +81,15 @@ public class UnitConverters {
         Log.println(Log.INFO, "TempToTemp", quanA + " " + quanB + " " + unitA);
         return quanB;
     }
+
+    public static double ParseFraction(String s){
+        double result;
+        if(s.contains("/")){
+            String[] nums = s.split("/");
+            result = Double.valueOf(nums[0]) / Double.valueOf(nums[1]);
+        } else {
+            result = Double.valueOf(s);
+        }
+        return result;
+    }
 }

@@ -85,7 +85,7 @@ public class ToolsVolumeFragment extends Fragment {
     }
 
     private void ConvertNumber() {
-        double num1 = Double.parseDouble(volumeNum1.getText().toString());
+        double num1 = UnitConverters.ParseFraction(volumeNum1.getText().toString());
         int unit1 = volumeUnit1.getSelectedItemPosition();
         int unit2 = volumeUnit2.getSelectedItemPosition();
         Log.println(Log.INFO, "ConvertNumber", num1 + " " + unit1 + " " + unit2);
