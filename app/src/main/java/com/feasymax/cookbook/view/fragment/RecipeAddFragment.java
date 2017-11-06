@@ -149,7 +149,7 @@ public class RecipeAddFragment extends Fragment {
         return BitmapFactory.decodeStream(
                 getActivity().getContentResolver().openInputStream(selectedImage), null, o2);
     }
-
+/*
     private static Bitmap resize(Bitmap image, int maxWidth, int maxHeight) {
         if (maxHeight > 0 && maxWidth > 0) {
             int width = image.getWidth();
@@ -170,5 +170,5 @@ public class RecipeAddFragment extends Fragment {
             return image;
         }
     }
-
+*/
 }
