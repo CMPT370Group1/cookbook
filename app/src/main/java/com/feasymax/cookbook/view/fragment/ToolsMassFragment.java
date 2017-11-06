@@ -84,7 +84,7 @@ public class ToolsMassFragment extends Fragment {
     }
 
     private void ConvertNumber() {
-        double num1 = Double.parseDouble(massNum1.getText().toString());
+        double num1 = UnitConverters.ParseFraction(massNum1.getText().toString());
         int unit1 = massUnit1.getSelectedItemPosition();
         int unit2 = massUnit2.getSelectedItemPosition();
         Log.println(Log.INFO, "ConvertNumber", num1 + " " + unit1 + " " + unit2);
