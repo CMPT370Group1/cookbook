@@ -2,8 +2,6 @@ package com.feasymax.cookbook.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,10 +11,6 @@ import android.widget.TextView;
 
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
-import com.feasymax.cookbook.view.tab.ToolsAdapter;
-
-import static com.feasymax.cookbook.R.id.signInErrorText;
-import static com.feasymax.cookbook.R.id.textEmail;
 
 public class RegisterActivity extends ActivityMenu {
 
@@ -60,7 +54,7 @@ public class RegisterActivity extends ActivityMenu {
 
     public void setButtons() {
         super.setButtons();
-        
+
         // register
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override

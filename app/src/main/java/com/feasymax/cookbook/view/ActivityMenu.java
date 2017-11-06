@@ -80,12 +80,13 @@ public abstract class ActivityMenu extends AppCompatActivity {
         btnRecipes = (Button) findViewById(R.id.button1);
         btnDiscover = (Button) findViewById(R.id.button2);
         btnTools = (Button) findViewById(R.id.button3);
-
+/*
+// NOTE: remove
         if (!Application.isUserSignedIn()) {
             btnRecipes.setEnabled(false);
             btnRecipes.setBackground(getDrawable(R.drawable.button_recipes_inactive));
         }
-
+*/
         btnRecipes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

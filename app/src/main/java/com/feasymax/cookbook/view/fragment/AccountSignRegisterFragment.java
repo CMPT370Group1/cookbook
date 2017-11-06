@@ -15,8 +15,6 @@ import com.feasymax.cookbook.model.Application;
 import com.feasymax.cookbook.view.MainActivity;
 import com.feasymax.cookbook.view.RegisterActivity;
 
-import static com.feasymax.cookbook.R.id.signInErrorText;
-
 /**
  * Created by Olya on 2017-09-21.
  */
