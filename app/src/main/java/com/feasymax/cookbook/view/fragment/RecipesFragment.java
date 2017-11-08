@@ -1,6 +1,9 @@
 package com.feasymax.cookbook.view.fragment;
 
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -16,6 +19,7 @@ import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.view.list.RecipeListAdapter;
 import com.feasymax.cookbook.view.list.RecipeListModel;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 /**
@@ -75,20 +79,56 @@ public class RecipesFragment extends Fragment{
     /****** Function to set data in ArrayList *************/
     public void setListData()
     {
+        final RecipeListModel recipe1 = new RecipeListModel();
 
-        for (int i = 0; i < 11; i++) {
+        /******* Firstly take data in model object ******/
+        recipe1.setRecipeTitle("Delicious cake");
+        recipe1.setRecipeImage(decodeResource(getResources(), R.drawable.dessert, 100, 100));
+        recipe1.setRecipeCaption("This is very good for a celebration!");
 
-            final RecipeListModel sched = new RecipeListModel();
+        /******** Take Model Object in ArrayList **********/
+        CustomListViewValuesArr.add( recipe1 );
 
-            /******* Firstly take data in model object ******/
-            sched.setCompanyName("Company "+i);
-            sched.setImage("image"+i);
-            sched.setUrl("http:\\www."+i+".com");
+        final RecipeListModel recipe2 = new RecipeListModel();
 
-            /******** Take Model Object in ArrayList **********/
-            CustomListViewValuesArr.add( sched );
+        /******* Firstly take data in model object ******/
+        recipe2.setRecipeTitle("Pumpkin soup");
+        recipe2.setRecipeImage(decodeResource(getResources(), R.drawable.soup, 100, 100));
+        recipe2.setRecipeCaption("Very light and tasty soup. Perfect for summer.");
+
+        /******** Take Model Object in ArrayList **********/
+        CustomListViewValuesArr.add( recipe2 );
+
+    }
+
+    /**
+     * Get the bitmap constrained by specified dimensions from resource
+     * @param res
+     * @param id
+     * @param maxWidth
+     * @param maxHeight
+     * @return bitmap
+     */
+    private Bitmap decodeResource(Resources res, int id, int maxWidth, int maxHeight) {
+        BitmapFactory.Options dimensions = new BitmapFactory.Options();
+        dimensions.inJustDecodeBounds = true;
+        Bitmap mBitmap = BitmapFactory.decodeResource(getResources(), id, dimensions);
+        int height = dimensions.outHeight;
+        int width =  dimensions.outWidth;
+
+        int scale = 1;
+        while (true) {
+            if (width / 2 < maxWidth || height / 2 < maxHeight) {
+                break;
+            }
+            width /= 2;
+            height /= 2;
+            scale *= 2;
         }
 
+        BitmapFactory.Options o = new BitmapFactory.Options();
+        o.inSampleSize = scale;
+        return BitmapFactory.decodeResource(res, id, o);
     }
 
     /*****************  This function used by adapter ****************/

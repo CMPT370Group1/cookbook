@@ -1,45 +1,56 @@
 package com.feasymax.cookbook.view.list;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by Olya on 2017-11-06.
  */
 
 public class RecipeListModel {
-    private  String CompanyName="";
-    private  String Image="";
-    private  String Url="";
+    private int recipeId;
+    private String RecipeTitle="";
+    private Bitmap RecipeImage=null;
+    private String RecipeCaption="";
 
     /*********** Set Methods ******************/
 
-    public void setCompanyName(String CompanyName)
-    {
-        this.CompanyName = CompanyName;
+    public void setRecipeId(int recipeId) {
+        this.recipeId = recipeId;
     }
 
-    public void setImage(String Image)
+    public void setRecipeTitle(String RecipeTitle)
     {
-        this.Image = Image;
+        this.RecipeTitle = RecipeTitle;
     }
 
-    public void setUrl(String Url)
+    public void setRecipeImage(Bitmap Image)
     {
-        this.Url = Url;
+        this.RecipeImage = Image;
+    }
+
+    public void setRecipeCaption(String Url)
+    {
+        this.RecipeCaption = Url;
     }
 
     /*********** Get Methods ****************/
 
-    public String getCompanyName()
-    {
-        return this.CompanyName;
+    public int getRecipeId() {
+        return recipeId;
     }
 
-    public String getImage()
+    public String getRecipeTitle()
     {
-        return this.Image;
+        return this.RecipeTitle;
     }
 
-    public String getUrl()
+    public Bitmap getRecipeImage()
     {
-        return this.Url;
+        return this.RecipeImage;
+    }
+
+    public String getRecipeCaption()
+    {
+        return this.RecipeCaption;
     }
 }

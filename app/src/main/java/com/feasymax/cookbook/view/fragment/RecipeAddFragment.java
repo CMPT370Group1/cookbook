@@ -150,11 +150,9 @@ public class RecipeAddFragment extends Fragment {
                 getActivity().getContentResolver().openInputStream(selectedImage), null, o2);
     }
 /*
-    private static Bitmap resize(Bitmap image, int maxWidth, int maxHeight) {
+    private static Bitmap resize(int imgWidth, int imgHeight, int maxWidth, int maxHeight) {
         if (maxHeight > 0 && maxWidth > 0) {
-            int width = image.getWidth();
-            int height = image.getHeight();
-            float ratioBitmap = (float) width / (float) height;
+            float ratioImg = (float) imgWidth / (float) imgHeight;
             float ratioMax = (float) maxWidth / (float) maxHeight;
 
             int finalWidth = maxWidth;

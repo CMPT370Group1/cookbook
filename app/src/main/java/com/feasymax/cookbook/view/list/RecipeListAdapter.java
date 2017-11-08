@@ -61,10 +61,9 @@ public class RecipeListAdapter extends BaseAdapter implements View.OnClickListen
     /********* Create a holder Class to contain inflated xml file elements *********/
     public static class ViewHolder{
 
-        public TextView text;
-        public TextView text1;
-        public TextView textWide;
-        public ImageView image;
+        public TextView recipeTitle;
+        public TextView recipeCaption;
+        public ImageView recipeImage;
 
     }
 
@@ -82,9 +81,9 @@ public class RecipeListAdapter extends BaseAdapter implements View.OnClickListen
             /****** View Holder Object to contain tabitem.xml file elements ******/
 
             holder = new ViewHolder();
-            holder.text = (TextView) vi.findViewById(R.id.text);
-            holder.text1=(TextView)vi.findViewById(R.id.text1);
-            holder.image=(ImageView)vi.findViewById(R.id.image);
+            holder.recipeTitle = (TextView) vi.findViewById(R.id.recipeTitle);
+            holder.recipeCaption=(TextView)vi.findViewById(R.id.recipeCaption);
+            holder.recipeImage=(ImageView)vi.findViewById(R.id.recipeImage);
 
             /************  Set holder with LayoutInflater ************/
             vi.setTag( holder );
@@ -94,7 +93,7 @@ public class RecipeListAdapter extends BaseAdapter implements View.OnClickListen
 
         if(data.size()<=0)
         {
-            holder.text.setText("No Data");
+            holder.recipeTitle.setText("No Data");
 
         }
         else
@@ -105,14 +104,11 @@ public class RecipeListAdapter extends BaseAdapter implements View.OnClickListen
 
             /************  Set Model values in Holder elements ***********/
 
-            holder.text.setText( tempValues.getCompanyName() );
-            holder.text1.setText( tempValues.getUrl() );
-            holder.image.setImageResource(
-                    res.getIdentifier(
-                            "com.androidexample.customlistview:drawable/"+tempValues.getImage()
-                            ,null,null));
+            holder.recipeTitle.setText( tempValues.getRecipeTitle() );
+            holder.recipeCaption.setText( tempValues.getRecipeCaption() );
+            holder.recipeImage.setImageBitmap(tempValues.getRecipeImage());
 
-            /******** Set Item Click Listner for LayoutInflater for each row *******/
+            /******** Set Item Click Listener for LayoutInflater for each row *******/
 
             vi.setOnClickListener(new OnItemClickListener( position ));
         }
