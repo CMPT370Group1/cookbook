@@ -32,5 +32,6 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     //compile project(':postgresql-42.1.4')
-    compile group: 'postgresql', name: 'postgresql', version: '9.0-801.jdbc4'
+    compile 'postgresql:postgresql:9.0-801.jdbc4'
+    compile project(':tagview-library')
 }

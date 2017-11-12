@@ -77,7 +77,7 @@ public class RecipesFragment extends ShowRecipesFragment{
         /******* Firstly take data in model object ******/
         recipe1.setRecipeId(0);
         recipe1.setRecipeTitle("Delicious cake");
-        recipe1.setRecipeImage(decodeResource(getResources(), R.drawable.dessert, 100, 100));
+        recipe1.setRecipeImage(decodeResource(getResources(), R.drawable.dessert, 150, 150));
         recipe1.setRecipeDuration(150);
 
         /******** Take Model Object in ArrayList **********/
@@ -88,7 +88,7 @@ public class RecipesFragment extends ShowRecipesFragment{
         /******* Firstly take data in model object ******/
         recipe2.setRecipeId(1);
         recipe2.setRecipeTitle("Pumpkin soup");
-        recipe2.setRecipeImage(decodeResource(getResources(), R.drawable.soup, 100, 100));
+        recipe2.setRecipeImage(decodeResource(getResources(), R.drawable.soup, 150, 150));
         recipe2.setRecipeDuration(30);
 
         /******** Take Model Object in ArrayList **********/
@@ -111,10 +111,7 @@ public class RecipesFragment extends ShowRecipesFragment{
         int width =  dimensions.outWidth;
 
         int scale = 1;
-        while (true) {
-            if (width / 2 < maxWidth || height / 2 < maxHeight) {
-                break;
-            }
+        while (width / 2 >= maxWidth || height / 2 >= maxHeight) {
             width /= 2;
             height /= 2;
             scale *= 2;

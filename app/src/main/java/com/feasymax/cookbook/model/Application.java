@@ -3,12 +3,14 @@ package com.feasymax.cookbook.model;
 import android.util.Log;
 
 import com.feasymax.cookbook.model.entity.DiscoverCollection;
+import com.feasymax.cookbook.model.entity.Ingredient;
 import com.feasymax.cookbook.model.entity.Recipe;
 import com.feasymax.cookbook.model.entity.RecipeShortInfo;
 import com.feasymax.cookbook.model.entity.UserAccount;
 import com.feasymax.cookbook.model.entity.UserCollection;
 import com.feasymax.cookbook.model.util.UserDao;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -262,8 +264,29 @@ public class Application {
     public static void getRecipeFromShortInfo(Recipe recipe) {
         //recipe.setImage(null);
         recipe.setCategory(0);
-        recipe.setDirections("Directions.");
-        recipe.setIngredients(null);
-        recipe.setTags(null);
+        recipe.setDirections("Directions to make this recipe. Directions to make this recipe. " +
+                "Directions to make this recipe. Directions to make this recipe. Directions to " +
+                "make this recipe. Directions to make this recipe. Directions to make this recipe.");
+        List<Ingredient> ingredients = new LinkedList<>();
+        ingredients.add(new Ingredient("butter", 200, "g"));
+        ingredients.add(new Ingredient("milk", 1, "cup"));
+        ingredients.add(new Ingredient("flour", 2, "cup"));
+        ingredients.add(new Ingredient("salt", 0.5, "tsp"));
+        ingredients.add(new Ingredient("sugar", 3, "tbsp"));
+        recipe.setIngredients(ingredients);
+        List<String> tags = new LinkedList<>();
+        tags.add("Breakfast");
+        tags.add("Yummy");
+        tags.add("Breakfast");
+        tags.add("Yummyfdfd");
+        tags.add("Breakfast");
+        tags.add("Yummydfdfdfdfdfd");
+        tags.add("Breakfa");
+        tags.add("Yummyaa");
+        tags.add("Breakfast");
+        tags.add("YummyYummyYummy");
+
+
+        recipe.setTags(tags);
     }
 }

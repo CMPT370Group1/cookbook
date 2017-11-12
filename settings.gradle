@@ -1,1 +1,2 @@
-include ':app', ':postgresql-42.1.4'
+include ':app', ':postgresql-42.1.4', ':tagview-library'
+project(':tagview-library').projectDir = new File('android-tagview-master/library')

@@ -13,7 +13,7 @@ public class Ingredient {
     /**
      * The quantity of the ingredient
      */
-    private int quantity;
+    private double quantity;
     /**
      * The unit of measure of the ingredient
      */
@@ -25,7 +25,7 @@ public class Ingredient {
      * @param quantity
      * @param unit
      */
-    public Ingredient(String name, int quantity, String unit) {
+    public Ingredient(String name, double quantity, String unit) {
         this.name = name;
         this.quantity = quantity;
         this.unit = unit;
@@ -51,7 +51,7 @@ public class Ingredient {
      * Get the quantity of the ingredient
      * @return
      */
-    public int getQuantity() {
+    public double getQuantity() {
         return quantity;
     }
 
@@ -59,7 +59,7 @@ public class Ingredient {
      * Set the quantity for the ingredient
      * @param quantity
      */
-    public void setQuantity(int quantity) {
+    public void setQuantity(double quantity) {
         this.quantity = quantity;
     }
 

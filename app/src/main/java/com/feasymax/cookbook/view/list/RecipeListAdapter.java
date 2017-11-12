@@ -28,8 +28,8 @@ public class RecipeListAdapter extends BaseAdapter implements View.OnClickListen
     private ArrayList data;
     private static LayoutInflater inflater = null;
     public Resources res;
-    RecipeListModel tempValues=null;
-    int i=0;
+    RecipeListModel tempValues = null;
+    int i = 0;
 
     /*************  CustomAdapter Constructor *****************/
     public RecipeListAdapter(ShowRecipesFragment a, ArrayList d, Resources resLocal) {
@@ -101,7 +101,7 @@ public class RecipeListAdapter extends BaseAdapter implements View.OnClickListen
         else
         {
             /***** Get each Model object from Arraylist ********/
-            tempValues=null;
+            tempValues = null;
             tempValues = ( RecipeListModel ) data.get( position );
 
             /************  Set Model values in Holder elements ***********/
