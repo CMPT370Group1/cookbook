@@ -8,6 +8,8 @@ import android.graphics.Bitmap;
 
 public class RecipeShortInfo {
 
+    private int id;
+
     /**
      * The recipe's title
      */
@@ -83,8 +85,8 @@ public class RecipeShortInfo {
 
     @Override
     public String toString() {
-        return "Recipe{" +
-                "title='" + title + '\'' +
+        return "Recipe{" + id +
+                ", title='" + title + '\'' +
                 ", duration=" + duration +
                 '}';
     }

@@ -58,7 +58,7 @@
                     android:layout_below="@id/recipeTitle"/>
 
                 <TextView
-                    android:id="@+id/recipeDiections"
+                    android:id="@+id/recipeDirections"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/recipeIngredients"

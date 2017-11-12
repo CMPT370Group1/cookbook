@@ -3,6 +3,7 @@ package com.feasymax.cookbook.view.list;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.feasymax.cookbook.R;
+import com.feasymax.cookbook.view.fragment.RecipesFragment;
+import com.feasymax.cookbook.view.fragment.common.ShowRecipesFragment;
 
 import java.util.ArrayList;
 
@@ -21,24 +24,23 @@ import java.util.ArrayList;
 
 public class RecipeListAdapter extends BaseAdapter implements View.OnClickListener {
     /*********** Declare Used Variables *********/
-    private Activity activity;
+    private ShowRecipesFragment fragment;
     private ArrayList data;
-    private static LayoutInflater inflater=null;
+    private static LayoutInflater inflater = null;
     public Resources res;
     RecipeListModel tempValues=null;
     int i=0;
 
     /*************  CustomAdapter Constructor *****************/
-    public RecipeListAdapter(Activity a, ArrayList d, Resources resLocal) {
+    public RecipeListAdapter(ShowRecipesFragment a, ArrayList d, Resources resLocal) {
 
         /********** Take passed values **********/
-        activity = a;
+        fragment = a;
         data = d;
         res = resLocal;
 
         /***********  Layout inflater to call external xml layout () ***********/
-        inflater = ( LayoutInflater ) activity.
-                getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = ( LayoutInflater ) fragment.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
     }
 
@@ -62,7 +64,7 @@ public class RecipeListAdapter extends BaseAdapter implements View.OnClickListen
     public static class ViewHolder{
 
         public TextView recipeTitle;
-        public TextView recipeCaption;
+        public TextView recipeDuration;
         public ImageView recipeImage;
 
     }
@@ -73,7 +75,7 @@ public class RecipeListAdapter extends BaseAdapter implements View.OnClickListen
         View vi = convertView;
         ViewHolder holder;
 
-        if(convertView==null){
+        if(convertView == null){
 
             /****** Inflate tabitem.xml file for each row ( Defined below ) *******/
             vi = inflater.inflate(R.layout.tabitem, null);
@@ -82,16 +84,16 @@ public class RecipeListAdapter extends BaseAdapter implements View.OnClickListen
 
             holder = new ViewHolder();
             holder.recipeTitle = (TextView) vi.findViewById(R.id.recipeTitle);
-            holder.recipeCaption=(TextView)vi.findViewById(R.id.recipeCaption);
-            holder.recipeImage=(ImageView)vi.findViewById(R.id.recipeImage);
+            holder.recipeDuration =(TextView)vi.findViewById(R.id.recipeCaption);
+            holder.recipeImage =(ImageView)vi.findViewById(R.id.recipeImage);
 
             /************  Set holder with LayoutInflater ************/
             vi.setTag( holder );
         }
         else
-            holder=(ViewHolder)vi.getTag();
+            holder = (ViewHolder) vi.getTag();
 
-        if(data.size()<=0)
+        if(data.size() <= 0)
         {
             holder.recipeTitle.setText("No Data");
 
@@ -105,7 +107,7 @@ public class RecipeListAdapter extends BaseAdapter implements View.OnClickListen
             /************  Set Model values in Holder elements ***********/
 
             holder.recipeTitle.setText( tempValues.getRecipeTitle() );
-            holder.recipeCaption.setText( tempValues.getRecipeCaption() );
+            holder.recipeDuration.setText( displayDuration(tempValues.getRecipeDuration()) );
             holder.recipeImage.setImageBitmap(tempValues.getRecipeImage());
 
             /******** Set Item Click Listener for LayoutInflater for each row *******/
@@ -131,13 +133,21 @@ public class RecipeListAdapter extends BaseAdapter implements View.OnClickListen
         @Override
         public void onClick(View arg0) {
 
-/*
-            CustomListViewAndroidExample sct = (CustomListViewAndroidExample)activity;
-*/
             /****  Call  onItemClick Method inside CustomListViewAndroidExample Class ( See Below )****/
-/*
-            sct.onItemClick(mPosition);
-*/
+
+            fragment.onItemClick(mPosition);
+
+        }
+    }
+
+    private String displayDuration(int duration) {
+        int hours = duration / 60;
+        int min = duration % 60;
+        if (hours == 0) {
+            return "Duration: " + min + " min";
+        }
+        else {
+            return "Duration: " + hours + " h " + min + " min";
         }
     }
 

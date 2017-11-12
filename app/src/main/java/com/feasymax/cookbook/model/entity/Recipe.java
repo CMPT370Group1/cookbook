@@ -10,6 +10,8 @@ import java.util.List;
 
 public class Recipe {
 
+    private int id;
+
     /**
      * The recipe's title
      */
@@ -48,7 +50,8 @@ public class Recipe {
      * @param duration
      * @param tags
      */
-    public Recipe(String title, int category, List<Ingredient> ingredients, String directions, int duration, List<String> tags, Bitmap image) {
+    public Recipe(int id, String title, int category, List<Ingredient> ingredients, String directions, int duration, List<String> tags, Bitmap image) {
+        this.id = id;
         this.title = title;
         this.category = category;
         this.ingredients = ingredients;
@@ -58,10 +61,29 @@ public class Recipe {
         this.image = image;
     }
 
+    public Recipe(int id, String title, int duration, Bitmap image) {
+        this.id = id;
+        this.title = title;
+        this.category = -1;
+        this.ingredients = null;
+        this.directions = null;
+        this.duration = duration;
+        this.tags = null;
+        this.image = image;
+    }
+
     /**
      * A public empty constructor
      */
     public Recipe() {}
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     /**
      * Get the recipe's title
@@ -101,6 +123,10 @@ public class Recipe {
      */
     public List<Ingredient> getIngredients() {
         return ingredients;
+    }
+
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
     }
 
     /**
@@ -151,6 +177,10 @@ public class Recipe {
         return tags;
     }
 
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
     /**
      * Add new tag to the recipe's tag list
      * @param tag
@@ -177,13 +207,13 @@ public class Recipe {
 
     @Override
     public String toString() {
-        return "Recipe{" +
-                "title='" + title + '\'' +
-                ", category=" + category +
-                ", ingredients=" + ingredients +
-                ", directions='" + directions + '\'' +
-                ", duration=" + duration +
-                ", tags=" + tags +
+        return "Recipe{" + id +
+                ", title='" + title + '\'' +
+                ", category = " + category +
+                ", ingredients = " + ingredients +
+                ", directions = '" + directions + '\'' +
+                ", duration = " + duration +
+                ", tags = " + tags +
                 '}';
     }
 }

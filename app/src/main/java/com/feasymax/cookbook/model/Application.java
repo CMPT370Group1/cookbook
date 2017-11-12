@@ -1,5 +1,7 @@
 package com.feasymax.cookbook.model;
 
+import android.util.Log;
+
 import com.feasymax.cookbook.model.entity.DiscoverCollection;
 import com.feasymax.cookbook.model.entity.Recipe;
 import com.feasymax.cookbook.model.entity.RecipeShortInfo;
@@ -26,7 +28,7 @@ public class Application {
     /**
      * Other users' collection of recipes, a single one can exist in the application
      */
-    private static DiscoverCollection discoverCollection = null;
+    private static DiscoverCollection discoverCollection = new DiscoverCollection();
 
     /**
      * Private constructor, because there could not be an Application object
@@ -220,6 +222,7 @@ public class Application {
      * @param recipe
      */
     public static void setDiscoverCurrentRecipe(Recipe recipe) {
+        Log.println(Log.INFO, "setCurrentRecipe", recipe.toString());
         discoverCollection.setCurRecipe(recipe);
     }
 
@@ -254,5 +257,13 @@ public class Application {
      */
     public static Recipe getDiscoverCurrentRecipe() {
         return discoverCollection.getCurRecipe();
+    }
+
+    public static void getRecipeFromShortInfo(Recipe recipe) {
+        //recipe.setImage(null);
+        recipe.setCategory(0);
+        recipe.setDirections("Directions.");
+        recipe.setIngredients(null);
+        recipe.setTags(null);
     }
 }

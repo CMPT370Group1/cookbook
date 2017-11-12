@@ -7,15 +7,16 @@ import android.graphics.Bitmap;
  */
 
 public class RecipeListModel {
-    private int recipeId;
-    private String RecipeTitle="";
-    private Bitmap RecipeImage=null;
-    private String RecipeCaption="";
+
+    private int RecipeId;
+    private String RecipeTitle = "";
+    private Bitmap RecipeImage = null;
+    private int RecipeDuration = 0;
 
     /*********** Set Methods ******************/
 
     public void setRecipeId(int recipeId) {
-        this.recipeId = recipeId;
+        this.RecipeId = recipeId;
     }
 
     public void setRecipeTitle(String RecipeTitle)
@@ -28,15 +29,15 @@ public class RecipeListModel {
         this.RecipeImage = Image;
     }
 
-    public void setRecipeCaption(String Url)
+    public void setRecipeDuration(int duration)
     {
-        this.RecipeCaption = Url;
+        this.RecipeDuration = duration;
     }
 
     /*********** Get Methods ****************/
 
     public int getRecipeId() {
-        return recipeId;
+        return RecipeId;
     }
 
     public String getRecipeTitle()
@@ -49,8 +50,15 @@ public class RecipeListModel {
         return this.RecipeImage;
     }
 
-    public String getRecipeCaption()
+    public int getRecipeDuration()
     {
-        return this.RecipeCaption;
+        return this.RecipeDuration;
+    }
+
+    public String toString() {
+        return "Recipe{" + RecipeId +
+                ", title = '" + RecipeTitle + '\'' +
+                ", duration = " + RecipeDuration +
+                '}';
     }
 }

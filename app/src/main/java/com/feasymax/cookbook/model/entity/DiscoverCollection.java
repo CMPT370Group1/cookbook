@@ -1,5 +1,7 @@
 package com.feasymax.cookbook.model.entity;
 
+import android.util.Log;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,6 +15,7 @@ public class DiscoverCollection {
     private Recipe curRecipe;
 
     public DiscoverCollection() {
+        curRecipe = null;
         recipes = new LinkedList<>();
     }
 
