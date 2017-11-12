@@ -59,7 +59,7 @@ public class RecipesFragment extends ShowRecipesFragment{
         /******** Take some data in Arraylist ( CustomListViewValuesArr ) ***********/
         setListData();
 
-        Resources res =getResources();
+        Resources res = getResources();
         list = ( ListView )view.findViewById( R.id.list );  // List defined in XML ( See Below )
 
         /**************** Create Custom Adapter *********/

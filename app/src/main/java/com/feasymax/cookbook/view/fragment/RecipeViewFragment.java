@@ -4,12 +4,15 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.InputType;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -42,6 +45,7 @@ public class RecipeViewFragment extends Fragment{
 
     private ImageView recipeImage;
     private TextView recipeTitle;
+    private TagView recipeDuration;
     private TableLayout recipeIngredients;
     private TextView recipeDirections;
     private TagView recipeTags;
@@ -49,9 +53,11 @@ public class RecipeViewFragment extends Fragment{
     private Recipe currentRecipe = null;
 
 
-    public RecipeViewFragment() {
-        // Required empty public constructor
-    }
+    /**
+     * Required empty public constructor
+     */
+    public RecipeViewFragment() {}
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -68,10 +74,12 @@ public class RecipeViewFragment extends Fragment{
 
         recipeImage = view.findViewById(R.id.recipeImage);
         recipeTitle = view.findViewById(R.id.recipeTitle);
+        recipeDuration = view.findViewById(R.id.recipeDuration);
         recipeIngredients = view.findViewById(R.id.recipeIngredients);
         recipeDirections = view.findViewById(R.id.recipeDirections);
         recipeTags = view.findViewById(R.id.recipeTags);
 
+        // Get the correct recipe to display depending on which activity is active
         if (this.getActivity() instanceof RecipesActivity) {
             currentRecipe = Application.getUserCurrentRecipe();
         }
@@ -82,41 +90,37 @@ public class RecipeViewFragment extends Fragment{
             Log.println(Log.ERROR, "onItemClick", "Unexpected activity");
         }
 
+        // Set up the recipe info
         recipeImage.setImageBitmap(currentRecipe.getImage());
         recipeTitle.setText(currentRecipe.getTitle());
         recipeDirections.setText(currentRecipe.getDirections());
 
+        TagView.Tag[] duration = { new TagView.Tag(displayDuration(currentRecipe.getDuration()),
+                Color.parseColor("#808080")) };
+        recipeDuration.setTags(duration, " ");
+
+
+        // Fill the table layout recipeIngredients with rows, one for each ingredient
         for (Ingredient ingredient : currentRecipe.getIngredients()) {
-            TableRow tr = new TableRow(this.getContext());
-            tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
-                    TableRow.LayoutParams.WRAP_CONTENT));
+            View tr = inflater.inflate(R.layout.ingredient_layout, null, false);
 
-            TableRow.LayoutParams params = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
-            params.setMargins(0, 0, 20, 0);
-
-            /* Create a Button to be the row-content. */
-            TextView quantity = new TextView(this.getContext());
+            // Fill the row with ingredient info
+            EditText quantity = tr.findViewById(R.id.quantity);
             quantity.setText(DF.format(ingredient.getQuantity()));
-            tr.addView(quantity, params);
-            //ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) quantity.getLayoutParams();
-            //mlp.setMargins(50, 0, 0, 0);
 
-            TextView unit = new TextView(this.getContext());
+            TextView unit = tr.findViewById(R.id.unit);
             unit.setText(ingredient.getUnit());
-            tr.addView(unit, params);
 
-            TextView name = new TextView(this.getContext());
+            TextView name = tr.findViewById(R.id.name);
             name.setText(ingredient.getName());
-            tr.addView(name, params);
 
-            /* Add row to TableLayout. */
-            //tr.setBackgroundResource(R.drawable.sf_gradient_03);
-            recipeIngredients.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,
-                    TableLayout.LayoutParams.WRAP_CONTENT));
-
+            // Add row to TableLayout.
+            recipeIngredients.addView(tr, new TableLayout.LayoutParams(
+                    TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
         }
 
-        LinkedList<TagView.Tag> tags = new LinkedList<TagView.Tag>();
+        // Set up the recipe tags
+        LinkedList<TagView.Tag> tags = new LinkedList<>();
         for (String content : currentRecipe.getTags()) {
             tags.add(new TagView.Tag(content, Color.parseColor("#ff4081"))); // color is colorAccent
         }
@@ -125,6 +129,9 @@ public class RecipeViewFragment extends Fragment{
         return view ;
     }
 
+    /**
+     *
+     */
     private void enterRecipesFragment() {
         RecipesFragment a2Fragment = new RecipesFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
@@ -132,5 +139,16 @@ public class RecipeViewFragment extends Fragment{
         // Store the Fragment in stack
         transaction.addToBackStack(null);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
+    }
+
+    private String displayDuration(int duration) {
+        int hours = duration / 60;
+        int min = duration % 60;
+        if (hours == 0) {
+            return "Duration: " + min + " min";
+        }
+        else {
+            return "Duration: " + hours + " h " + min + " min";
+        }
     }
 }
