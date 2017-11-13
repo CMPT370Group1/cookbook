@@ -15,7 +15,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.feasymax.cookbook.R;
@@ -35,6 +37,8 @@ public class RecipeAddFragment extends Fragment {
     View view;
     ImageView recipeImage;
     TextView recipeImageText;
+    Spinner recipeCategory;
+    Spinner ingredientUnit;
 
     public RecipeAddFragment() {
         // Required empty public constructor
@@ -46,6 +50,8 @@ public class RecipeAddFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_res_add, container, false);
         recipeImage = view.findViewById(R.id.recipeImage);
         recipeImageText = view.findViewById(R.id.myImageViewText);
+        recipeCategory = view.findViewById(R.id.recipeCategory);
+        ingredientUnit = view.findViewById(R.id.ingredientUnit);
 
         recipeImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +59,11 @@ public class RecipeAddFragment extends Fragment {
                 pickImage();
             }
         });
+
+        ArrayAdapter adapterCategory = ArrayAdapter.createFromResource(this.getContext(),
+                R.array.categories, R.layout.spinner_item);
+        adapterCategory.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        recipeCategory.setAdapter(adapterCategory);
 
         return view ;
     }
@@ -119,6 +130,7 @@ public class RecipeAddFragment extends Fragment {
                 Bitmap bitmapImage = decodeUri(selectedImage, 500, 500);
                 recipeImage.setImageBitmap(bitmapImage);
                 recipeImageText.setVisibility(View.INVISIBLE);
+                recipeImage.setImageTintMode(null);
             }
             catch (Exception e)
             {

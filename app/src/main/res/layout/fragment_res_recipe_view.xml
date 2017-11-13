@@ -15,12 +15,13 @@
             android:id="@+id/buttonCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorControlHighlight"
+            android:background="@color/colorPrimaryDark"
             android:drawablePadding="@dimen/tiny_margin"
-            android:drawableStart="?attr/actionModeCloseDrawable"
+            android:drawableStart="@drawable/ic_arrow_back"
             android:padding="@dimen/tiny_margin"
             android:text="Category"
-            android:textAlignment="textStart"/>
+            android:textAlignment="textStart"
+            android:textColor="?android:attr/textColorSecondaryNoDisable"/>
 
         <ScrollView
             android:layout_width="match_parent"

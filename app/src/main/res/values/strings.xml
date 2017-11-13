@@ -7,6 +7,22 @@
     <string name="action_settings">Settings</string>
     <string name="action_info">Info</string>
 
+    <string-array name="categories">
+        <item>Breakfast</item>
+        <item>Snacks</item>
+        <item>Soup</item>
+        <item>Appetizers</item>
+        <item>Salads</item>
+        <item>Breads</item>
+        <item>Beverages</item>
+        <item>Desserts</item>
+        <item>Main dishes</item>
+        <item>Side dishes</item>
+        <item>Sauces</item>
+        <item>Vegetables</item>
+        <item>Other</item>
+    </string-array>
+
     <string-array name="volume_units">
         <item>tsp</item>
         <item>tbsp</item>

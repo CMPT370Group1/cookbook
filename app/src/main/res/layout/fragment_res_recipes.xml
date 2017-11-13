@@ -20,12 +20,13 @@
             android:id="@+id/buttonAllCategories"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorControlHighlight"
+            android:background="@color/colorPrimaryDark"
             android:drawablePadding="10dp"
-            android:drawableStart="?android:attr/actionModeCloseDrawable"
+            android:drawableStart="@drawable/ic_arrow_back"
             android:padding="10dp"
             android:text="All Categories"
-            android:textAlignment="textStart"/>
+            android:textAlignment="textStart"
+            android:textColor="?android:attr/textColorSecondaryNoDisable"/>
 
         <ListView
             android:id="@+id/list"
