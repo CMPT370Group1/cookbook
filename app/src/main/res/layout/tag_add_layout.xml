@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+          android:id="@+id/tr_ingredient_add"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:paddingBottom="@dimen/tiny_margin">
+
+    <EditText
+        android:id="@+id/tagName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:layout_weight="83"
+        android:background="?attr/colorControlHighlight"
+        android:ems="10"
+        android:hint="Name"
+        android:inputType="textShortMessage"
+        android:padding="5dp"
+        android:selectAllOnFocus="true"
+        android:textSize="18sp"/>
+
+    <ImageButton
+        android:id="@+id/buttonDeleteTag"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="12"
+        android:background="@color/colorAccent"
+        android:src="@android:drawable/ic_delete"
+        android:tint="@android:color/white"/>
+
+</TableRow>

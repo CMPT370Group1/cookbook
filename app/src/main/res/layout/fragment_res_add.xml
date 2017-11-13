@@ -91,78 +91,11 @@
                 android:textSize="20sp"
                 />
 
-            <LinearLayout
-                android:id="@+id/listRecipeIngredients"
+            <TableLayout
+                android:id="@+id/recipeIngredientsAdd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/tiny_margin"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:id="@+id/recipeIngredient0"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="105"
-                    android:orientation="horizontal">
-
-                    <EditText
-                        android:id="@+id/ingredientName0"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
-                        android:layout_weight="45"
-                        android:background="?attr/colorControlHighlight"
-                        android:ems="10"
-                        android:hint="Name"
-                        android:inputType="text"
-                        android:padding="5dp"
-                        android:selectAllOnFocus="true"
-                        android:textSize="18sp"/>
-
-                    <EditText
-                        android:id="@+id/ingredientQuantity0"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginRight="5dp"
-                        android:layout_weight="20"
-                        android:background="?attr/colorControlHighlight"
-                        android:ems="10"
-                        android:hint="#"
-                        android:inputType="numberDecimal"
-                        android:padding="5dp"
-                        android:selectAllOnFocus="true"
-                        android:textSize="18sp"/>
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
-                        android:layout_weight="28"
-                        android:background="?attr/colorControlHighlight">
-
-                        <Spinner
-                            android:id="@+id/ingredientUnit"
-                            style="@style/Widget.AppCompat.Spinner.DropDown"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:entries="@array/mass_volume_units"
-                            android:padding="5dp"/>
-
-                    </RelativeLayout>
-
-                    <ImageButton
-                        android:id="@+id/button_delete"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="12"
-                        android:background="@color/colorAccent"
-                        android:src="@android:drawable/ic_delete"
-                        android:tint="@android:color/white"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
+                android:layout_marginBottom="@dimen/tiny_margin"/>
 
             <ImageButton
                 android:id="@+id/buttonAddIngredient"
@@ -284,44 +217,23 @@
                 android:textSize="20sp"
                 />
 
-            <RelativeLayout
-                android:id="@+id/recipeTags"
+            <TableLayout
+                android:id="@+id/recipeTagTable"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/small_margin">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="@dimen/tiny_margin"/>
 
-                <LinearLayout
-                    android:id="@+id/listRecipeTags"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginBottom="@dimen/tiny_margin">
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/tiny_margin"
-                        android:background="?attr/colorControlHighlight"
-                        android:ems="10"
-                        android:inputType="textShortMessage"
-                        android:padding="5dp"
-                        android:textSize="18sp"/>
-
-                </LinearLayout>
-
-                <ImageButton
-                    android:id="@+id/buttonAddTag"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/small_margin"
-                    android:background="@color/colorAccent"
-                    android:tint="@android:color/white"
-                    android:padding="10dp"
-                    android:src="@drawable/plus"
-                    android:textColor="@android:color/white"
-                    android:layout_below="@id/listRecipeTags"/>
-
-            </RelativeLayout>
+            <ImageButton
+                android:id="@+id/buttonAddTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/small_margin"
+                android:background="@color/colorAccent"
+                android:tint="@android:color/white"
+                android:padding="10dp"
+                android:src="@drawable/plus"
+                android:textColor="@android:color/white"/>
 
         </LinearLayout>
 

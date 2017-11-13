@@ -3,4 +3,6 @@
                  style="?android:attr/spinnerDropDownItemStyle"
                  android:layout_width="match_parent"
                  android:layout_height="?android:attr/listPreferredItemHeight"
-                 android:textColor="@android:color/black"/>
+                 android:textColor="@android:color/black"
+                 android:ellipsize="marquee"
+                 android:maxLines="1"/>

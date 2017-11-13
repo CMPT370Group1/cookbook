@@ -17,7 +17,7 @@ public class Ingredient {
     /**
      * The unit of measure of the ingredient
      */
-    private String unit;
+    private int unit;
 
     /**
      * A public constructor for the ingredient that initializes all its attributes
@@ -25,7 +25,7 @@ public class Ingredient {
      * @param quantity
      * @param unit
      */
-    public Ingredient(String name, double quantity, String unit) {
+    public Ingredient(String name, double quantity, int unit) {
         this.name = name;
         this.quantity = quantity;
         this.unit = unit;
@@ -67,7 +67,7 @@ public class Ingredient {
      * Get the unit of measure of the ingredient
      * @return
      */
-    public String getUnit() {
+    public int getUnit() {
         return unit;
     }
 
@@ -75,7 +75,7 @@ public class Ingredient {
      * Set the unit of measure for the ingredient
      * @param unit
      */
-    public void setUnit(String unit) {
+    public void setUnit(int unit) {
         this.unit = unit;
     }
 

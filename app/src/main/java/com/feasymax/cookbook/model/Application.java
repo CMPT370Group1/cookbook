@@ -268,11 +268,11 @@ public class Application {
                 "Directions to make this recipe. Directions to make this recipe. Directions to " +
                 "make this recipe. Directions to make this recipe. Directions to make this recipe.");
         List<Ingredient> ingredients = new LinkedList<>();
-        ingredients.add(new Ingredient("butter", 200, "g"));
-        ingredients.add(new Ingredient("milk", 1, "cup"));
-        ingredients.add(new Ingredient("flour", 2, "cup"));
-        ingredients.add(new Ingredient("salt", 0.5, "tsp"));
-        ingredients.add(new Ingredient("sugar", 3, "tbsp"));
+        ingredients.add(new Ingredient("butter", 200, 1));
+        ingredients.add(new Ingredient("milk", 1, 7));
+        ingredients.add(new Ingredient("flour", 2, 7));
+        ingredients.add(new Ingredient("salt", 0.5, 5));
+        ingredients.add(new Ingredient("sugar", 3, 6));
         recipe.setIngredients(ingredients);
         List<String> tags = new LinkedList<>();
         tags.add("Breakfast");

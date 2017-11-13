@@ -5,4 +5,5 @@
           android:layout_height="wrap_content"
           android:text="Text"
           android:textColor="?attr/colorControlNormal"
-          android:textSize="18sp"/>
+          android:textSize="18sp"
+          android:gravity="left"/>

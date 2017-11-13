@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+          android:id="@+id/tr_ingredient_add"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:paddingBottom="@dimen/tiny_margin">
+
+    <EditText
+        android:id="@+id/ingredientName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:layout_weight="45"
+        android:background="?attr/colorControlHighlight"
+        android:ems="10"
+        android:hint="Name"
+        android:inputType="text"
+        android:padding="5dp"
+        android:selectAllOnFocus="true"
+        android:textSize="18sp"/>
+
+    <EditText
+        android:id="@+id/ingredientQuantity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="5dp"
+        android:layout_weight="20"
+        android:background="?attr/colorControlHighlight"
+        android:ems="10"
+        android:hint="#"
+        android:inputType="numberDecimal"
+        android:padding="5dp"
+        android:selectAllOnFocus="true"
+        android:textSize="18sp"/>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:layout_weight="28"
+        android:background="?attr/colorControlHighlight">
+
+        <Spinner
+            android:id="@+id/ingredientUnit"
+            style="@style/Widget.AppCompat.Spinner.DropDown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/mass_volume_units"
+            android:padding="5dp"/>
+
+    </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/buttonDeleteIngredient"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="12"
+        android:background="@color/colorAccent"
+        android:src="@android:drawable/ic_delete"
+        android:tint="@android:color/white"/>
+
+</TableRow>
