@@ -9,6 +9,7 @@ import com.feasymax.cookbook.model.entity.RecipeShortInfo;
 import com.feasymax.cookbook.model.entity.UserAccount;
 import com.feasymax.cookbook.model.entity.UserCollection;
 import com.feasymax.cookbook.model.util.UserDao;
+import com.feasymax.cookbook.view.list.RecipeListModel;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -70,7 +71,6 @@ public class Application {
         if (userID != 0) {
             user = new UserAccount(userID, username, email);
             userCollection = new UserCollection();
-            discoverCollection = new DiscoverCollection();
             return true;
         } else {
             return false;
@@ -89,7 +89,6 @@ public class Application {
         if (userID != 0) {
             user = new UserAccount(userID, username);
             userCollection = new UserCollection();
-            discoverCollection = new DiscoverCollection();
             return true;
         } else {
             return false;
@@ -112,7 +111,6 @@ public class Application {
         if (userID != 0) {
             user = new UserAccount(userID, username, email);
             userCollection = new UserCollection();
-            discoverCollection = new DiscoverCollection();
             return true;
         } else {
             return false;
@@ -159,6 +157,11 @@ public class Application {
      * @return true is user is signed in, false otherwise
      */
     public static boolean isUserSignedIn() {
+        // TODO: remove if statement when DB is working
+        if (user == null) {
+            user = new UserAccount(0, "temp", "temp@domain.com");
+            userCollection = new UserCollection();
+        }
         return (user != null);
     }
 
@@ -166,7 +169,7 @@ public class Application {
      *
      * @param recipes
      */
-    public static void setUserCollectionRecipes(List<RecipeShortInfo> recipes) {
+    public static void setUserCollectionRecipes(List<RecipeListModel> recipes) {
         userCollection.setRecipes(recipes);
     }
 
@@ -182,7 +185,7 @@ public class Application {
      *
      * @return
      */
-    public static List<RecipeShortInfo> getUserCollectionRecipes() {
+    public static List<RecipeListModel> getUserCollectionRecipes() {
         return userCollection.getRecipes();
     }
 
@@ -198,7 +201,7 @@ public class Application {
      *
      * @param recipeInfo
      */
-    public static void addUserRecipe(RecipeShortInfo recipeInfo) {
+    public static void addUserRecipe(RecipeListModel recipeInfo) {
         userCollection.addNewRecipe(recipeInfo);
     }
 
@@ -207,7 +210,7 @@ public class Application {
      * @param recipeInfo
      * @return
      */
-    public static boolean removeUserRecipe(RecipeShortInfo recipeInfo) {
+    public static boolean removeUserRecipe(RecipeListModel recipeInfo) {
         return userCollection.removeRecipe(recipeInfo);
     }
 
@@ -215,7 +218,7 @@ public class Application {
      *
      * @param recipes
      */
-    public static void setDiscoverCollectionRecipes(List<RecipeShortInfo> recipes) {
+    public static void setDiscoverCollectionRecipes(List<RecipeListModel> recipes) {
         discoverCollection.setRecipes(recipes);
     }
 
@@ -232,7 +235,7 @@ public class Application {
      *
      * @return
      */
-    public static List<RecipeShortInfo> getDiscoverCollectionRecipes() {
+    public static List<RecipeListModel> getDiscoverCollectionRecipes() {
         return discoverCollection.getRecipes();
     }
 
@@ -240,7 +243,7 @@ public class Application {
      *
      * @param recipeInfo
      */
-    public static void addDiscoverRecipe(RecipeShortInfo recipeInfo) {
+    public static void addDiscoverRecipe(RecipeListModel recipeInfo) {
         discoverCollection.addNewRecipe(recipeInfo);
     }
 
@@ -249,7 +252,7 @@ public class Application {
      * @param recipeInfo
      * @return
      */
-    public static boolean removeDiscoverRecipe(RecipeShortInfo recipeInfo) {
+    public static boolean removeDiscoverRecipe(RecipeListModel recipeInfo) {
         return discoverCollection.removeRecipe(recipeInfo);
     }
 
@@ -261,6 +264,7 @@ public class Application {
         return discoverCollection.getCurRecipe();
     }
 
+    // TODO: change the stub to actual function
     public static void getRecipeFromShortInfo(Recipe recipe) {
         //recipe.setImage(null);
         recipe.setCategory(0);
@@ -285,7 +289,6 @@ public class Application {
         tags.add("Yummyaa");
         tags.add("Breakfast");
         tags.add("YummyYummyYummy");
-
 
         recipe.setTags(tags);
     }

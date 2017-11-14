@@ -2,6 +2,8 @@ package com.feasymax.cookbook.model.entity;
 
 import android.util.Log;
 
+import com.feasymax.cookbook.view.list.RecipeListModel;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,7 +13,7 @@ import java.util.List;
 
 public class DiscoverCollection {
 
-    private List<RecipeShortInfo> recipes;
+    private List<RecipeListModel> recipes;
     private Recipe curRecipe;
 
     public DiscoverCollection() {
@@ -19,11 +21,11 @@ public class DiscoverCollection {
         recipes = new LinkedList<>();
     }
 
-    public List<RecipeShortInfo> getRecipes() {
+    public List<RecipeListModel> getRecipes() {
         return recipes;
     }
 
-    public void setRecipes(List<RecipeShortInfo> recipes) {
+    public void setRecipes(List<RecipeListModel> recipes) {
         this.recipes = recipes;
     }
 
@@ -35,11 +37,11 @@ public class DiscoverCollection {
         this.curRecipe = curRecipe;
     }
 
-    public void addNewRecipe(RecipeShortInfo recipeInfo) {
+    public void addNewRecipe(RecipeListModel recipeInfo) {
         this.recipes.add(recipeInfo);
     }
 
-    public boolean removeRecipe(RecipeShortInfo recipeInfo) {
+    public boolean removeRecipe(RecipeListModel recipeInfo) {
         return this.recipes.remove(recipeInfo);
     }
 }

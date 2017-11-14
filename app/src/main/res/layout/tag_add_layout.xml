@@ -10,7 +10,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginRight="5dp"
-        android:layout_weight="83"
+        android:layout_weight="90"
         android:background="?attr/colorControlHighlight"
         android:ems="10"
         android:hint="Name"
@@ -23,7 +23,7 @@
         android:id="@+id/buttonDeleteTag"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="12"
+        android:layout_weight="10"
         android:background="@color/colorAccent"
         android:src="@android:drawable/ic_delete"
         android:tint="@android:color/white"/>

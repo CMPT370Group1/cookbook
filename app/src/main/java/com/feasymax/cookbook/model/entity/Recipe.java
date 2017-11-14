@@ -73,9 +73,18 @@ public class Recipe {
     }
 
     /**
-     * A public empty constructor
+     * A public constructor that makes an empty recipe
      */
-    public Recipe() {}
+    public Recipe() {
+        this.id = -1;
+        this.title = "";
+        this.category = -1;
+        this.ingredients = null;
+        this.directions = null;
+        this.duration = 0;
+        this.tags = null;
+        this.image = null;
+    }
 
     public int getId() {
         return id;

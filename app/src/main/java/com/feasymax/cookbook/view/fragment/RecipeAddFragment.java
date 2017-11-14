@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -25,11 +26,19 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.feasymax.cookbook.R;
+import com.feasymax.cookbook.model.Application;
+import com.feasymax.cookbook.model.entity.Ingredient;
+import com.feasymax.cookbook.model.entity.Recipe;
+import com.feasymax.cookbook.view.DiscoverActivity;
+import com.feasymax.cookbook.view.RecipesActivity;
+import com.feasymax.cookbook.view.list.RecipeListModel;
 
 import java.io.FileNotFoundException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,17 +63,26 @@ public class RecipeAddFragment extends Fragment {
     /*
      * Recipe attributes
      */
-    private ImageView recipeImage;
-    private TextView recipeImageText;
+    private EditText recipeTitle;
     private Spinner recipeCategory;
     private TableLayout recipeIngredientTable;
-    private TableLayout recipeTagTable;
     private Map<Integer, View> recipeIngredients;
+    private List<Ingredient> ingredientList;
     private int ingredientIndex;
+    private EditText recipeDirections;
+    private EditText recipeDurationHour;
+    private EditText recipeDurationMin;
+    private TableLayout recipeTagTable;
     private Map<Integer, View> recipeTags;
+    private List<String> tagList;
     private int tagIndex;
+    private ImageView recipeImage;
+    private Bitmap recipeImageBitmap;
+    private TextView recipeImageText;
+
     private ImageButton addIngredient;
     private ImageButton addTag;
+    private Button addRecipe;
 
     /**
      * Required empty public constructor
@@ -78,18 +96,28 @@ public class RecipeAddFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_res_add, container, false);
 
         // set up all the variables for components
-        recipeImage = view.findViewById(R.id.recipeImage);
-        recipeImageText = view.findViewById(R.id.myImageViewText);
-        recipeCategory = view.findViewById(R.id.recipeCategory);
+        recipeTitle = view.findViewById(R.id.recipeTitleAdd);
+        recipeCategory = view.findViewById(R.id.recipeCategoryAdd);
+        recipeIngredientTable = view.findViewById(R.id.recipeIngredientsAdd);
+        recipeDirections = view.findViewById(R.id.recipeDirectionsAdd);
+        recipeDurationHour = view.findViewById(R.id.recipeDurationHour);
+        recipeDurationMin = view.findViewById(R.id.recipeDurationMin);
+        recipeTagTable = view.findViewById(R.id.recipeTagTableAdd);
+        recipeImage = view.findViewById(R.id.recipeImageAdd);
+        recipeImageText = view.findViewById(R.id.myImageViewTextAdd);
+
         addIngredient = view.findViewById(R.id.buttonAddIngredient);
         addTag = view.findViewById(R.id.buttonAddTag);
-        recipeIngredientTable = view.findViewById(R.id.recipeIngredientsAdd);
-        recipeTagTable = view.findViewById(R.id.recipeTagTable);
+        addRecipe = view.findViewById(R.id.buttonAddRecipe);
 
         recipeIngredients = new HashMap<>();
+        ingredientList = new LinkedList<>();
         ingredientIndex = 0;
         recipeTags = new HashMap<>();
+        tagList = new LinkedList<>();
         tagIndex = 0;
+
+        recipeCategory.setSelection(12);
 
         // pick recipe image from SD card
         recipeImage.setOnClickListener(new View.OnClickListener() {
@@ -118,6 +146,13 @@ public class RecipeAddFragment extends Fragment {
                 R.array.categories, R.layout.spinner_item_left);
         adapterCategory.setDropDownViewResource(R.layout.spinner_dropdown_item);
         recipeCategory.setAdapter(adapterCategory);
+
+        addRecipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addRecipe();
+            }
+        });
 
         return view ;
     }
@@ -204,8 +239,8 @@ public class RecipeAddFragment extends Fragment {
             try
             {
                 Uri selectedImage = data.getData();
-                Bitmap bitmapImage = decodeUri(selectedImage, 500, 500);
-                recipeImage.setImageBitmap(bitmapImage);
+                recipeImageBitmap = decodeUri(selectedImage, 500, 500);
+                recipeImage.setImageBitmap(recipeImageBitmap);
                 recipeImageText.setVisibility(View.INVISIBLE);
                 recipeImage.setImageTintMode(null);
             }
@@ -253,12 +288,16 @@ public class RecipeAddFragment extends Fragment {
     private void addNewIngredient() {
         View tr = getActivity().getLayoutInflater().inflate(R.layout.ingredient_add_layout, null, false);
 
+        EditText name = tr.findViewById(R.id.ingredientName);
+
         Spinner unit = tr.findViewById(R.id.ingredientUnit);
         // correctly display recipe categories in the dropdown spinner
         ArrayAdapter adapterUnit = ArrayAdapter.createFromResource(this.getContext(),
                 R.array.mass_volume_units, R.layout.spinner_item_left);
         adapterUnit.setDropDownViewResource(R.layout.spinner_dropdown_item);
         unit.setAdapter(adapterUnit);
+
+        EditText quantity = tr.findViewById(R.id.ingredientQuantity);
 
         // Add row to TableLayout.
         recipeIngredientTable.addView(tr, new TableLayout.LayoutParams(
@@ -284,15 +323,17 @@ public class RecipeAddFragment extends Fragment {
     private void addNewTag() {
         View tr = getActivity().getLayoutInflater().inflate(R.layout.tag_add_layout, null, false);
 
+        EditText tagName = tr.findViewById(R.id.tagName);
+
         // Add row to TableLayout.
         recipeTagTable.addView(tr, new TableLayout.LayoutParams(
                 TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
 
         recipeTags.put(tagIndex, tr);
 
-        ImageButton deleteIngredient = tr.findViewById(R.id.buttonDeleteTag);
-        deleteIngredient.setTag(tagIndex);
-        deleteIngredient.setOnClickListener(new View.OnClickListener() {
+        ImageButton deleteTag = tr.findViewById(R.id.buttonDeleteTag);
+        deleteTag.setTag(tagIndex);
+        deleteTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 View row = recipeTags.get((int)v.getTag());
@@ -302,6 +343,81 @@ public class RecipeAddFragment extends Fragment {
         });
 
         tagIndex++;
+
+    }
+
+    private void addRecipe() {
+        if (recipeTitle.getText().length() != 0) {
+            Recipe recipe = new Recipe();
+            RecipeListModel recipeModel = new RecipeListModel();
+            recipe.setTitle(recipeTitle.getText().toString());
+            recipeModel.setRecipeTitle(recipe.getTitle());
+            recipe.setCategory(recipeCategory.getSelectedItemPosition());
+            for (int ingr: recipeIngredients.keySet()) {
+                View tr = recipeIngredients.get(ingr);
+                EditText name = tr.findViewById(R.id.ingredientName);
+                if (name.getText().length() != 0) {
+                    Spinner unit = tr.findViewById(R.id.ingredientUnit);
+                    EditText quantity = tr.findViewById(R.id.ingredientQuantity);
+                    Double ingrQuantity = 0.0;
+                    if (quantity.getText().length() != 0) {
+                        ingrQuantity = Double.valueOf(quantity.getText().toString());
+                    }
+                    Ingredient ingredient = new Ingredient(name.getText().toString(),
+                            ingrQuantity, unit.getSelectedItemPosition());
+                    ingredientList.add(ingredient);
+                }
+            }
+            recipe.setIngredients(ingredientList);
+            recipe.setDirections(recipeDirections.getText().toString());
+            if (recipeDurationHour.getText().length() != 0) {
+                recipe.setDuration(Integer.parseInt(recipeDurationHour.getText().toString())*60);
+            }
+            if (recipeDurationMin.getText().length() != 0) {
+                recipe.setDuration(recipe.getDuration() +
+                        Integer.parseInt(recipeDurationMin.getText().toString()));
+            }
+            recipeModel.setRecipeDuration(recipe.getDuration());
+            for (int tag: recipeTags.keySet()) {
+                View tr = recipeTags.get(tag);
+                EditText name = tr.findViewById(R.id.tagName);
+                if (name.getText().length() != 0) {
+                    String tagName = name.getText().toString();
+                    tagList.add(tagName);
+                    Log.println(Log.INFO, "ADD INGRED", name.getText().toString());
+                }
+            }
+            recipe.setTags(tagList);
+            recipe.setImage(recipeImageBitmap);
+            recipeModel.setRecipeImage(recipeImageBitmap);
+
+            Log.println(Log.INFO, "addRecipe", recipe.toString());
+            Log.println(Log.INFO, "addRecipe", recipeModel.toString());
+
+            Application.addUserRecipe(recipeModel);
+            Log.println(Log.INFO, "addRecipe", Application.getUserCollectionRecipes().toString());
+
+            emptyFragment();
+        }
+
+    }
+
+    private void emptyFragment() {
+        recipeTitle.setText("");
+        recipeCategory.setSelection(12);
+        recipeIngredientTable.removeAllViews();
+        recipeIngredients.clear();
+        ingredientList.clear();
+        recipeDirections.setText("");
+        recipeDurationHour.setText("");
+        recipeDurationMin.setText("");
+        recipeTagTable.removeAllViews();
+        recipeTags.clear();
+        tagList.clear();
+        recipeImageBitmap = null;
+        recipeImage.setImageDrawable(getResources().getDrawable(R.drawable.bread, null));
+        recipeImage.setColorFilter(ContextCompat.getColor(getContext(), R.color.colorPrimary),
+                android.graphics.PorterDuff.Mode.MULTIPLY);
 
     }
 /*

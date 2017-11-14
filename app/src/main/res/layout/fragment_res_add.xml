@@ -14,7 +14,7 @@
             android:layout_width="wrap_content">
 
             <ImageView
-                android:id="@+id/recipeImage"
+                android:id="@+id/recipeImageAdd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
@@ -25,7 +25,7 @@
                 app:srcCompat="@drawable/bread"/>
 
             <TextView
-                android:id="@+id/myImageViewText"
+                android:id="@+id/myImageViewTextAdd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/recipeImage"
@@ -48,7 +48,7 @@
             android:padding="20dp">
 
             <EditText
-                android:id="@+id/recipeTitle"
+                android:id="@+id/recipeTitleAdd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/small_margin"
@@ -66,7 +66,7 @@
                 android:layout_marginBottom="@dimen/small_margin">
 
                 <Spinner
-                    android:id="@+id/recipeCategory"
+                    android:id="@+id/recipeCategoryAdd"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     style="@style/Widget.AppCompat.Spinner.DropDown"
@@ -125,7 +125,7 @@
                 />
 
             <EditText
-                android:id="@+id/recipeDirections"
+                android:id="@+id/recipeDirectionsAdd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/small_margin"
@@ -218,7 +218,7 @@
                 />
 
             <TableLayout
-                android:id="@+id/recipeTagTable"
+                android:id="@+id/recipeTagTableAdd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -236,6 +236,15 @@
                 android:textColor="@android:color/white"/>
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonAddRecipe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:text="Add Recipe"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"/>
 
     </LinearLayout>
 
