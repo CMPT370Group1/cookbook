@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.feasymax.cookbook.R;
+import com.feasymax.cookbook.model.Application;
 import com.feasymax.cookbook.model.entity.Recipe;
 import com.feasymax.cookbook.view.DiscoverActivity;
 import com.feasymax.cookbook.view.RecipesActivity;
@@ -21,6 +22,8 @@ import com.feasymax.cookbook.view.list.RecipeListAdapter;
 import com.feasymax.cookbook.view.list.RecipeListModel;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by Olya on 2017-09-21.
@@ -35,7 +38,7 @@ public class RecipesFragment extends ShowRecipesFragment{
     ListView list;
     RecipeListAdapter adapter;
     public RecipesFragment CustomListView = null;
-    public ArrayList<RecipeListModel> CustomListViewValuesArr = new ArrayList<RecipeListModel>();
+    public List<RecipeListModel> CustomListViewValuesArr;
 
     public RecipesFragment() {
         // Required empty public constructor
@@ -56,43 +59,53 @@ public class RecipesFragment extends ShowRecipesFragment{
         });
 
         CustomListView = this;
-        /******** Take some data in Arraylist ( CustomListViewValuesArr ) ***********/
+        // Take some data in list ( CustomListViewValuesArr )
         setListData();
 
         Resources res = getResources();
         list = ( ListView )view.findViewById( R.id.list );  // List defined in XML ( See Below )
 
-        /**************** Create Custom Adapter *********/
+        // Create Custom Adapter
         adapter = new RecipeListAdapter( this, CustomListViewValuesArr, res );
         list.setAdapter( adapter );
 
         return view ;
     }
 
-    /****** Function to set data in ArrayList *************/
+    // Function to set data in List
     public void setListData()
     {
-        final RecipeListModel recipe1 = new RecipeListModel();
+        if (getActivity() instanceof RecipesActivity){
+            CustomListViewValuesArr = Application.getUserCollectionRecipes();
+        }
+        else if (getActivity() instanceof DiscoverActivity) {
+            CustomListViewValuesArr = Application.getDiscoverCollectionRecipes();
+        }
 
-        /******* Firstly take data in model object ******/
-        recipe1.setRecipeId(0);
-        recipe1.setRecipeTitle("Delicious cake");
-        recipe1.setRecipeImage(decodeResource(getResources(), R.drawable.dessert, 150, 150));
-        recipe1.setRecipeDuration(150);
+        // TODO: remove when database is active
+        if (CustomListViewValuesArr.size() == 0) {
+            final RecipeListModel recipe1 = new RecipeListModel();
 
-        /******** Take Model Object in ArrayList **********/
-        CustomListViewValuesArr.add( recipe1 );
+            // Firstly take data in model object
+            recipe1.setRecipeId(0);
+            recipe1.setRecipeTitle("Delicious cake");
+            recipe1.setRecipeImage(decodeResource(getResources(), R.drawable.dessert, 150, 150));
+            recipe1.setRecipeDuration(150);
 
-        final RecipeListModel recipe2 = new RecipeListModel();
+            // Take Model Object in List
+            CustomListViewValuesArr.add( recipe1 );
 
-        /******* Firstly take data in model object ******/
-        recipe2.setRecipeId(1);
-        recipe2.setRecipeTitle("Pumpkin soup");
-        recipe2.setRecipeImage(decodeResource(getResources(), R.drawable.soup, 150, 150));
-        recipe2.setRecipeDuration(30);
+            final RecipeListModel recipe2 = new RecipeListModel();
 
-        /******** Take Model Object in ArrayList **********/
-        CustomListViewValuesArr.add( recipe2 );
+            // Firstly take data in model object
+            recipe2.setRecipeId(1);
+            recipe2.setRecipeTitle("Pumpkin soup");
+            recipe2.setRecipeImage(decodeResource(getResources(), R.drawable.soup, 150, 150));
+            recipe2.setRecipeDuration(30);
+
+            // Take Model Object in List
+            CustomListViewValuesArr.add( recipe2 );
+        }
     }
 
     /**
@@ -122,7 +135,7 @@ public class RecipesFragment extends ShowRecipesFragment{
         return BitmapFactory.decodeResource(res, id, o);
     }
 
-    /*****************  This function used by adapter ****************/
+    /*  This function used by adapter */
     @Override
     public void onItemClick(int mPosition)
     {

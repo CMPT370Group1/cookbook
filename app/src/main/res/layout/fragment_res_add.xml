@@ -20,18 +20,16 @@
                 android:adjustViewBounds="true"
                 android:contextClickable="true"
                 android:scaleType="fitCenter"
-                android:tint="@color/colorPrimary"
-                android:tintMode="multiply"
                 app:srcCompat="@drawable/bread"/>
 
             <TextView
                 android:id="@+id/myImageViewTextAdd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/recipeImage"
-                android:layout_alignLeft="@+id/recipeImage"
-                android:layout_alignRight="@+id/recipeImage"
-                android:layout_alignTop="@+id/recipeImage"
+                android:layout_alignBottom="@+id/recipeImageAdd"
+                android:layout_alignLeft="@+id/recipeImageAdd"
+                android:layout_alignRight="@+id/recipeImageAdd"
+                android:layout_alignTop="@+id/recipeImageAdd"
                 android:layout_margin="1dp"
                 android:gravity="center"
                 android:text="CLICK TO CHOOSE IMAGE\nFROM GALLERY"

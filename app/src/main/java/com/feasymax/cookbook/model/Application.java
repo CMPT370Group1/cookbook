@@ -2,6 +2,7 @@ package com.feasymax.cookbook.model;
 
 import android.util.Log;
 
+import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.entity.DiscoverCollection;
 import com.feasymax.cookbook.model.entity.Ingredient;
 import com.feasymax.cookbook.model.entity.Recipe;
@@ -158,10 +159,12 @@ public class Application {
      */
     public static boolean isUserSignedIn() {
         // TODO: remove if statement when DB is working
+        /*
         if (user == null) {
             user = new UserAccount(0, "temp", "temp@domain.com");
             userCollection = new UserCollection();
         }
+        */
         return (user != null);
     }
 

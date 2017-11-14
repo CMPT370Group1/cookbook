@@ -16,7 +16,7 @@ import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.view.fragment.RecipesFragment;
 import com.feasymax.cookbook.view.fragment.common.ShowRecipesFragment;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Olya on 2017-11-06.
@@ -25,14 +25,14 @@ import java.util.ArrayList;
 public class RecipeListAdapter extends BaseAdapter implements View.OnClickListener {
     /*********** Declare Used Variables *********/
     private ShowRecipesFragment fragment;
-    private ArrayList data;
+    private List data;
     private static LayoutInflater inflater = null;
     public Resources res;
     RecipeListModel tempValues = null;
     int i = 0;
 
     /*************  CustomAdapter Constructor *****************/
-    public RecipeListAdapter(ShowRecipesFragment a, ArrayList d, Resources resLocal) {
+    public RecipeListAdapter(ShowRecipesFragment a, List d, Resources resLocal) {
 
         /********** Take passed values **********/
         fragment = a;
@@ -44,7 +44,7 @@ public class RecipeListAdapter extends BaseAdapter implements View.OnClickListen
 
     }
 
-    /******** What is the size of Passed Arraylist Size ************/
+    /******** What is the size of Passed list Size ************/
     public int getCount() {
 
         if(data.size()<=0)
@@ -100,7 +100,7 @@ public class RecipeListAdapter extends BaseAdapter implements View.OnClickListen
         }
         else
         {
-            /***** Get each Model object from Arraylist ********/
+            /***** Get each Model object from list ********/
             tempValues = null;
             tempValues = ( RecipeListModel ) data.get( position );
 
@@ -141,6 +141,9 @@ public class RecipeListAdapter extends BaseAdapter implements View.OnClickListen
     }
 
     private String displayDuration(int duration) {
+        if (duration == 0) {
+            return "Duration: unspecified";
+        }
         int hours = duration / 60;
         int min = duration % 60;
         if (hours == 0) {

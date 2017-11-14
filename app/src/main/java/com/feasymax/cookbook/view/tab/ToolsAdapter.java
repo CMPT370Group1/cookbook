@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.feasymax.cookbook.view.fragment.ToolsAccountFragment;
 import com.feasymax.cookbook.view.fragment.ToolsMassFragment;
@@ -16,7 +17,7 @@ import com.feasymax.cookbook.view.fragment.ToolsVolumeFragment;
  * Created by Olya on 2017-09-21.
  */
 
-public class ToolsAdapter extends FragmentPagerAdapter {
+public class ToolsAdapter extends FragmentStatePagerAdapter {
     private Context mContext;
     private String[] titles ={"ACCOUNT","MASS", "VOLUME", "TEMPERATURE", "MASS-VOLUME"};
 

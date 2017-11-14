@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.feasymax.cookbook.view.fragment.RecipeAddFragment;
 import com.feasymax.cookbook.view.fragment.RecipeCategoriesFragment;
@@ -15,7 +16,7 @@ import com.feasymax.cookbook.view.fragment.RecipeSearchFragment;
  * Created by Olya on 2017-09-21.
  */
 
-public class RecipeAdapter extends FragmentPagerAdapter {
+public class RecipeAdapter extends FragmentStatePagerAdapter {
     private Context mContext;
     private String[] titles ={"ALL","ADD","SEARCH","LINKS"};
 

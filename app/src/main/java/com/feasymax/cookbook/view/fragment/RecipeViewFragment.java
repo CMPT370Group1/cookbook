@@ -174,6 +174,9 @@ public class RecipeViewFragment extends Fragment{
      * @return string representation of duration in hours and minutes
      */
     private String displayDuration(int duration) {
+        if (duration == 0) {
+            return "unspecified";
+        }
         int hours = duration / 60;
         int min = duration % 60;
         if (hours == 0) {

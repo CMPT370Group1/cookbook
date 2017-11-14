@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -126,6 +127,9 @@ public class RecipeAddFragment extends Fragment {
                 pickImage();
             }
         });
+        recipeImage.setImageDrawable(getResources().getDrawable(R.drawable.bread, null));
+        recipeImage.setColorFilter(ContextCompat.getColor(getContext(), R.color.colorPrimary),
+                android.graphics.PorterDuff.Mode.MULTIPLY);
 
         addIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -242,7 +246,7 @@ public class RecipeAddFragment extends Fragment {
                 recipeImageBitmap = decodeUri(selectedImage, 500, 500);
                 recipeImage.setImageBitmap(recipeImageBitmap);
                 recipeImageText.setVisibility(View.INVISIBLE);
-                recipeImage.setImageTintMode(null);
+                recipeImage.clearColorFilter();
             }
             catch (Exception e)
             {
@@ -388,6 +392,9 @@ public class RecipeAddFragment extends Fragment {
                 }
             }
             recipe.setTags(tagList);
+            if (recipeImageBitmap == null) {
+                recipeImageBitmap = decodeResource(getResources(), R.drawable.no_image, 150, 150);
+            }
             recipe.setImage(recipeImageBitmap);
             recipeModel.setRecipeImage(recipeImageBitmap);
 
@@ -418,7 +425,27 @@ public class RecipeAddFragment extends Fragment {
         recipeImage.setImageDrawable(getResources().getDrawable(R.drawable.bread, null));
         recipeImage.setColorFilter(ContextCompat.getColor(getContext(), R.color.colorPrimary),
                 android.graphics.PorterDuff.Mode.MULTIPLY);
+        recipeImageText.setVisibility(View.VISIBLE);
 
+    }
+
+    private Bitmap decodeResource(Resources res, int id, int maxWidth, int maxHeight) {
+        BitmapFactory.Options dimensions = new BitmapFactory.Options();
+        dimensions.inJustDecodeBounds = true;
+        Bitmap mBitmap = BitmapFactory.decodeResource(getResources(), id, dimensions);
+        int height = dimensions.outHeight;
+        int width =  dimensions.outWidth;
+
+        int scale = 1;
+        while (width / 2 >= maxWidth || height / 2 >= maxHeight) {
+            width /= 2;
+            height /= 2;
+            scale *= 2;
+        }
+
+        BitmapFactory.Options o = new BitmapFactory.Options();
+        o.inSampleSize = scale;
+        return BitmapFactory.decodeResource(res, id, o);
     }
 /*
     private static Bitmap resize(int imgWidth, int imgHeight, int maxWidth, int maxHeight) {
