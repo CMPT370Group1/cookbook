@@ -15,6 +15,7 @@ import android.widget.ListView;
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
 import com.feasymax.cookbook.model.entity.Recipe;
+import com.feasymax.cookbook.util.Graphics;
 import com.feasymax.cookbook.view.DiscoverActivity;
 import com.feasymax.cookbook.view.RecipesActivity;
 import com.feasymax.cookbook.view.fragment.common.ShowRecipesFragment;
@@ -89,7 +90,8 @@ public class RecipesFragment extends ShowRecipesFragment{
             // Firstly take data in model object
             recipe1.setRecipeId(0);
             recipe1.setRecipeTitle("Delicious cake");
-            recipe1.setRecipeImage(decodeResource(getResources(), R.drawable.dessert, 150, 150));
+            recipe1.setRecipeImage(Graphics.decodeSampledBitmapFromResource(getResources(), R.drawable.dessert, 200, 200));
+
             recipe1.setRecipeDuration(150);
 
             // Take Model Object in List
@@ -100,7 +102,7 @@ public class RecipesFragment extends ShowRecipesFragment{
             // Firstly take data in model object
             recipe2.setRecipeId(1);
             recipe2.setRecipeTitle("Pumpkin soup");
-            recipe2.setRecipeImage(decodeResource(getResources(), R.drawable.soup, 150, 150));
+            recipe2.setRecipeImage(Graphics.decodeSampledBitmapFromResource(getResources(), R.drawable.soup, 200, 200));
             recipe2.setRecipeDuration(30);
 
             // Take Model Object in List
@@ -108,32 +110,6 @@ public class RecipesFragment extends ShowRecipesFragment{
         }
     }
 
-    /**
-     * Get the bitmap constrained by specified dimensions from resource
-     * @param res
-     * @param id
-     * @param maxWidth
-     * @param maxHeight
-     * @return bitmap
-     */
-    private Bitmap decodeResource(Resources res, int id, int maxWidth, int maxHeight) {
-        BitmapFactory.Options dimensions = new BitmapFactory.Options();
-        dimensions.inJustDecodeBounds = true;
-        Bitmap mBitmap = BitmapFactory.decodeResource(getResources(), id, dimensions);
-        int height = dimensions.outHeight;
-        int width =  dimensions.outWidth;
-
-        int scale = 1;
-        while (width / 2 >= maxWidth || height / 2 >= maxHeight) {
-            width /= 2;
-            height /= 2;
-            scale *= 2;
-        }
-
-        BitmapFactory.Options o = new BitmapFactory.Options();
-        o.inSampleSize = scale;
-        return BitmapFactory.decodeResource(res, id, o);
-    }
 
     /*  This function used by adapter */
     @Override

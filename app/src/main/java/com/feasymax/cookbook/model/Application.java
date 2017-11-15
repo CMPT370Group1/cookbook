@@ -10,6 +10,7 @@ import com.feasymax.cookbook.model.entity.RecipeShortInfo;
 import com.feasymax.cookbook.model.entity.UserAccount;
 import com.feasymax.cookbook.model.entity.UserCollection;
 import com.feasymax.cookbook.model.util.UserDao;
+import com.feasymax.cookbook.util.Graphics;
 import com.feasymax.cookbook.view.list.RecipeListModel;
 
 import java.util.LinkedList;
@@ -280,7 +281,7 @@ public class Application {
         recipeModel.setRecipeId(recipe.getId());
         recipeModel.setRecipeTitle(recipe.getTitle());
         recipeModel.setRecipeDuration(recipe.getDuration());
-        recipeModel.setRecipeImage(recipe.getImage()); // TODO: resize image first
+        recipeModel.setRecipeImage(Graphics.resize(recipe.getImage(), 200, 200));
 
         setUserCurrentRecipe(recipe);
         addUserRecipe(recipeModel);

@@ -31,6 +31,7 @@ import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
 import com.feasymax.cookbook.model.entity.Ingredient;
 import com.feasymax.cookbook.model.entity.Recipe;
+import com.feasymax.cookbook.util.Graphics;
 import com.feasymax.cookbook.view.DiscoverActivity;
 import com.feasymax.cookbook.view.RecipesActivity;
 import com.feasymax.cookbook.view.list.RecipeListModel;
@@ -244,7 +245,7 @@ public class RecipeAddFragment extends Fragment {
             try
             {
                 Uri selectedImage = data.getData();
-                recipeImageBitmap = decodeUri(selectedImage, 500, 500);
+                recipeImageBitmap = Graphics.decodeUri(getActivity(), selectedImage, 500, 500);
                 recipeImage.setImageBitmap(recipeImageBitmap);
                 recipeImageText.setVisibility(View.INVISIBLE);
                 recipeImage.clearColorFilter();
@@ -256,39 +257,6 @@ public class RecipeAddFragment extends Fragment {
         }
     }
 
-    /**
-     * Decode selected image in the specified size
-     * @param selectedImage uri of the image
-     * @param maxWidth
-     * @param maxHeight
-     * @return the bitmap decoded
-     * @throws FileNotFoundException
-     */
-    private Bitmap decodeUri(Uri selectedImage, int maxWidth, int maxHeight) throws FileNotFoundException {
-        // just read the image size
-        BitmapFactory.Options o = new BitmapFactory.Options();
-        o.inJustDecodeBounds = true;
-        BitmapFactory.decodeStream(
-                getActivity().getContentResolver().openInputStream(selectedImage), null, o);
-
-        // find the new image size and the number the image should be scaled by
-        int width_tmp = o.outWidth, height_tmp = o.outHeight;
-        int scale = 1;
-        while (true) {
-            if (width_tmp / 2 < maxWidth || height_tmp / 2 < maxHeight) {
-                break;
-            }
-            width_tmp /= 2;
-            height_tmp /= 2;
-            scale *= 2;
-        }
-
-        // decode the bitmap scaling it
-        BitmapFactory.Options o2 = new BitmapFactory.Options();
-        o2.inSampleSize = scale;
-        return BitmapFactory.decodeStream(
-                getActivity().getContentResolver().openInputStream(selectedImage), null, o2);
-    }
 
     private void addNewIngredient() {
         View tr = getActivity().getLayoutInflater().inflate(R.layout.ingredient_add_layout, null, false);
@@ -396,8 +364,8 @@ public class RecipeAddFragment extends Fragment {
 
             recipe.setTags(tagList);
             if (recipeImageBitmap == null) {
-                recipeImageBitmap = decodeResource(getResources(), R.drawable.no_image420, 420, 420);
-                recipeImageBitmap = resize(recipeImageBitmap, 420, 420);
+                recipeImageBitmap = Graphics.decodeSampledBitmapFromResource(getResources(), R.drawable.no_image420, 420, 420);
+                recipeImageBitmap = Graphics.resize(recipeImageBitmap, 420, 420);
             }
             recipe.setImage(recipeImageBitmap);
 
@@ -430,59 +398,6 @@ public class RecipeAddFragment extends Fragment {
                 android.graphics.PorterDuff.Mode.MULTIPLY);
         recipeImageText.setVisibility(View.VISIBLE);
 
-    }
-
-    private Bitmap decodeResource(Resources res, int id, int reqWidth, int reqHeight) {
-        BitmapFactory.Options dimensions = new BitmapFactory.Options();
-        dimensions.inJustDecodeBounds = true;
-        BitmapFactory.decodeResource(getResources(), id, dimensions);
-        int height = dimensions.outHeight;
-        int width =  dimensions.outWidth;
-        Log.println(Log.INFO, "imageDimensions", height + " x " + width);
-
-        int scale = 1;
-        while (width / 2 > reqWidth || height / 2 > reqHeight) {
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
-            while ((halfHeight / scale) >= reqHeight
-                    && (halfWidth / scale) >= reqWidth) {
-                scale *= 2;
-            }
-        }
-
-        Log.println(Log.INFO, "imageDimensions", height + " x " + width);
-        BitmapFactory.Options o = new BitmapFactory.Options();
-        o.inSampleSize = scale;
-        return BitmapFactory.decodeResource(res, id, o);
-    }
-
-    public int dpToPx(int dp) {
-        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
-        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-    }
-
-    private Bitmap resize(Bitmap image, int maxWidth, int maxHeight) {
-        if (maxHeight > 0 && maxWidth > 0) {
-            float ratioImg = (float) image.getWidth() / (float) image.getHeight();
-            float ratioMax = (float) maxWidth / (float) maxHeight;
-            Log.println(Log.INFO, "imageDimensions", image.getHeight() + " x " + image.getWidth());
-
-            int finalWidth = maxWidth;
-            int finalHeight = maxHeight;
-            if (ratioMax > ratioImg) {
-                finalWidth = (int) ((float)maxHeight * ratioImg);
-            } else {
-                finalHeight = (int) ((float)maxWidth / ratioImg);
-            }
-            image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
-            Log.println(Log.INFO, "imageDimensions", image.getHeight() + " x " + image.getWidth());
-            return image;
-        } else {
-            return image;
-        }
     }
 
 }
