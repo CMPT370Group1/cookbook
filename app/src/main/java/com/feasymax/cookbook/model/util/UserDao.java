@@ -4,6 +4,8 @@ package com.feasymax.cookbook.model.util;
  * Created by kristine042 on 2017-10-09.
  */
 
+import com.feasymax.cookbook.model.entity.Recipe;
+
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -325,6 +327,11 @@ public class UserDao {
             e.printStackTrace();
         }
         return email;
+    }
+
+    public int addNewRecipe(Recipe recipe) {
+        int recipeId = 0;
+        return recipeId;
     }
 
 }

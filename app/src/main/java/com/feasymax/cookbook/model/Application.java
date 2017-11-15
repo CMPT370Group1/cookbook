@@ -267,6 +267,25 @@ public class Application {
         return discoverCollection.getCurRecipe();
     }
 
+    public static void addNewRecipe(Recipe recipe) {
+        UserDao userDao = new UserDao();
+
+        int id = userDao.addNewRecipe(recipe);
+        if (id == -1) {
+            return;
+        }
+
+        recipe.setId(id);
+        RecipeListModel recipeModel = new RecipeListModel();
+        recipeModel.setRecipeId(recipe.getId());
+        recipeModel.setRecipeTitle(recipe.getTitle());
+        recipeModel.setRecipeDuration(recipe.getDuration());
+        recipeModel.setRecipeImage(recipe.getImage()); // TODO: resize image first
+
+        setUserCurrentRecipe(recipe);
+        addUserRecipe(recipeModel);
+    }
+
     // TODO: change the stub to actual function
     public static void getRecipeFromShortInfo(Recipe recipe) {
         //recipe.setImage(null);

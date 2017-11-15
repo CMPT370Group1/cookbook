@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -350,12 +351,13 @@ public class RecipeAddFragment extends Fragment {
 
     }
 
+    /**
+     *
+     */
     private void addRecipe() {
         if (recipeTitle.getText().length() != 0) {
             Recipe recipe = new Recipe();
-            RecipeListModel recipeModel = new RecipeListModel();
             recipe.setTitle(recipeTitle.getText().toString());
-            recipeModel.setRecipeTitle(recipe.getTitle());
             recipe.setCategory(recipeCategory.getSelectedItemPosition());
             for (int ingr: recipeIngredients.keySet()) {
                 View tr = recipeIngredients.get(ingr);
@@ -381,30 +383,31 @@ public class RecipeAddFragment extends Fragment {
                 recipe.setDuration(recipe.getDuration() +
                         Integer.parseInt(recipeDurationMin.getText().toString()));
             }
-            recipeModel.setRecipeDuration(recipe.getDuration());
             for (int tag: recipeTags.keySet()) {
                 View tr = recipeTags.get(tag);
                 EditText name = tr.findViewById(R.id.tagName);
                 if (name.getText().length() != 0) {
                     String tagName = name.getText().toString();
                     tagList.add(tagName);
+                    
                     Log.println(Log.INFO, "ADD INGRED", name.getText().toString());
                 }
             }
+
             recipe.setTags(tagList);
             if (recipeImageBitmap == null) {
-                recipeImageBitmap = decodeResource(getResources(), R.drawable.no_image, 150, 150);
+                recipeImageBitmap = decodeResource(getResources(), R.drawable.no_image420, 420, 420);
+                recipeImageBitmap = resize(recipeImageBitmap, 420, 420);
             }
             recipe.setImage(recipeImageBitmap);
-            recipeModel.setRecipeImage(recipeImageBitmap);
+
+            Application.addNewRecipe(recipe);
 
             Log.println(Log.INFO, "addRecipe", recipe.toString());
-            Log.println(Log.INFO, "addRecipe", recipeModel.toString());
-
-            Application.addUserRecipe(recipeModel);
             Log.println(Log.INFO, "addRecipe", Application.getUserCollectionRecipes().toString());
 
             emptyFragment();
+            // TODO: maybe go to recipe view fragment displaying current fragment
         }
 
     }
@@ -429,42 +432,57 @@ public class RecipeAddFragment extends Fragment {
 
     }
 
-    private Bitmap decodeResource(Resources res, int id, int maxWidth, int maxHeight) {
+    private Bitmap decodeResource(Resources res, int id, int reqWidth, int reqHeight) {
         BitmapFactory.Options dimensions = new BitmapFactory.Options();
         dimensions.inJustDecodeBounds = true;
-        Bitmap mBitmap = BitmapFactory.decodeResource(getResources(), id, dimensions);
+        BitmapFactory.decodeResource(getResources(), id, dimensions);
         int height = dimensions.outHeight;
         int width =  dimensions.outWidth;
+        Log.println(Log.INFO, "imageDimensions", height + " x " + width);
 
         int scale = 1;
-        while (width / 2 >= maxWidth || height / 2 >= maxHeight) {
-            width /= 2;
-            height /= 2;
-            scale *= 2;
+        while (width / 2 > reqWidth || height / 2 > reqHeight) {
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / scale) >= reqHeight
+                    && (halfWidth / scale) >= reqWidth) {
+                scale *= 2;
+            }
         }
 
+        Log.println(Log.INFO, "imageDimensions", height + " x " + width);
         BitmapFactory.Options o = new BitmapFactory.Options();
         o.inSampleSize = scale;
         return BitmapFactory.decodeResource(res, id, o);
     }
-/*
-    private static Bitmap resize(int imgWidth, int imgHeight, int maxWidth, int maxHeight) {
+
+    public int dpToPx(int dp) {
+        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
+        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+    }
+
+    private Bitmap resize(Bitmap image, int maxWidth, int maxHeight) {
         if (maxHeight > 0 && maxWidth > 0) {
-            float ratioImg = (float) imgWidth / (float) imgHeight;
+            float ratioImg = (float) image.getWidth() / (float) image.getHeight();
             float ratioMax = (float) maxWidth / (float) maxHeight;
+            Log.println(Log.INFO, "imageDimensions", image.getHeight() + " x " + image.getWidth());
 
             int finalWidth = maxWidth;
             int finalHeight = maxHeight;
-            if (ratioMax > ratioBitmap) {
-                finalWidth = (int) ((float)maxHeight * ratioBitmap);
+            if (ratioMax > ratioImg) {
+                finalWidth = (int) ((float)maxHeight * ratioImg);
             } else {
-                finalHeight = (int) ((float)maxWidth / ratioBitmap);
+                finalHeight = (int) ((float)maxWidth / ratioImg);
             }
             image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
+            Log.println(Log.INFO, "imageDimensions", image.getHeight() + " x " + image.getWidth());
             return image;
         } else {
             return image;
         }
     }
-*/
+
 }
