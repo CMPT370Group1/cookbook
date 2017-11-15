@@ -5,7 +5,11 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
-    <string name="action_info">Info</string>
+    <string name="action_appinfo">App Info</string>
+    <string name="action_info">Page Info</string>
+    <string name="action_recipe_edit">Edit Recipe</string>
+    <string name="action_recipe_delete">Delete Recipe</string>
+    <string name="action_recipe_add">Add Recipe</string>
 
     <string-array name="categories">
         <item>Breakfast</item>

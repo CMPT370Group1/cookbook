@@ -15,6 +15,9 @@ import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -97,6 +100,8 @@ public class RecipeAddFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_res_add, container, false);
+
+        setHasOptionsMenu(true);
 
         // set up all the variables for components
         recipeTitle = view.findViewById(R.id.recipeTitleAdd);
@@ -398,6 +403,27 @@ public class RecipeAddFragment extends Fragment {
                 android.graphics.PorterDuff.Mode.MULTIPLY);
         recipeImageText.setVisibility(View.VISIBLE);
 
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.menu_fragment, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_info:
+                Log.println(Log.INFO, "MENU","action_info has clicked");
+                return true;
+            default:
+                Log.println(Log.INFO, "MENU","error");
+                break;
+        }
+
+        return false;
     }
 
 }

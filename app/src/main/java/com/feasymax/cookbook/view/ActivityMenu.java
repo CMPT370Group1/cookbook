@@ -69,7 +69,7 @@ public abstract class ActivityMenu extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_info) {
+        if (id == R.id.action_appinfo) {
             return true;
         }
 

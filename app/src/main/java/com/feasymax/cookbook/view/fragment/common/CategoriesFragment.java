@@ -3,7 +3,11 @@ package com.feasymax.cookbook.view.fragment.common;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -40,6 +44,8 @@ public class CategoriesFragment extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_res_categories, container, false);
+
+        setHasOptionsMenu(true);
 
         btnBreakfast = view.findViewById(R.id.ib_breakfast);
         btnAppetizer = view.findViewById(R.id.ib_appetizer);
@@ -87,5 +93,26 @@ public class CategoriesFragment extends Fragment{
         // Store the Fragment in stack
         transaction.addToBackStack(null);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.menu_fragment, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_info:
+                Log.println(Log.INFO, "MENU","action_info has clicked");
+                return true;
+            default:
+                Log.println(Log.INFO, "MENU","error");
+                break;
+        }
+
+        return false;
     }
 }

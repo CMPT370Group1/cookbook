@@ -19,7 +19,7 @@ public class RecipeCategoriesFragment extends CategoriesFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState) ;
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     // open a category fragment that shows all recipes in that category

@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_recipe_edit"
+        android:orderInCategory="100"
+        android:title="@string/action_recipe_edit"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_recipe_delete"
+        android:orderInCategory="100"
+        android:title="@string/action_recipe_delete"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_info"
+        android:orderInCategory="100"
+        android:title="@string/action_info"
+        app:showAsAction="never" />
+</menu>

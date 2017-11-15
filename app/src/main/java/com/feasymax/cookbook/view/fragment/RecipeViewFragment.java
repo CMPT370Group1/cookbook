@@ -6,6 +6,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -63,7 +66,6 @@ public class RecipeViewFragment extends Fragment{
      */
     private Recipe currentRecipe = null;
 
-
     /**
      * Required empty public constructor
      */
@@ -74,6 +76,8 @@ public class RecipeViewFragment extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_res_recipe_view, container, false);
+
+        setHasOptionsMenu(true);
 
         // set up all the variables for components
         btnCategory = view.findViewById(R.id.buttonCategory);
@@ -185,5 +189,56 @@ public class RecipeViewFragment extends Fragment{
         else {
             return "Duration: " + hours + " h " + min + " min";
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        if (getActivity() instanceof RecipesActivity) {
+            inflater.inflate(R.menu.menu_recipe_view_rec, menu);
+        }
+        else if (getActivity() instanceof DiscoverActivity) {
+            inflater.inflate(R.menu.menu_recipe_view_disc, menu);
+        }
+        else {
+            Log.println(Log.ERROR, "MENU","unexpected activity");
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_info:
+                Log.println(Log.INFO, "MENU","action_info has clicked");
+                return true;
+            case R.id.action_recipe_edit:
+                Log.println(Log.INFO, "MENU","action_recipe_edit has clicked");
+                editRecipe();
+                return true;
+            case R.id.action_recipe_delete:
+                Log.println(Log.INFO, "MENU","action_recipe_delete has clicked");
+                deleteRecipe();
+                return true;
+            case R.id.action_recipe_add:
+                Log.println(Log.INFO, "MENU","action_recipe_add has clicked");
+                addRecipe();
+                return true;
+            default:
+                break;
+        }
+        return false;
+    }
+
+    private void editRecipe() {
+
+    }
+
+    private void deleteRecipe() {
+
+    }
+
+    private void addRecipe() {
+
     }
 }
