@@ -1,12 +1,14 @@
 package com.feasymax.cookbook.view;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.feasymax.cookbook.R;
+import com.feasymax.cookbook.view.fragment.RecipeViewFragment;
 import com.feasymax.cookbook.view.tab.RecipeAdapter;
 
 public class RecipesActivity extends ActivityMenuTabs {
@@ -55,5 +57,17 @@ public class RecipesActivity extends ActivityMenuTabs {
                 mDrawer.closeDrawers();
             }
         });
+    }
+
+    public void navigateFragment(int position){
+        mViewPager.setCurrentItem(position, true);
+
+        RecipeViewFragment a2Fragment = new RecipeViewFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        // Store the Fragment in stack
+        transaction.addToBackStack(null);
+        transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
+
     }
 }

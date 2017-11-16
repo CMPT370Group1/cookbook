@@ -3,7 +3,7 @@
              xmlns:app="http://schemas.android.com/apk/res-auto"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             android:id="@+id/recipe_add_main_layout">
+             android:id="@+id/categories_main_layout">
 
     <ScrollView
             android:layout_width="match_parent"

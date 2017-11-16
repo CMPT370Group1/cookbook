@@ -329,7 +329,7 @@ public class UserDao {
         return email;
     }
 
-    public int addNewRecipe(Recipe recipe) {
+    public int addNewRecipe(Recipe recipe, boolean owner) {
         int recipeId = 0;
         return recipeId;
     }

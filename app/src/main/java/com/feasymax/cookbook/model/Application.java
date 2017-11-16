@@ -159,13 +159,6 @@ public class Application {
      * @return true is user is signed in, false otherwise
      */
     public static boolean isUserSignedIn() {
-        // TODO: remove if statement when DB is working
-        /*
-        if (user == null) {
-            user = new UserAccount(0, "temp", "temp@domain.com");
-            userCollection = new UserCollection();
-        }
-        */
         return (user != null);
     }
 
@@ -268,10 +261,10 @@ public class Application {
         return discoverCollection.getCurRecipe();
     }
 
-    public static void addNewRecipe(Recipe recipe) {
+    public static void addNewRecipe(Recipe recipe, boolean owner) {
         UserDao userDao = new UserDao();
 
-        int id = userDao.addNewRecipe(recipe);
+        int id = userDao.addNewRecipe(recipe, owner);
         if (id == -1) {
             return;
         }
@@ -285,6 +278,16 @@ public class Application {
 
         setUserCurrentRecipe(recipe);
         addUserRecipe(recipeModel);
+    }
+
+    public static void deleteRecipe(Recipe recipe) {
+        Log.println(Log.INFO, "deleteRecipe","deleteRecipe");
+    }
+
+    public static void editRecipe(Recipe recipe) {
+        Log.println(Log.INFO, "editRecipe","editRecipe");
+        // save recipe to database
+        // update recipe info in UserCollection.recipes with the same id
     }
 
     // TODO: change the stub to actual function

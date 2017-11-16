@@ -2,20 +2,15 @@ package com.feasymax.cookbook.view.fragment;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.TabActivity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,9 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TabHost;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.feasymax.cookbook.R;
@@ -39,14 +32,8 @@ import com.feasymax.cookbook.model.Application;
 import com.feasymax.cookbook.model.entity.Ingredient;
 import com.feasymax.cookbook.model.entity.Recipe;
 import com.feasymax.cookbook.util.Graphics;
-import com.feasymax.cookbook.view.ActivityMenuTabs;
-import com.feasymax.cookbook.view.DiscoverActivity;
-import com.feasymax.cookbook.view.RecipesActivity;
-import com.feasymax.cookbook.view.list.RecipeListModel;
 
-import java.io.FileNotFoundException;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -58,7 +45,7 @@ import java.util.Map;
  * It has a form to add a new user recipe manually.
  */
 
-public class RecipeAddFragment extends Fragment {
+public class RecipeEditFragment extends Fragment {
 
     /*
      * Format to display a fraction
@@ -93,20 +80,24 @@ public class RecipeAddFragment extends Fragment {
 
     private ImageButton addIngredient;
     private ImageButton addTag;
-    private Button addRecipe;
+    private Button editRecipe;
+
+    private Recipe editedRecipe;
 
     /**
      * Required empty public constructor
      */
-    public RecipeAddFragment() {}
+    public RecipeEditFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_res_add, container, false);
+        View view = inflater.inflate(R.layout.fragment_res_edit, container, false);
 
         setHasOptionsMenu(true);
+
+        editedRecipe = Application.getUserCurrentRecipe();
 
         // set up all the variables for components
         recipeTitle = view.findViewById(R.id.recipeTitleAdd);
@@ -121,7 +112,7 @@ public class RecipeAddFragment extends Fragment {
 
         addIngredient = view.findViewById(R.id.buttonAddIngredient);
         addTag = view.findViewById(R.id.buttonAddTag);
-        addRecipe = view.findViewById(R.id.buttonAddRecipe);
+        editRecipe = view.findViewById(R.id.buttonAddRecipe);
 
         recipeIngredients = new HashMap<>();
         ingredientList = new LinkedList<>();
@@ -130,18 +121,22 @@ public class RecipeAddFragment extends Fragment {
         tagList = new LinkedList<>();
         tagIndex = 0;
 
-        recipeCategory.setSelection(12);
+        recipeTitle.setText(editedRecipe.getTitle());
+        recipeCategory.setSelection(editedRecipe.getCategory());
+        recipeDirections.setText(editedRecipe.getDirections());
+        recipeDurationHour.setText(String.valueOf(editedRecipe.getDuration() / 60));
+        recipeDurationMin.setText(String.valueOf(editedRecipe.getDuration() % 60));
 
-        // pick recipe image from SD card
+        //
+        recipeImageBitmap = editedRecipe.getImage();
         recipeImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 pickImage();
             }
         });
-        recipeImage.setImageDrawable(getResources().getDrawable(R.drawable.bread, null));
-        recipeImage.setColorFilter(ContextCompat.getColor(getContext(), R.color.colorPrimary),
-                android.graphics.PorterDuff.Mode.MULTIPLY);
+        recipeImage.setImageBitmap(recipeImageBitmap);
+
 
         addIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,10 +158,10 @@ public class RecipeAddFragment extends Fragment {
         adapterCategory.setDropDownViewResource(R.layout.spinner_dropdown_item);
         recipeCategory.setAdapter(adapterCategory);
 
-        addRecipe.setOnClickListener(new View.OnClickListener() {
+        editRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addRecipe();
+                editRecipe();
             }
         });
 
@@ -180,7 +175,7 @@ public class RecipeAddFragment extends Fragment {
     {
         // if permission to access storage already granted
         if (ContextCompat.checkSelfPermission(getActivity(),
-                android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
         {
             // pick image from SD card
             Log.println(Log.INFO, "pickImage", "permission already granted");
@@ -332,11 +327,10 @@ public class RecipeAddFragment extends Fragment {
     /**
      *
      */
-    private void addRecipe() {
+    private void editRecipe() {
         if (recipeTitle.getText().length() != 0) {
-            Recipe recipe = new Recipe();
-            recipe.setTitle(recipeTitle.getText().toString());
-            recipe.setCategory(recipeCategory.getSelectedItemPosition());
+            editedRecipe.setTitle(recipeTitle.getText().toString());
+            editedRecipe.setCategory(recipeCategory.getSelectedItemPosition());
             for (int ingr: recipeIngredients.keySet()) {
                 View tr = recipeIngredients.get(ingr);
                 EditText name = tr.findViewById(R.id.ingredientName);
@@ -352,13 +346,13 @@ public class RecipeAddFragment extends Fragment {
                     ingredientList.add(ingredient);
                 }
             }
-            recipe.setIngredients(ingredientList);
-            recipe.setDirections(recipeDirections.getText().toString());
+            editedRecipe.setIngredients(ingredientList);
+            editedRecipe.setDirections(recipeDirections.getText().toString());
             if (recipeDurationHour.getText().length() != 0) {
-                recipe.setDuration(Integer.parseInt(recipeDurationHour.getText().toString())*60);
+                editedRecipe.setDuration(Integer.parseInt(recipeDurationHour.getText().toString())*60);
             }
             if (recipeDurationMin.getText().length() != 0) {
-                recipe.setDuration(recipe.getDuration() +
+                editedRecipe.setDuration(editedRecipe.getDuration() +
                         Integer.parseInt(recipeDurationMin.getText().toString()));
             }
             for (int tag: recipeTags.keySet()) {
@@ -372,16 +366,16 @@ public class RecipeAddFragment extends Fragment {
                 }
             }
 
-            recipe.setTags(tagList);
+            editedRecipe.setTags(tagList);
             if (recipeImageBitmap == null) {
                 recipeImageBitmap = Graphics.decodeSampledBitmapFromResource(getResources(), R.drawable.no_image420, 420, 420);
                 recipeImageBitmap = Graphics.resize(recipeImageBitmap, 420, 420);
             }
-            recipe.setImage(recipeImageBitmap);
+            editedRecipe.setImage(recipeImageBitmap);
 
-            Application.addNewRecipe(recipe, true);
+            Application.editRecipe(editedRecipe);
 
-            Log.println(Log.INFO, "addRecipe", recipe.toString());
+            Log.println(Log.INFO, "addRecipe", Application.getUserCurrentRecipe().toString());
             Log.println(Log.INFO, "addRecipe", Application.getUserCollectionRecipes().toString());
 
             emptyFragment();
@@ -433,14 +427,11 @@ public class RecipeAddFragment extends Fragment {
     }
 
     protected void enterRecipeViewFragment() {
-        ((RecipesActivity)getActivity()).navigateFragment(0);
-/*
         RecipeViewFragment a2Fragment = new RecipeViewFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
         // Store the Fragment in stack
         transaction.addToBackStack(null);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
-*/
     }
 }

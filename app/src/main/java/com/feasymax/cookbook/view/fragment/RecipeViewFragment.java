@@ -1,5 +1,6 @@
 package com.feasymax.cookbook.view.fragment;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -173,6 +174,18 @@ public class RecipeViewFragment extends Fragment{
     }
 
     /**
+     * Go back to all recipes in a category
+     */
+    private void enterRecipeEditFragment() {
+        RecipeEditFragment a2Fragment = new RecipeEditFragment();
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+
+        // Store the Fragment in stack
+        transaction.addToBackStack(null);
+        transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
+    }
+
+    /**
      * Display recipe preparation duration in hours and minutes from given minutes
      * @param duration preparation duration in minutes
      * @return string representation of duration in hours and minutes
@@ -231,14 +244,26 @@ public class RecipeViewFragment extends Fragment{
     }
 
     private void editRecipe() {
-
+        if (getActivity() instanceof RecipesActivity) {
+            enterRecipeEditFragment();
+            //Application.editRecipe(Application.getDiscoverCurrentRecipe());
+        }
     }
 
     private void deleteRecipe() {
-
+        if (getActivity() instanceof RecipesActivity) {
+            Application.deleteRecipe(Application.getDiscoverCurrentRecipe());
+        }
     }
 
     private void addRecipe() {
+        if (getActivity() instanceof DiscoverActivity) {
+            if (Application.isUserSignedIn()) {
+                Application.addNewRecipe(Application.getDiscoverCurrentRecipe(), false);
+            } else {
+                Log.println(Log.INFO, "addRecipe","user is not signed in");
+            }
+        }
 
     }
 }
