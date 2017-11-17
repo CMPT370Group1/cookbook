@@ -7,4 +7,6 @@ package com.feasymax.cookbook.model.util;
 public class WebSearch {
     public WebSearch() {
     }
+
+
 }
