@@ -253,6 +253,7 @@ public class RecipeViewFragment extends Fragment{
     private void deleteRecipe() {
         if (getActivity() instanceof RecipesActivity) {
             Application.deleteRecipe(Application.getDiscoverCurrentRecipe());
+            enterRecipesFragment();
         }
     }
 

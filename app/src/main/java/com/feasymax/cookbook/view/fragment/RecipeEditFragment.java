@@ -112,7 +112,7 @@ public class RecipeEditFragment extends Fragment {
 
         addIngredient = view.findViewById(R.id.buttonAddIngredient);
         addTag = view.findViewById(R.id.buttonAddTag);
-        editRecipe = view.findViewById(R.id.buttonAddRecipe);
+        editRecipe = view.findViewById(R.id.buttonEditRecipe);
 
         recipeIngredients = new HashMap<>();
         ingredientList = new LinkedList<>();

@@ -434,13 +434,5 @@ public class RecipeAddFragment extends Fragment {
 
     protected void enterRecipeViewFragment() {
         ((RecipesActivity)getActivity()).navigateFragment(0);
-/*
-        RecipeViewFragment a2Fragment = new RecipeViewFragment();
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-
-        // Store the Fragment in stack
-        transaction.addToBackStack(null);
-        transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
-*/
     }
 }

@@ -282,6 +282,9 @@ public class Application {
 
     public static void deleteRecipe(Recipe recipe) {
         Log.println(Log.INFO, "deleteRecipe","deleteRecipe");
+        // delete recipe from database
+        // delete corresponding recipe from UserCollection.recipes
+        // set the UserCollection.currentRecipe to null
     }
 
     public static void editRecipe(Recipe recipe) {
