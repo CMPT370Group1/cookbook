@@ -13,6 +13,15 @@ public class RecipeListModel {
     private Bitmap RecipeImage = null;
     private int RecipeDuration = 0;
 
+    public RecipeListModel() {}
+
+    public RecipeListModel(int id, String title, Bitmap image, int duration) {
+        RecipeId = id;
+        RecipeTitle = title;
+        RecipeImage = image;
+        RecipeDuration = duration;
+    }
+
     /*********** Set Methods ******************/
 
     public void setRecipeId(int recipeId) {

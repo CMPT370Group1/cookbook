@@ -5,12 +5,14 @@ package com.feasymax.cookbook.model.util;
  */
 
 import com.feasymax.cookbook.model.entity.Recipe;
+import com.feasymax.cookbook.view.list.RecipeListModel;
 
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 import static android.R.attr.description;
 import static android.R.attr.id;
@@ -332,6 +334,14 @@ public class UserDao {
     public int addNewRecipe(Recipe recipe, boolean owner) {
         int recipeId = 0;
         return recipeId;
+    }
+
+    public List<RecipeListModel> searchUserRecipes(int userId, List<String> input) {
+        return null;
+    }
+
+    public List<RecipeListModel> searchDiscoverRecipes(List<String> input) {
+        return null;
     }
 
 }
