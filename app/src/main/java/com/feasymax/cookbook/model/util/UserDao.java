@@ -9,10 +9,13 @@ import com.feasymax.cookbook.view.list.RecipeListModel;
 
 import java.sql.DriverManager;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.LinkedList;
 import java.util.List;
+import java.sql.*;
 
 import static android.R.attr.description;
 import static android.R.attr.id;
@@ -337,10 +340,59 @@ public class UserDao {
     }
 
     public List<RecipeListModel> searchUserRecipes(int userId, List<String> input) {
-        return null;
+        ResultSet rs1,rs2,rs3,rs4;
+        Statement sql;
+        RecipeListModel rlm = new RecipeListModel();
+        LinkedList<RecipeListModel> lk = new LinkedList<>();
+        try {
+            sql = conn.createStatement();
+            for (int i = 0; i < input.size(); i++) {
+                rs1 = sql.executeQuery("SELECT id FROM users u WHERE u.id = "+userId);
+                rs2 = sql.executeQuery("SELECT title FROM recipes r WHERE r.title = " +input.get(i));
+                rs3 = sql.executeQuery("SELECT image FROM recipes r WHERE r.title = " +input.get(i));
+                rs4 = sql.executeQuery("SELECT duration FROM recipes r WHERE r.title = "+input.get(i));
+                rlm.setRecipeTitle(rs2.toString());
+                rlm.setRecipeId(rs1.getInt(rs1.toString()));
+                //rlm.setRecipeImage(rs3.);
+                lk.add(rlm);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return lk;
+
+
+
+
+
+
+
+        /**ry{
+            while (input.get(){
+
+            }
+            p = conn.prepareStatement();
+        }
+
+
+        /**
+        private String doExecutionWithReturn(String input){
+            try{
+                p = conn.prepareStatement(input);
+                temp = p.executeQuery();
+            }
+            catch (SQLException e){
+                e.printStackTrace();
+            }
+            return printResultSet();
+        }
+         */
+
+
     }
 
     public List<RecipeListModel> searchDiscoverRecipes(List<String> input) {
+
         return null;
     }
 

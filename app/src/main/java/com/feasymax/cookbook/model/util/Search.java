@@ -23,6 +23,11 @@ public class Search {
          List<RecipeListModel> results;
 
          List<String> searchTokens = new LinkedList<>();
+         for(String retval : input.split(" ")){
+             searchTokens.add(retval);
+         }
+
+         //searchTokens.add(input);
          //tokenize the input
 
          if (activity == 0){
