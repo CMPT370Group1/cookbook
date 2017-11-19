@@ -4,7 +4,11 @@ package com.feasymax.cookbook.model.util;
  * Created by kristine042 on 2017-10-09.
  */
 
+import android.graphics.Bitmap;
+import android.util.Log;
+
 import com.feasymax.cookbook.model.entity.Recipe;
+import com.feasymax.cookbook.util.Graphics;
 import com.feasymax.cookbook.view.list.RecipeListModel;
 
 import java.sql.DriverManager;
@@ -32,6 +36,7 @@ public class UserDao {
     private static final String PASSWORD = "v0vAecsxvf0gzgCIlFPN";
     private static final String USERNAME = "cmpt370_feasymax";
     private volatile int userID = 0;
+    private volatile int recipeID = -1;
     private volatile String updateRes = "";
     private String email;
 
@@ -334,9 +339,83 @@ public class UserDao {
         return email;
     }
 
-    public int addNewRecipe(Recipe recipe, boolean owner) {
-        int recipeId = 0;
-        return recipeId;
+    public int addNewRecipe(final Recipe recipe, final int userID, final boolean owner) {
+        recipeID = -1;
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try  {
+                    connect();
+                    Statement stmt = null;
+                    ResultSet rs = null;
+
+                    String title = recipe.getTitle();
+                    String category = String.valueOf(recipe.getCategory());
+                    String description = recipe.getDirections();
+                    int duration = recipe.getDuration();
+                    Bitmap image = recipe.getImage();
+                    Bitmap image_icon = Graphics.resize(image, 200, 200);
+                    try {
+                        stmt = conn.createStatement();
+                        rs = stmt.executeQuery("SELECT MAX(id) AS id FROM recipes");
+                        int autoID = 1;
+                        if (rs.next()) {
+                            autoID = rs.getInt("id") + 1;
+                        }
+                        Log.println(Log.INFO, "addNewRecipe", "new id = " + autoID);
+
+                        String query = "INSERT INTO recipes (id, title, category_name, durtion_min, " +
+                                "recipe_description) VALUES (" + autoID + ", '" + title + "', '" +
+                                category + "', " + duration + ", '" + description + "')";
+                        //conn.setAutoCommit(false);
+                        stmt = conn.createStatement();
+                        stmt.executeUpdate(query);
+
+                        recipeID = autoID;
+
+                        // if the username is not already taken
+                        if (recipeID != -1) {
+                            stmt = conn.createStatement();
+                            rs = stmt.executeQuery("SELECT MAX(id) AS id FROM user_recipe");
+                            autoID = 1;
+                            if (rs.next()) {
+                                autoID = rs.getInt("id") + 1;
+                            }
+                            Log.println(Log.INFO, "addNewRecipe", "new id = " + autoID);
+
+                            query = "INSERT INTO user_recipe (id, user_id, recipe_id, states) " +
+                                    "VALUES (" +autoID + ", " + userID + ", " + recipeID + ", 0)";
+                            //conn.setAutoCommit(false);
+                            stmt = conn.createStatement();
+                            stmt.executeUpdate(query);
+                        }
+                    } catch(SQLException e) {
+                        System.out.println("SQL error");
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            if (conn != null)
+                                conn.close();
+                        }
+                        catch(SQLException e) {
+
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
+        try {
+            Thread.sleep(1800);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return recipeID;
     }
 
     public List<RecipeListModel> searchUserRecipes(int userId, List<String> input) {

@@ -108,7 +108,13 @@ public class RecipeViewFragment extends Fragment{
         }
 
         // Set up the recipe info
-        recipeImage.setImageBitmap(currentRecipe.getImage());
+        if (currentRecipe.getImage() != null) {
+            recipeImage.setImageBitmap(currentRecipe.getImage());
+        }
+        else {
+            recipeImage.setImageDrawable(getResources().getDrawable(R.drawable.no_image420, null));
+        }
+
         recipeTitle.setText(currentRecipe.getTitle());
         recipeDirections.setText(currentRecipe.getDirections());
 

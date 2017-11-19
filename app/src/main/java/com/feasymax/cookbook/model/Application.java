@@ -261,12 +261,12 @@ public class Application {
         return discoverCollection.getCurRecipe();
     }
 
-    public static void addNewRecipe(Recipe recipe, boolean owner) {
+    public static int addNewRecipe(Recipe recipe, boolean owner) {
         UserDao userDao = new UserDao();
 
-        int id = userDao.addNewRecipe(recipe, owner);
+        int id = userDao.addNewRecipe(recipe, getUser().getUserID(), owner);
         if (id == -1) {
-            return;
+            return -1;
         }
 
         recipe.setId(id);
@@ -278,6 +278,8 @@ public class Application {
 
         setUserCurrentRecipe(recipe);
         addUserRecipe(recipeModel);
+
+        return 0;
     }
 
     public static void deleteRecipe(Recipe recipe) {

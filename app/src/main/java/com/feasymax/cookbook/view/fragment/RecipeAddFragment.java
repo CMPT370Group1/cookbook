@@ -379,14 +379,17 @@ public class RecipeAddFragment extends Fragment {
             }
             recipe.setImage(recipeImageBitmap);
 
-            Application.addNewRecipe(recipe, true);
+            if (Application.addNewRecipe(recipe, true) == 0) {
+                Log.println(Log.INFO, "addRecipe", recipe.toString());
+                Log.println(Log.INFO, "addRecipe", Application.getUserCollectionRecipes().toString());
 
-            Log.println(Log.INFO, "addRecipe", recipe.toString());
-            Log.println(Log.INFO, "addRecipe", Application.getUserCollectionRecipes().toString());
-
-            emptyFragment();
-            enterRecipeViewFragment();
-            // TODO: maybe go to recipe view fragment displaying current fragment
+                emptyFragment();
+                enterRecipeViewFragment();
+                // TODO: maybe go to recipe view fragment displaying current fragment
+            }
+            else {
+                Log.println(Log.INFO, "addRecipe", "couldn't add recipe");
+            }
         }
 
     }
