@@ -379,7 +379,7 @@ public class RecipeAddFragment extends Fragment {
             }
             recipe.setImage(recipeImageBitmap);
 
-            if (Application.addNewRecipe(recipe, true) == 0) {
+            if (Application.addNewRecipe(recipe, true) != -1) {
                 Log.println(Log.INFO, "addRecipe", recipe.toString());
                 Log.println(Log.INFO, "addRecipe", Application.getUserCollectionRecipes().toString());
 

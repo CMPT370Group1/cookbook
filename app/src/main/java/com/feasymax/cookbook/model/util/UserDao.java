@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.feasymax.cookbook.model.entity.Recipe;
+import com.feasymax.cookbook.util.DbBitmapUtility;
 import com.feasymax.cookbook.util.Graphics;
 import com.feasymax.cookbook.view.list.RecipeListModel;
 
@@ -347,18 +348,20 @@ public class UserDao {
             public void run() {
                 try  {
                     connect();
-                    Statement stmt = null;
+                    PreparedStatement stmt = null;
                     ResultSet rs = null;
 
                     String title = recipe.getTitle();
                     String category = String.valueOf(recipe.getCategory());
                     String description = recipe.getDirections();
                     int duration = recipe.getDuration();
-                    Bitmap image = recipe.getImage();
-                    Bitmap image_icon = Graphics.resize(image, 200, 200);
+                    byte[] image = DbBitmapUtility.getBytes(recipe.getImage());
+                    byte[] image_icon = DbBitmapUtility.getBytes(Graphics.resize(recipe.getImage(), 200, 200));
+
                     try {
-                        stmt = conn.createStatement();
-                        rs = stmt.executeQuery("SELECT MAX(id) AS id FROM recipes");
+                        conn.setAutoCommit(false);
+                        stmt = conn.prepareStatement("SELECT MAX(id) AS id FROM recipes");
+                        rs = stmt.executeQuery();
                         int autoID = 1;
                         if (rs.next()) {
                             autoID = rs.getInt("id") + 1;
@@ -366,18 +369,22 @@ public class UserDao {
                         Log.println(Log.INFO, "addNewRecipe", "new id = " + autoID);
 
                         String query = "INSERT INTO recipes (id, title, category_name, durtion_min, " +
-                                "recipe_description) VALUES (" + autoID + ", '" + title + "', '" +
-                                category + "', " + duration + ", '" + description + "')";
-                        //conn.setAutoCommit(false);
-                        stmt = conn.createStatement();
-                        stmt.executeUpdate(query);
+                                "recipe_description, image, image_icon) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                        stmt = conn.prepareStatement(query);
+                        stmt.setInt(1, autoID);
+                        stmt.setString(2, title);
+                        stmt.setString(3, category);
+                        stmt.setInt(4, duration);
+                        stmt.setString(5, description);
+                        stmt.setBytes(6, image);
+                        stmt.setBytes(7, image_icon);
+                        stmt.executeUpdate();
 
                         recipeID = autoID;
 
-                        // if the username is not already taken
                         if (recipeID != -1) {
-                            stmt = conn.createStatement();
-                            rs = stmt.executeQuery("SELECT MAX(id) AS id FROM user_recipe");
+                            stmt = conn.prepareStatement("SELECT MAX(id) AS id FROM user_recipe");
+                            rs = stmt.executeQuery();
                             autoID = 1;
                             if (rs.next()) {
                                 autoID = rs.getInt("id") + 1;
@@ -385,10 +392,16 @@ public class UserDao {
                             Log.println(Log.INFO, "addNewRecipe", "new id = " + autoID);
 
                             query = "INSERT INTO user_recipe (id, user_id, recipe_id, states) " +
-                                    "VALUES (" +autoID + ", " + userID + ", " + recipeID + ", 0)";
-                            //conn.setAutoCommit(false);
-                            stmt = conn.createStatement();
-                            stmt.executeUpdate(query);
+                                    "VALUES (?, ?, ?, ?)";
+                            stmt = conn.prepareStatement(query);
+                            stmt.setInt(1, autoID);
+                            stmt.setInt(2, userID);
+                            stmt.setInt(3, recipeID);
+                            stmt.setInt(4, 0);
+                            stmt.executeUpdate();
+
+                            stmt.close();
+                            conn.commit();
                         }
                     } catch(SQLException e) {
                         System.out.println("SQL error");
@@ -410,7 +423,7 @@ public class UserDao {
 
         thread.start();
         try {
-            Thread.sleep(1800);
+            thread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
