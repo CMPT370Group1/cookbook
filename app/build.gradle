@@ -34,4 +34,5 @@ dependencies {
     //compile project(':postgresql-42.1.4')
     compile 'postgresql:postgresql:9.0-801.jdbc4'
     compile project(':tagview-library')
+    compile project(':jsoup-1.10.3')
 }
