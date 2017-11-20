@@ -89,6 +89,7 @@ public class RecipeAddFragment extends Fragment {
     private int tagIndex;
     private ImageView recipeImage;
     private Bitmap recipeImageBitmap;
+    private Bitmap recipeIconBitmap;
     private TextView recipeImageText;
 
     private ImageButton addIngredient;
@@ -280,11 +281,10 @@ public class RecipeAddFragment extends Fragment {
         adapterUnit.setDropDownViewResource(R.layout.spinner_dropdown_item);
         unit.setAdapter(adapterUnit);
 
-        EditText quantity = tr.findViewById(R.id.ingredientQuantity);
-
         // Add row to TableLayout.
         recipeIngredientTable.addView(tr, new TableLayout.LayoutParams(
                 TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        name.requestFocus();
 
         recipeIngredients.put(ingredientIndex, tr);
 
@@ -311,6 +311,7 @@ public class RecipeAddFragment extends Fragment {
         // Add row to TableLayout.
         recipeTagTable.addView(tr, new TableLayout.LayoutParams(
                 TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        tagName.requestFocus();
 
         recipeTags.put(tagIndex, tr);
 
@@ -373,19 +374,18 @@ public class RecipeAddFragment extends Fragment {
             }
 
             recipe.setTags(tagList);
-            if (recipeImageBitmap == null) {
-                recipeImageBitmap = Graphics.decodeSampledBitmapFromResource(getResources(), R.drawable.no_image420, 420, 420);
-                recipeImageBitmap = Graphics.resize(recipeImageBitmap, 420, 420);
-            }
-            recipe.setImage(recipeImageBitmap);
 
-            if (Application.addNewRecipe(recipe, true) != -1) {
-                Log.println(Log.INFO, "addRecipe", recipe.toString());
+            if (recipeImageBitmap == null) {
+                recipeIconBitmap = Graphics.decodeSampledBitmapFromResource(getResources(), R.drawable.no_image420, 200, 200);
+                recipeIconBitmap = Graphics.resize(recipeIconBitmap, 200, 200);
+            }
+
+            if (Application.addNewRecipe(recipe, true, recipeIconBitmap) != -1) {
+                Log.println(Log.INFO, "addRecipe", Application.getUserCurrentRecipe().toString());
                 Log.println(Log.INFO, "addRecipe", Application.getUserCollectionRecipes().toString());
 
                 emptyFragment();
                 enterRecipeViewFragment();
-                // TODO: maybe go to recipe view fragment displaying current fragment
             }
             else {
                 Log.println(Log.INFO, "addRecipe", "couldn't add recipe");
@@ -399,19 +399,19 @@ public class RecipeAddFragment extends Fragment {
         recipeCategory.setSelection(12);
         recipeIngredientTable.removeAllViews();
         recipeIngredients.clear();
-        ingredientList.clear();
         recipeDirections.setText("");
         recipeDurationHour.setText("");
         recipeDurationMin.setText("");
         recipeTagTable.removeAllViews();
         recipeTags.clear();
-        tagList.clear();
         recipeImageBitmap = null;
+        recipeIconBitmap = null;
         recipeImage.setImageDrawable(getResources().getDrawable(R.drawable.bread, null));
         recipeImage.setColorFilter(ContextCompat.getColor(getContext(), R.color.colorPrimary),
                 android.graphics.PorterDuff.Mode.MULTIPLY);
         recipeImageText.setVisibility(View.VISIBLE);
 
+        recipeImage.requestFocus();
     }
 
     @Override

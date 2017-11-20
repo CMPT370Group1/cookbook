@@ -69,7 +69,7 @@ public class RecipesFragment extends ShowRecipesFragment{
         setListData();
 
         Resources res = getResources();
-        list = ( ListView )view.findViewById( R.id.list );  // List defined in XML ( See Below )
+        list = ( ListView )view.findViewById( R.id.list );
 
         // Create Custom Adapter
         adapter = new RecipeListAdapter( this, CustomListViewValuesArr, res );

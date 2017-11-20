@@ -356,10 +356,15 @@ public class UserDao {
                     String category = String.valueOf(recipe.getCategory());
                     String description = recipe.getDirections();
                     int duration = recipe.getDuration();
-                    byte[] image = DbBitmapUtility.getBytes(recipe.getImage());
-                    byte[] image_icon = DbBitmapUtility.getBytes(Graphics.resize(recipe.getImage(), 200, 200));
+                    byte[] image = null;
+                    byte[] image_icon = null;
+                    if (recipe.getImage() != null) {
+                        image = DbBitmapUtility.getBytes(recipe.getImage());
+                        image_icon = DbBitmapUtility.getBytes(Graphics.resize(recipe.getImage(), 200, 200));
+                    }
 
                     try {
+                        // do not commit after every query
                         conn.setAutoCommit(false);
                         // select new id for the new recipe
                         stmt = conn.prepareStatement("SELECT MAX(id) AS id FROM recipes");

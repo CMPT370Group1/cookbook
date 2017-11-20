@@ -1,5 +1,6 @@
 package com.feasymax.cookbook.model;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.feasymax.cookbook.R;
@@ -261,7 +262,7 @@ public class Application {
         return discoverCollection.getCurRecipe();
     }
 
-    public static int addNewRecipe(Recipe recipe, boolean owner) {
+    public static int addNewRecipe(Recipe recipe, boolean owner, Bitmap image_icon) {
         UserDao userDao = new UserDao();
 
         int id = userDao.addNewRecipe(recipe, getUser().getUserID(), owner);
@@ -274,7 +275,13 @@ public class Application {
         recipeModel.setRecipeId(recipe.getId());
         recipeModel.setRecipeTitle(recipe.getTitle());
         recipeModel.setRecipeDuration(recipe.getDuration());
-        recipeModel.setRecipeImage(Graphics.resize(recipe.getImage(), 200, 200));
+        if (recipe.getImage() != null) {
+            recipeModel.setRecipeImage(Graphics.resize(recipe.getImage(), 200, 200));
+        }
+        else {
+            recipeModel.setRecipeImage(Graphics.resize(image_icon, 200, 200));
+        }
+
 
         setUserCurrentRecipe(recipe);
         addUserRecipe(recipeModel);

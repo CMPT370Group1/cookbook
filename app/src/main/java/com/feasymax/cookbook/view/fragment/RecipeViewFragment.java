@@ -108,6 +108,7 @@ public class RecipeViewFragment extends Fragment{
         }
 
         // Set up the recipe info
+        Log.println(Log.INFO, "In RecipeViewFragment", "Current recipe: " + currentRecipe.toString());
         if (currentRecipe.getImage() != null) {
             recipeImage.setImageBitmap(currentRecipe.getImage());
         }
@@ -122,8 +123,8 @@ public class RecipeViewFragment extends Fragment{
                 Color.parseColor("#808080")) };
         recipeDuration.setTags(duration, " ");
 
-
         // Fill the table layout recipeIngredients with rows, one for each ingredient
+        Log.println(Log.INFO, "In RecipeViewFragment", "Ingredients: " + currentRecipe.getIngredients().toString());
         for (Ingredient ingredient : currentRecipe.getIngredients()) {
             View tr = inflater.inflate(R.layout.ingredient_view_layout, null, false);
 
@@ -132,7 +133,7 @@ public class RecipeViewFragment extends Fragment{
             quantity.setText(DF.format(ingredient.getQuantity()));
 
             Spinner unit = tr.findViewById(R.id.unit);
-            // correctly display recipe categories in the dropdown spinner
+            // correctly display ingredient's units in the dropdown spinner
             if (ingredient.getUnit() < 5) {
                 ArrayAdapter adapterUnit = ArrayAdapter.createFromResource(this.getContext(),
                         R.array.mass_units, R.layout.spinner_item_center);
@@ -148,7 +149,6 @@ public class RecipeViewFragment extends Fragment{
                 unit.setSelection(ingredient.getUnit() - 5);
             }
 
-
             TextView name = tr.findViewById(R.id.name);
             name.setText(ingredient.getName());
 
@@ -159,6 +159,7 @@ public class RecipeViewFragment extends Fragment{
 
         // Set up the recipe tags
         LinkedList<TagView.Tag> tags = new LinkedList<>();
+        Log.println(Log.INFO, "In RecipeViewFragment", "Tags: " + currentRecipe.getTags().toString());
         for (String content : currentRecipe.getTags()) {
             tags.add(new TagView.Tag(content, Color.parseColor("#ff4081"))); // color is colorAccent
         }
@@ -266,7 +267,7 @@ public class RecipeViewFragment extends Fragment{
     private void addRecipe() {
         if (getActivity() instanceof DiscoverActivity) {
             if (Application.isUserSignedIn()) {
-                Application.addNewRecipe(Application.getDiscoverCurrentRecipe(), false);
+                Application.addNewRecipe(Application.getDiscoverCurrentRecipe(), false, null);
             } else {
                 Log.println(Log.INFO, "addRecipe","user is not signed in");
             }

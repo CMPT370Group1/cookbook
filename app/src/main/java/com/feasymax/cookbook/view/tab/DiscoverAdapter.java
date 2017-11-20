@@ -4,12 +4,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.feasymax.cookbook.view.fragment.DiscoverCategoriesFragment;
-import com.feasymax.cookbook.view.fragment.DiscoverSearchFragment;
 import com.feasymax.cookbook.view.fragment.DiscoverWebsearchFragment;
+import com.feasymax.cookbook.view.fragment.RecipeCategoriesFragment;
+import com.feasymax.cookbook.view.fragment.RecipeSearchFragment;
+
 /**
  * Created by Olya on 2017-09-21.
  */
@@ -27,9 +27,9 @@ public class DiscoverAdapter extends FragmentStatePagerAdapter {
         Fragment frag= null;
 
         if(position ==0){
-            frag = new DiscoverCategoriesFragment();
+            frag = new RecipeCategoriesFragment();
         }else if(position == 1){
-            frag = new DiscoverSearchFragment();
+            frag = new RecipeSearchFragment();
         }else if(position == 2){
             frag = new DiscoverWebsearchFragment();
         }
