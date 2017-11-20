@@ -41,6 +41,7 @@ public class UserDao {
     private volatile int recipeID = -1;
     private volatile String updateRes = "";
     private String email;
+    private List<RecipeListModel> list = null;
 
     /**
      * Get a connection to database
@@ -341,6 +342,106 @@ public class UserDao {
         return email;
     }
 
+
+    /**
+     * Add new recipe to the database, add the recipeID to the user_recipe table with state 1 and
+     * return recipeID. If the user does not own the recipe, simply add the recipeID to the
+     * user_recipe table with state 0
+     * @param userCollection
+     * @param userID
+     * @param category
+     * @return result code
+     */
+    public List<RecipeListModel> updateRecipeCollection(final boolean userCollection, final int userID, final int category) {
+        list = null;
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try  {
+                    connect();
+                    PreparedStatement stmt = null;
+                    ResultSet rs = null;
+
+                    // do not commit after every query
+                    conn.setAutoCommit(false);
+
+                    try {
+                        int id = -1;
+                        String title = null;
+                        int duration = -1;
+                        byte[] image_icon = null;
+                        Bitmap image = null;
+
+                        RecipeListModel recipeListModel = null;
+                        list = new LinkedList<>();
+
+                        // insert all recipe info into recipes table
+                        String query = "SELECT id, title, durtion_min, image FROM recipes r WHERE ";
+                        if (userCollection) {
+                            query += " r.id IN (SELECT recipe_id FROM user_recipe " +
+                                    "WHERE user_id = " + userID + ") AND ";
+                        }
+                        query += "r.category_name = '" + String.valueOf(category) + "'";
+
+                        stmt = conn.prepareStatement(query);
+                        rs = stmt.executeQuery();
+                        while (rs.next()) {
+                            id = rs.getInt("id");
+                            title = rs.getString("title");
+                            duration = rs.getInt("durtion_min");
+                            image_icon = rs.getBytes("image");
+                            if (image_icon != null) {
+                                image = DbBitmapUtility.getImage(image_icon);
+                            }
+
+                            recipeListModel = new RecipeListModel(id, title, image, duration);
+                            Log.println(Log.INFO, "updateRecipeCollection", recipeListModel.toString());
+                            list.add(recipeListModel);
+                        }
+
+                        stmt.close();
+                        conn.commit();
+
+                    } catch(SQLException e) {
+                        System.out.println("SQL error");
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            if (conn != null)
+                                conn.close();
+                        }
+                        catch(SQLException e) {
+
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+
+
+    /**
+     * Add new recipe to the database, add the recipeID to the user_recipe table with state 1 and
+     * return recipeID. If the user does not own the recipe, simply add the recipeID to the
+     * user_recipe table with state 0
+     * @param recipe
+     * @param userID
+     * @param owner does the user own the recipe
+     * @return recipeID
+     */
     public int addNewRecipe(final Recipe recipe, final int userID, final boolean owner) {
         recipeID = -1;
 
@@ -352,103 +453,111 @@ public class UserDao {
                     PreparedStatement stmt = null;
                     ResultSet rs = null;
 
-                    String title = recipe.getTitle();
-                    String category = String.valueOf(recipe.getCategory());
-                    String description = recipe.getDirections();
-                    int duration = recipe.getDuration();
-                    byte[] image = null;
-                    byte[] image_icon = null;
-                    if (recipe.getImage() != null) {
-                        image = DbBitmapUtility.getBytes(recipe.getImage());
-                        image_icon = DbBitmapUtility.getBytes(Graphics.resize(recipe.getImage(), 200, 200));
-                    }
+                    // do not commit after every query
+                    conn.setAutoCommit(false);
 
                     try {
-                        // do not commit after every query
-                        conn.setAutoCommit(false);
-                        // select new id for the new recipe
-                        stmt = conn.prepareStatement("SELECT MAX(id) AS id FROM recipes");
-                        rs = stmt.executeQuery();
-                        int autoID = 1;
-                        if (rs.next()) {
-                            autoID = rs.getInt("id") + 1;
-                        }
-                        Log.println(Log.INFO, "addNewRecipe", "new id = " + autoID);
-                        recipeID = autoID;
+                        if (owner == true) {
 
-                        // insert all recipe info into recipes table
-                        String query = "INSERT INTO recipes (id, title, category_name, durtion_min, " +
-                                "recipe_description, image, image_icon) VALUES (?, ?, ?, ?, ?, ?, ?)";
-                        stmt = conn.prepareStatement(query);
-                        stmt.setInt(1, autoID);
-                        stmt.setString(2, title);
-                        stmt.setString(3, category);
-                        stmt.setInt(4, duration);
-                        stmt.setString(5, description);
-                        stmt.setBytes(6, image);
-                        stmt.setBytes(7, image_icon);
-                        stmt.executeUpdate();
+                            String title = recipe.getTitle();
+                            String category = String.valueOf(recipe.getCategory());
+                            String description = recipe.getDirections();
+                            int duration = recipe.getDuration();
+                            byte[] image = null;
+                            byte[] image_icon = null;
+                            if (recipe.getImage() != null) {
+                                image = DbBitmapUtility.getBytes(recipe.getImage());
+                                image_icon = DbBitmapUtility.getBytes(Graphics.resize(recipe.getImage(), 200, 200));
+                            }
 
-                        // insert all recipe's ingredients
-                        for (Ingredient ingr: recipe.getIngredients()) {
-                            // select new id for the new ingredient
-                            stmt = conn.prepareStatement("SELECT MAX(id) AS id FROM ingredients");
+                            // select new id for the new recipe
+                            stmt = conn.prepareStatement("SELECT MAX(id) AS id FROM recipes");
                             rs = stmt.executeQuery();
-                            autoID = 1;
+                            int autoID = 1;
                             if (rs.next()) {
                                 autoID = rs.getInt("id") + 1;
                             }
                             Log.println(Log.INFO, "addNewRecipe", "new id = " + autoID);
+                            recipeID = autoID;
 
-                            // insert an ingredient
-                            query = "INSERT INTO ingredients (id, name, quantity, unit, recipe_id) " +
-                                    "VALUES (?, ?, ?, ?, ?)";
+                            // insert all recipe info into recipes table
+                            String query = "INSERT INTO recipes (id, title, category_name, durtion_min, " +
+                                    "recipe_description, image, image_icon) VALUES (?, ?, ?, ?, ?, ?, ?)";
                             stmt = conn.prepareStatement(query);
                             stmt.setInt(1, autoID);
-                            stmt.setString(2, ingr.getName());
-                            stmt.setDouble(3, ingr.getQuantity());
-                            stmt.setInt(4, ingr.getUnit());
-                            stmt.setInt(5, recipeID);
+                            stmt.setString(2, title);
+                            stmt.setString(3, category);
+                            stmt.setInt(4, duration);
+                            stmt.setString(5, description);
+                            stmt.setBytes(6, image);
+                            stmt.setBytes(7, image_icon);
                             stmt.executeUpdate();
-                        }
-                        // insert all recipe's tags
-                        for (String tag: recipe.getTags()) {
-                            // select new id for the new ingredient
-                            stmt = conn.prepareStatement("SELECT MAX(id) AS id FROM tag");
-                            rs = stmt.executeQuery();
-                            autoID = 1;
-                            if (rs.next()) {
-                                autoID = rs.getInt("id") + 1;
+
+                            // insert all recipe's ingredients
+                            for (Ingredient ingr: recipe.getIngredients()) {
+                                // select new id for the new ingredient
+                                stmt = conn.prepareStatement("SELECT MAX(id) AS id FROM ingredients");
+                                rs = stmt.executeQuery();
+                                autoID = 1;
+                                if (rs.next()) {
+                                    autoID = rs.getInt("id") + 1;
+                                }
+                                Log.println(Log.INFO, "addNewRecipe", "new id = " + autoID);
+
+                                // insert an ingredient
+                                query = "INSERT INTO ingredients (id, name, quantity, unit, recipe_id) " +
+                                        "VALUES (?, ?, ?, ?, ?)";
+                                stmt = conn.prepareStatement(query);
+                                stmt.setInt(1, autoID);
+                                stmt.setString(2, ingr.getName());
+                                stmt.setDouble(3, ingr.getQuantity());
+                                stmt.setInt(4, ingr.getUnit());
+                                stmt.setInt(5, recipeID);
+                                stmt.executeUpdate();
                             }
-                            Log.println(Log.INFO, "addNewRecipe", "new id = " + autoID);
+                            // insert all recipe's tags
+                            for (String tag: recipe.getTags()) {
+                                // select new id for the new ingredient
+                                stmt = conn.prepareStatement("SELECT MAX(id) AS id FROM tag");
+                                rs = stmt.executeQuery();
+                                autoID = 1;
+                                if (rs.next()) {
+                                    autoID = rs.getInt("id") + 1;
+                                }
+                                Log.println(Log.INFO, "addNewRecipe", "new id = " + autoID);
 
-                            // insert an ingredient
-                            query = "INSERT INTO tag (id, tag_name, recipe_id) " +
-                                    "VALUES (?, ?, ?)";
-                            stmt = conn.prepareStatement(query);
-                            stmt.setInt(1, autoID);
-                            stmt.setString(2, tag);
-                            stmt.setInt(3, recipeID);
-                            stmt.executeUpdate();
+                                // insert an ingredient
+                                query = "INSERT INTO tag (id, tag_name, recipe_id) " +
+                                        "VALUES (?, ?, ?)";
+                                stmt = conn.prepareStatement(query);
+                                stmt.setInt(1, autoID);
+                                stmt.setString(2, tag);
+                                stmt.setInt(3, recipeID);
+                                stmt.executeUpdate();
+                            }
+
+                        }
+                        else {
+                            recipeID = recipe.getId();
                         }
 
                         // finally, insert recipe id and user id into user_recipe table to indicate
                         // that the user has the recipe in the collection
                         stmt = conn.prepareStatement("SELECT MAX(id) AS id FROM user_recipe");
                         rs = stmt.executeQuery();
-                        autoID = 1;
+                        int autoID = 1;
                         if (rs.next()) {
                             autoID = rs.getInt("id") + 1;
                         }
                         Log.println(Log.INFO, "addNewRecipe", "new id = " + autoID);
 
-                        query = "INSERT INTO user_recipe (id, user_id, recipe_id, states) " +
+                        String query = "INSERT INTO user_recipe (id, user_id, recipe_id, states) " +
                                 "VALUES (?, ?, ?, ?)";
                         stmt = conn.prepareStatement(query);
                         stmt.setInt(1, autoID);
                         stmt.setInt(2, userID);
                         stmt.setInt(3, recipeID);
-                        stmt.setInt(4, 0);
+                        stmt.setInt(4, ((owner) ? 1 : 0));
                         stmt.executeUpdate();
 
                         // close the statement and commit all changes

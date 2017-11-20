@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
+import com.feasymax.cookbook.model.entity.DiscoverCollection;
 
 public class MainActivity extends ActivityMenu {
 
@@ -20,6 +21,9 @@ public class MainActivity extends ActivityMenu {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initializeActivity();
+        if (Application.getDiscoverCollection() == null) {
+            Application.setDiscoverCollection(new DiscoverCollection());
+        }
     }
 
     @Override

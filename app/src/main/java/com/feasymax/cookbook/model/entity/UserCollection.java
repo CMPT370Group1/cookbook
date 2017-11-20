@@ -13,6 +13,7 @@ public class UserCollection {
 
     private List<RecipeListModel> recipes;
     private Recipe curRecipe;
+    private int category;
 
     public UserCollection() {
         recipes = new LinkedList<>();
@@ -32,6 +33,14 @@ public class UserCollection {
 
     public void setCurRecipe(Recipe curRecipe) {
         this.curRecipe = curRecipe;
+    }
+
+    public int getCategory() {
+        return category;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
     }
 
     public void addNewRecipe(RecipeListModel recipeInfo) {

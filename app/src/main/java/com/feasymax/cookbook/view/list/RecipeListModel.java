@@ -68,6 +68,7 @@ public class RecipeListModel {
         return "Recipe{" + RecipeId +
                 ", title = '" + RecipeTitle + '\'' +
                 ", duration = " + RecipeDuration +
+                ", image = " + RecipeImage +
                 '}';
     }
 }

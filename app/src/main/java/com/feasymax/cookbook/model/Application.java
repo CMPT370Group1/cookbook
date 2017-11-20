@@ -34,7 +34,7 @@ public class Application {
     /**
      * Other users' collection of recipes, a single one can exist in the application
      */
-    private static DiscoverCollection discoverCollection = new DiscoverCollection();
+    private static DiscoverCollection discoverCollection;
 
     /**
      * Private constructor, because there could not be an Application object
@@ -124,10 +124,8 @@ public class Application {
      * When the user signs out, set the user object to null
      */
     public static void userSignOut(){
-        // TODO
         user = null;
         userCollection = null;
-        discoverCollection = null;
     }
 
     /**
@@ -161,6 +159,14 @@ public class Application {
      */
     public static boolean isUserSignedIn() {
         return (user != null);
+    }
+
+    public static UserCollection getUserCollection() {
+        return userCollection;
+    }
+
+    public static void setUserCollection(UserCollection userCollection) {
+        Application.userCollection = userCollection;
     }
 
     /**
@@ -210,6 +216,14 @@ public class Application {
      */
     public static boolean removeUserRecipe(RecipeListModel recipeInfo) {
         return userCollection.removeRecipe(recipeInfo);
+    }
+
+    public static DiscoverCollection getDiscoverCollection() {
+        return discoverCollection;
+    }
+
+    public static void setDiscoverCollection(DiscoverCollection discoverCollection) {
+        Application.discoverCollection = discoverCollection;
     }
 
     /**
@@ -262,6 +276,17 @@ public class Application {
         return discoverCollection.getCurRecipe();
     }
 
+    /**
+     *
+     * @return
+     */
+    public static List<RecipeListModel> getCollectionFromDB(final boolean userCollection,
+                                                            final int userID, int category) {
+        UserDao userDao = new UserDao();
+        return userDao.updateRecipeCollection(userCollection, userID, category);
+    }
+
+
     public static int addNewRecipe(Recipe recipe, boolean owner, Bitmap image_icon) {
         UserDao userDao = new UserDao();
 
@@ -279,7 +304,7 @@ public class Application {
             recipeModel.setRecipeImage(Graphics.resize(recipe.getImage(), 200, 200));
         }
         else {
-            recipeModel.setRecipeImage(Graphics.resize(image_icon, 200, 200));
+            recipeModel.setRecipeImage(image_icon);
         }
 
 

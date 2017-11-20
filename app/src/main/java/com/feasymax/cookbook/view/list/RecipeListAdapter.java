@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.feasymax.cookbook.R;
+import com.feasymax.cookbook.util.Graphics;
 import com.feasymax.cookbook.view.fragment.RecipesFragment;
 import com.feasymax.cookbook.view.fragment.common.ShowRecipesFragment;
 
@@ -47,8 +48,10 @@ public class RecipeListAdapter extends BaseAdapter implements View.OnClickListen
     /******** What is the size of Passed list Size ************/
     public int getCount() {
 
+        if (data == null)
+            return 0;
         if(data.size()<=0)
-            return 1;
+            return 0;
         return data.size();
     }
 
@@ -93,7 +96,7 @@ public class RecipeListAdapter extends BaseAdapter implements View.OnClickListen
         else
             holder = (ViewHolder) vi.getTag();
 
-        if(data.size() <= 0)
+        if(getCount() == 0)
         {
             holder.recipeTitle.setText("No Data");
 
@@ -108,7 +111,13 @@ public class RecipeListAdapter extends BaseAdapter implements View.OnClickListen
 
             holder.recipeTitle.setText( tempValues.getRecipeTitle() );
             holder.recipeDuration.setText( displayDuration(tempValues.getRecipeDuration()) );
-            holder.recipeImage.setImageBitmap(tempValues.getRecipeImage());
+            if (tempValues.getRecipeImage() != null) {
+                holder.recipeImage.setImageBitmap(tempValues.getRecipeImage());
+            }
+            else {
+                holder.recipeImage.setImageBitmap(Graphics.decodeSampledBitmapFromResource(res, R.drawable.no_image420, 200, 200));
+            }
+
 
             /******** Set Item Click Listener for LayoutInflater for each row *******/
 

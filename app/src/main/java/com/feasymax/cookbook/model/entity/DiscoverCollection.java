@@ -15,10 +15,12 @@ public class DiscoverCollection {
 
     private List<RecipeListModel> recipes;
     private Recipe curRecipe;
+    private int category;
 
     public DiscoverCollection() {
         curRecipe = null;
         recipes = new LinkedList<>();
+        category = -1;
     }
 
     public List<RecipeListModel> getRecipes() {
@@ -35,6 +37,14 @@ public class DiscoverCollection {
 
     public void setCurRecipe(Recipe curRecipe) {
         this.curRecipe = curRecipe;
+    }
+
+    public int getCategory() {
+        return category;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
     }
 
     public void addNewRecipe(RecipeListModel recipeInfo) {

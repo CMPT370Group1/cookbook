@@ -82,36 +82,12 @@ public class RecipesFragment extends ShowRecipesFragment{
     public void setListData()
     {
         if (getActivity() instanceof RecipesActivity){
-            CustomListViewValuesArr = Application.getUserCollectionRecipes();
+            CustomListViewValuesArr = Application.getCollectionFromDB(true,
+                    Application.getUser().getUserID(), Application.getUserCollection().getCategory());
         }
         else if (getActivity() instanceof DiscoverActivity) {
-            CustomListViewValuesArr = Application.getDiscoverCollectionRecipes();
-        }
-
-        // TODO: remove when database is active
-        if (CustomListViewValuesArr.size() == 0) {
-            final RecipeListModel recipe1 = new RecipeListModel();
-
-            // Firstly take data in model object
-            recipe1.setRecipeId(0);
-            recipe1.setRecipeTitle("Delicious cake");
-            recipe1.setRecipeImage(Graphics.decodeSampledBitmapFromResource(getResources(), R.drawable.dessert, 200, 200));
-
-            recipe1.setRecipeDuration(150);
-
-            // Take Model Object in List
-            CustomListViewValuesArr.add( recipe1 );
-
-            final RecipeListModel recipe2 = new RecipeListModel();
-
-            // Firstly take data in model object
-            recipe2.setRecipeId(1);
-            recipe2.setRecipeTitle("Pumpkin soup");
-            recipe2.setRecipeImage(Graphics.decodeSampledBitmapFromResource(getResources(), R.drawable.soup, 200, 200));
-            recipe2.setRecipeDuration(30);
-
-            // Take Model Object in List
-            CustomListViewValuesArr.add( recipe2 );
+            CustomListViewValuesArr = Application.getCollectionFromDB(false, -1,
+                    Application.getDiscoverCollection().getCategory());
         }
     }
 

@@ -380,6 +380,8 @@ public class RecipeAddFragment extends Fragment {
                 recipeIconBitmap = Graphics.resize(recipeIconBitmap, 200, 200);
             }
 
+            Log.println(Log.INFO, "addRecipe", Application.getUserCurrentRecipe().toString());
+
             if (Application.addNewRecipe(recipe, true, recipeIconBitmap) != -1) {
                 Log.println(Log.INFO, "addRecipe", Application.getUserCurrentRecipe().toString());
                 Log.println(Log.INFO, "addRecipe", Application.getUserCollectionRecipes().toString());
