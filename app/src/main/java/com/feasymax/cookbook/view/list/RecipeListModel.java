@@ -71,4 +71,5 @@ public class RecipeListModel {
                 ", image = " + RecipeImage +
                 '}';
     }
+
 }

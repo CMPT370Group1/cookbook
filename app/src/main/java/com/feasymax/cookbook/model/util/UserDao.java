@@ -347,12 +347,12 @@ public class UserDao {
      * Add new recipe to the database, add the recipeID to the user_recipe table with state 1 and
      * return recipeID. If the user does not own the recipe, simply add the recipeID to the
      * user_recipe table with state 0
-     * @param userCollection
+     * @param isUserCollection
      * @param userID
      * @param category
      * @return result code
      */
-    public List<RecipeListModel> updateRecipeCollection(final boolean userCollection, final int userID, final int category) {
+    public List<RecipeListModel> updateRecipeCollection(final boolean isUserCollection, final int userID, final int category) {
         list = null;
 
         Thread thread = new Thread(new Runnable() {
@@ -378,7 +378,7 @@ public class UserDao {
 
                         // insert all recipe info into recipes table
                         String query = "SELECT id, title, durtion_min, image_icon FROM recipes r WHERE ";
-                        if (userCollection) {
+                        if (isUserCollection) {
                             query += " r.id IN (SELECT recipe_id FROM user_recipe " +
                                     "WHERE user_id = " + userID + ") AND ";
                         }
@@ -778,10 +778,109 @@ public class UserDao {
 
 
     }
+   //need title, image , duration
+    //doing all search here
+    //could be both
+    //using duplicate code to make it two
+    public List<RecipeListModel> searchRecipes(final boolean isUserCollection, final int userID,
+                                                       final List<String> tokens) {
+        list=null;
 
-    public List<RecipeListModel> searchDiscoverRecipes(List<String> input) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //dont need to create a new list at the beginning since we will be
+                //adding searching for everything then adding up.
+                RecipeListModel recipeListModel = null;
+                LinkedList<RecipeListModel> lList = new LinkedList<>();
 
-        return null;
+                try {
+                    connect();
+                    PreparedStatement stmt = null;
+                    ResultSet rs = null;
+
+                    try {
+
+                        //no user id since we can't discover the ones saved by users
+                        int id = -1;
+                        String title = null;
+                        int duration = 0;
+                        byte[] image_icon = null;
+                        Bitmap image = null;
+
+                        //discover recipes has  to display title,duration and image
+
+                        String query = "SELECT id, title, durtion_min, image_icon FROM recipes r WHERE ";
+
+                        if (isUserCollection) {
+                            query += " r.id IN (SELECT recipe_id FROM user_recipe " +
+                                    "WHERE user_id = " + userID + ") AND ";
+                        }
+                        query += "r.title = '" + String.valueOf(title) + "'";
+                        query += " OR r.recipe_description = '" + String.valueOf(description) + "'";
+
+
+
+
+
+                        stmt = conn.prepareStatement(query);
+                        rs = stmt.executeQuery();
+                        if (!rs.isBeforeFirst()) {
+                            throw new SQLException("No data found");
+                        }
+                        while (rs.next()) {
+
+                            id = rs.getInt("id");
+                            title = rs.getString("title");
+                            duration = rs.getInt("durtion_min");
+                            if (rs.getObject("image_icon") != null && !rs.wasNull()) {
+                                image_icon = rs.getBytes("image_icon");
+                                image = DbBitmapUtility.getImage(image_icon);
+                            }
+
+                            recipeListModel = new RecipeListModel(id, title, image, duration);
+                            Log.println(Log.INFO, "discover Recipes", recipeListModel.toString());
+                            list.add(recipeListModel);
+
+
+                            image_icon = null;
+                        }
+                        stmt.close();
+                        conn.commit();
+
+                    } catch (SQLException e) {
+                        System.out.println("SQL ERROR for discover recipes");
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            if (conn != null)
+                                conn.close();
+                        } catch (SQLException e) {
+                        }
+                    }
+
+
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+        //start the thread
+        //dont use sleep thread since it will overlap
+        thread.start();
+
+        try {
+
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+        return list;
+
     }
 
 }

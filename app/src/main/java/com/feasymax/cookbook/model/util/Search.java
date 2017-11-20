@@ -33,37 +33,19 @@ public class Search {
          if (activity == 0){
              int userId = Application.getUser().getUserID();
 
-             results = userDao.searchUserRecipes(userId, searchTokens);
+             results = userDao.searchRecipes(true, userId, searchTokens);
          }
          else {
-             results = userDao.searchDiscoverRecipes(searchTokens);
+             results = userDao.searchRecipes(false, -1, searchTokens);
          }
 
          return results;
          //return title ,duration(int) and bitmap(image)
      }
+
 //    Take a string, connect database, search , then return a list
 //    This is from discover page
 
-
-
-//    public void Search (View view){
-//        String str1=editText.getText().toString();
-//        String str2=connect().searchData(str1);
-//        textView.setText(str2);
-//    }
-//
-//    public void Name (){
-//        String str1=editText.getText().toString();
-//        String str2=database.searchName(str1);
-//        textView.setText(str2);
-//    }
-//        public void Duration(View view){
-//        String str1=editText.getText().toString();
-//        String str2=database.searchDuration(str1);
-//        textView.setText(str2);
-//            //connect to db
-//    }
 
 
 }
