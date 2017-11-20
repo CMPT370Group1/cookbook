@@ -34,9 +34,9 @@ import java.util.List;
  */
 
 public class RecipesFragment extends ShowRecipesFragment{
-/*
-    private RelativeLayout rl;
-    */
+
+    private final String FRAGMENT_ID = "RecipesFragment";
+
     private Button btnAllCategories;
 
     ListView list;
@@ -97,14 +97,14 @@ public class RecipesFragment extends ShowRecipesFragment{
     public void onItemClick(int mPosition)
     {
         RecipeListModel tempValues = CustomListViewValuesArr.get(mPosition);
-        // TODO: remove image from Recipe constructor and get bigger version from db in getRecipeFromShortInfo
-        Recipe curr = new Recipe(tempValues.getRecipeId(), tempValues.getRecipeTitle(), tempValues.getRecipeDuration(), tempValues.getRecipeImage());
-        com.feasymax.cookbook.model.Application.getRecipeFromShortInfo(curr);
+        Recipe recipe = Application.getRecipeFromShortInfo(tempValues);
         if (this.getActivity() instanceof RecipesActivity) {
-            com.feasymax.cookbook.model.Application.setUserCurrentRecipe(curr);
+            recipe.setCategory(Application.getUserCollection().getCategory());
+            Application.setUserCurrentRecipe(recipe);
         }
         else if (this.getActivity() instanceof DiscoverActivity) {
-            com.feasymax.cookbook.model.Application.setDiscoverCurrentRecipe(curr);
+            recipe.setCategory(Application.getDiscoverCollection().getCategory());
+            Application.setDiscoverCurrentRecipe(recipe);
         }
         else {
             Log.println(Log.ERROR, "onItemClick", "Unexpected activity");
@@ -118,7 +118,7 @@ public class RecipesFragment extends ShowRecipesFragment{
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
         // Store the Fragment in stack
-        transaction.addToBackStack(null);
+        transaction.addToBackStack(FRAGMENT_ID);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
 
@@ -127,7 +127,7 @@ public class RecipesFragment extends ShowRecipesFragment{
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
         // Store the Fragment in stack
-        transaction.addToBackStack(null);
+        transaction.addToBackStack(FRAGMENT_ID);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
 

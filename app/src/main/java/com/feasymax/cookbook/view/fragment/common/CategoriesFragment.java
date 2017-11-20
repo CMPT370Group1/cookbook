@@ -24,7 +24,9 @@ import java.util.ArrayList;
  * Created by Olya on 2017-09-21.
  */
 
-public class CategoriesFragment extends Fragment{
+public class CategoriesFragment extends OnBackPressFragment{
+
+    private final String FRAGMENT_ID = "CategoriesFragment";
 
     private ImageButton btnBreakfast;
     private ImageButton btnSnack;
@@ -99,7 +101,7 @@ public class CategoriesFragment extends Fragment{
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
         // Store the Fragment in stack
-        transaction.addToBackStack(null);
+        transaction.addToBackStack(FRAGMENT_ID);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
 

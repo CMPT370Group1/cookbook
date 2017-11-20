@@ -59,14 +59,14 @@ public class RecipesActivity extends ActivityMenuTabs {
         });
     }
 
-    public void navigateFragment(int position){
+    public void navigateFragment(int position, final String id){
         mViewPager.setCurrentItem(position, true);
 
         RecipeViewFragment a2Fragment = new RecipeViewFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         // Store the Fragment in stack
-        transaction.addToBackStack(null);
+        transaction.addToBackStack(id);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
 
     }

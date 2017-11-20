@@ -296,20 +296,21 @@ public class Application {
         }
 
         recipe.setId(id);
-        RecipeListModel recipeModel = new RecipeListModel();
-        recipeModel.setRecipeId(recipe.getId());
-        recipeModel.setRecipeTitle(recipe.getTitle());
-        recipeModel.setRecipeDuration(recipe.getDuration());
-        if (recipe.getImage() != null) {
-            recipeModel.setRecipeImage(Graphics.resize(recipe.getImage(), 200, 200));
-        }
-        else {
-            recipeModel.setRecipeImage(image_icon);
-        }
-
-
         setUserCurrentRecipe(recipe);
-        addUserRecipe(recipeModel);
+
+        if (recipe.getCategory() == getUserCollection().getCategory()) {
+            RecipeListModel recipeModel = new RecipeListModel();
+            recipeModel.setRecipeId(recipe.getId());
+            recipeModel.setRecipeTitle(recipe.getTitle());
+            recipeModel.setRecipeDuration(recipe.getDuration());
+            if (recipe.getImage() != null) {
+                recipeModel.setRecipeImage(Graphics.resize(recipe.getImage(), 200, 200));
+            }
+            else {
+                recipeModel.setRecipeImage(image_icon);
+            }
+            addUserRecipe(recipeModel);
+        }
 
         return 0;
     }
@@ -328,31 +329,10 @@ public class Application {
     }
 
     // TODO: change the stub to actual function
-    public static void getRecipeFromShortInfo(Recipe recipe) {
-        //recipe.setImage(null);
-        recipe.setCategory(0);
-        recipe.setDirections("Directions to make this recipe. Directions to make this recipe. " +
-                "Directions to make this recipe. Directions to make this recipe. Directions to " +
-                "make this recipe. Directions to make this recipe. Directions to make this recipe.");
-        List<Ingredient> ingredients = new LinkedList<>();
-        ingredients.add(new Ingredient("butter", 200, 1));
-        ingredients.add(new Ingredient("milk", 1, 7));
-        ingredients.add(new Ingredient("flour", 2, 7));
-        ingredients.add(new Ingredient("salt", 0.5, 5));
-        ingredients.add(new Ingredient("sugar", 3, 6));
-        recipe.setIngredients(ingredients);
-        List<String> tags = new LinkedList<>();
-        tags.add("Breakfast");
-        tags.add("Yummy");
-        tags.add("Breakfast");
-        tags.add("Yummyfdfd");
-        tags.add("Breakfast");
-        tags.add("Yummydfdfdfdfdfd");
-        tags.add("Breakfa");
-        tags.add("Yummyaa");
-        tags.add("Breakfast");
-        tags.add("YummyYummyYummy");
-
-        recipe.setTags(tags);
+    public static Recipe getRecipeFromShortInfo(RecipeListModel rlm) {
+        Recipe recipe = new Recipe(rlm.getRecipeId(), rlm.getRecipeTitle(), rlm.getRecipeDuration());
+        UserDao userDao = new UserDao();
+        userDao.updateRecipe(recipe);
+        return recipe;
     }
 }

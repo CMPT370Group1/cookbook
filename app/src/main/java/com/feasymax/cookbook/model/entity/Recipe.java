@@ -61,7 +61,7 @@ public class Recipe {
         this.image = image;
     }
 
-    public Recipe(int id, String title, int duration, Bitmap image) {
+    public Recipe(int id, String title, int duration) {
         this.id = id;
         this.title = title;
         this.category = -1;
@@ -69,7 +69,7 @@ public class Recipe {
         this.directions = null;
         this.duration = duration;
         this.tags = null;
-        this.image = image;
+        this.image = null;
     }
 
     /**
@@ -223,6 +223,7 @@ public class Recipe {
                 ", directions = '" + directions + '\'' +
                 ", duration = " + duration +
                 ", tags = " + tags +
+                ", image = " + image +
                 '}';
     }
 }

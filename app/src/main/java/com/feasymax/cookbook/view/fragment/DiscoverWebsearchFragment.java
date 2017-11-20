@@ -9,12 +9,13 @@ import android.view.ViewGroup;
 
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.util.WebSearch;
+import com.feasymax.cookbook.view.fragment.common.OnBackPressFragment;
 
 /**
  * Created by Olya on 2017-09-21.
  */
 
-public class DiscoverWebsearchFragment extends Fragment {
+public class DiscoverWebsearchFragment extends OnBackPressFragment {
 
     android.widget.SearchView searchView;
 

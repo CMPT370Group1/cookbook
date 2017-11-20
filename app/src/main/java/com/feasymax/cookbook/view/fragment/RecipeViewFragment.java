@@ -26,6 +26,7 @@ import com.feasymax.cookbook.model.entity.Ingredient;
 import com.feasymax.cookbook.model.entity.Recipe;
 import com.feasymax.cookbook.view.DiscoverActivity;
 import com.feasymax.cookbook.view.RecipesActivity;
+import com.feasymax.cookbook.view.fragment.common.OnBackPressFragment;
 
 import java.text.DecimalFormat;
 import java.util.LinkedList;
@@ -40,7 +41,7 @@ import pl.charmas.android.tagview.TagView;
  * or save it (Discover activity).
  */
 
-public class RecipeViewFragment extends Fragment{
+public class RecipeViewFragment extends OnBackPressFragment{
 
     /*
      * Format to display a fraction
@@ -124,46 +125,57 @@ public class RecipeViewFragment extends Fragment{
         recipeDuration.setTags(duration, " ");
 
         // Fill the table layout recipeIngredients with rows, one for each ingredient
-        Log.println(Log.INFO, "In RecipeViewFragment", "Ingredients: " + currentRecipe.getIngredients().toString());
-        for (Ingredient ingredient : currentRecipe.getIngredients()) {
-            View tr = inflater.inflate(R.layout.ingredient_view_layout, null, false);
+        if (currentRecipe.getIngredients() != null) {
+            Log.println(Log.INFO, "In RecipeViewFragment", "Ingredients: " + currentRecipe.getIngredients().toString());
 
-            // Fill the row with ingredient info
-            EditText quantity = tr.findViewById(R.id.quantity);
-            quantity.setText(DF.format(ingredient.getQuantity()));
+            for (Ingredient ingredient : currentRecipe.getIngredients()) {
+                View tr = inflater.inflate(R.layout.ingredient_view_layout, null, false);
 
-            Spinner unit = tr.findViewById(R.id.unit);
-            // correctly display ingredient's units in the dropdown spinner
-            if (ingredient.getUnit() < 5) {
-                ArrayAdapter adapterUnit = ArrayAdapter.createFromResource(this.getContext(),
-                        R.array.mass_units, R.layout.spinner_item_center);
-                adapterUnit.setDropDownViewResource(R.layout.spinner_dropdown_item);
-                unit.setAdapter(adapterUnit);
-                unit.setSelection(ingredient.getUnit());
+                // Fill the row with ingredient info
+                EditText quantity = tr.findViewById(R.id.quantity);
+                quantity.setText(DF.format(ingredient.getQuantity()));
+
+                Spinner unit = tr.findViewById(R.id.unit);
+                // correctly display ingredient's units in the dropdown spinner
+                if (ingredient.getUnit() < 5) {
+                    ArrayAdapter adapterUnit = ArrayAdapter.createFromResource(this.getContext(),
+                            R.array.mass_units, R.layout.spinner_item_center);
+                    adapterUnit.setDropDownViewResource(R.layout.spinner_dropdown_item);
+                    unit.setAdapter(adapterUnit);
+                    unit.setSelection(ingredient.getUnit());
+                }
+                else {
+                    ArrayAdapter adapterUnit = ArrayAdapter.createFromResource(this.getContext(),
+                            R.array.volume_units, R.layout.spinner_item_center);
+                    adapterUnit.setDropDownViewResource(R.layout.spinner_dropdown_item);
+                    unit.setAdapter(adapterUnit);
+                    unit.setSelection(ingredient.getUnit() - 5);
+                }
+
+                TextView name = tr.findViewById(R.id.name);
+                name.setText(ingredient.getName());
+
+                // Add row to TableLayout.
+                recipeIngredients.addView(tr, new TableLayout.LayoutParams(
+                        TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
             }
-            else {
-                ArrayAdapter adapterUnit = ArrayAdapter.createFromResource(this.getContext(),
-                        R.array.volume_units, R.layout.spinner_item_center);
-                adapterUnit.setDropDownViewResource(R.layout.spinner_dropdown_item);
-                unit.setAdapter(adapterUnit);
-                unit.setSelection(ingredient.getUnit() - 5);
-            }
-
-            TextView name = tr.findViewById(R.id.name);
-            name.setText(ingredient.getName());
-
-            // Add row to TableLayout.
-            recipeIngredients.addView(tr, new TableLayout.LayoutParams(
-                    TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        }
+        else {
+            Log.println(Log.INFO, "In RecipeViewFragment", "Ingredients: null");
         }
 
         // Set up the recipe tags
         LinkedList<TagView.Tag> tags = new LinkedList<>();
-        Log.println(Log.INFO, "In RecipeViewFragment", "Tags: " + currentRecipe.getTags().toString());
-        for (String content : currentRecipe.getTags()) {
-            tags.add(new TagView.Tag(content, Color.parseColor("#ff4081"))); // color is colorAccent
+        if (currentRecipe.getTags() != null) {
+            Log.println(Log.INFO, "In RecipeViewFragment", "Tags: " + currentRecipe.getTags().toString());
+            for (String content : currentRecipe.getTags()) {
+                tags.add(new TagView.Tag(content, Color.parseColor("#ff4081"))); // color is colorAccent
+            }
+            recipeTags.setTags(tags, " ");
         }
-        recipeTags.setTags(tags, " ");
+        else {
+            Log.println(Log.INFO, "In RecipeViewFragment", "Tags: null");
+        }
 
         return view ;
     }

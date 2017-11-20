@@ -32,6 +32,7 @@ import com.feasymax.cookbook.model.Application;
 import com.feasymax.cookbook.model.entity.Ingredient;
 import com.feasymax.cookbook.model.entity.Recipe;
 import com.feasymax.cookbook.util.Graphics;
+import com.feasymax.cookbook.view.fragment.common.OnBackPressFragment;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -45,7 +46,9 @@ import java.util.Map;
  * It has a form to add a new user recipe manually.
  */
 
-public class RecipeEditFragment extends Fragment {
+public class RecipeEditFragment extends OnBackPressFragment {
+
+    private final String FRAGMENT_ID = "RecipeEditFragment";
 
     /*
      * Format to display a fraction
@@ -431,7 +434,7 @@ public class RecipeEditFragment extends Fragment {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
         // Store the Fragment in stack
-        transaction.addToBackStack(null);
+        transaction.addToBackStack(FRAGMENT_ID);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
 }

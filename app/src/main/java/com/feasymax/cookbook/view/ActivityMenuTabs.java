@@ -15,13 +15,17 @@ import android.widget.Button;
 
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
-import com.feasymax.cookbook.view.tab.ToolsAdapter;
+import com.feasymax.cookbook.view.back_press.OnBackClickListener;
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by Olya on 2017-10-08.
  */
 
-public abstract class ActivityMenuTabs extends AppCompatActivity {
+public abstract class ActivityMenuTabs extends BaseActivity {
 
     protected TabLayout mTabLayout;
     public static ViewPager mViewPager;

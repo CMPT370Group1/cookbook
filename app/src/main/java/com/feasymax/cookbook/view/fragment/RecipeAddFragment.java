@@ -42,6 +42,7 @@ import com.feasymax.cookbook.util.Graphics;
 import com.feasymax.cookbook.view.ActivityMenuTabs;
 import com.feasymax.cookbook.view.DiscoverActivity;
 import com.feasymax.cookbook.view.RecipesActivity;
+import com.feasymax.cookbook.view.fragment.common.OnBackPressFragment;
 import com.feasymax.cookbook.view.list.RecipeListModel;
 
 import java.io.FileNotFoundException;
@@ -58,7 +59,9 @@ import java.util.Map;
  * It has a form to add a new user recipe manually.
  */
 
-public class RecipeAddFragment extends Fragment {
+public class RecipeAddFragment extends OnBackPressFragment {
+
+    private final String FRAGMENT_ID = "RecipeAddFragment";
 
     /*
      * Format to display a fraction
@@ -376,11 +379,11 @@ public class RecipeAddFragment extends Fragment {
             recipe.setTags(tagList);
 
             if (recipeImageBitmap == null) {
-                recipeIconBitmap = Graphics.decodeSampledBitmapFromResource(getResources(), R.drawable.no_image420, 200, 200);
-                recipeIconBitmap = Graphics.resize(recipeIconBitmap, 200, 200);
+                recipeImageBitmap = Graphics.decodeSampledBitmapFromResource(getResources(), R.drawable.no_image420, 420, 420);
             }
+            recipe.setImage(recipeImageBitmap);
 
-            Log.println(Log.INFO, "addRecipe", Application.getUserCurrentRecipe().toString());
+            Log.println(Log.INFO, "addRecipe", recipe.toString());
 
             if (Application.addNewRecipe(recipe, true, recipeIconBitmap) != -1) {
                 Log.println(Log.INFO, "addRecipe", Application.getUserCurrentRecipe().toString());
@@ -438,6 +441,6 @@ public class RecipeAddFragment extends Fragment {
     }
 
     protected void enterRecipeViewFragment() {
-        ((RecipesActivity)getActivity()).navigateFragment(0);
+        ((RecipesActivity)getActivity()).navigateFragment(0, FRAGMENT_ID);
     }
 }

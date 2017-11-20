@@ -13,12 +13,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.feasymax.cookbook.R;
+import com.feasymax.cookbook.view.fragment.common.OnBackPressFragment;
 
 /**
  * Created by Olya on 2017-09-21.
  */
 
-public class RecipeLinksFragment extends Fragment {
+public class RecipeLinksFragment extends OnBackPressFragment {
 
     private Button openWebpage;
 

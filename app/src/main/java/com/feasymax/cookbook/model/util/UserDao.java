@@ -369,7 +369,7 @@ public class UserDao {
                     try {
                         int id = -1;
                         String title = null;
-                        int duration = -1;
+                        int duration = 0;
                         byte[] image_icon = null;
                         Bitmap image = null;
 
@@ -377,7 +377,7 @@ public class UserDao {
                         list = new LinkedList<>();
 
                         // insert all recipe info into recipes table
-                        String query = "SELECT id, title, durtion_min, image FROM recipes r WHERE ";
+                        String query = "SELECT id, title, durtion_min, image_icon FROM recipes r WHERE ";
                         if (userCollection) {
                             query += " r.id IN (SELECT recipe_id FROM user_recipe " +
                                     "WHERE user_id = " + userID + ") AND ";
@@ -386,18 +386,23 @@ public class UserDao {
 
                         stmt = conn.prepareStatement(query);
                         rs = stmt.executeQuery();
+                        if (!rs.isBeforeFirst() ) {
+                            throw new SQLException("No data found");
+                        }
                         while (rs.next()) {
                             id = rs.getInt("id");
                             title = rs.getString("title");
                             duration = rs.getInt("durtion_min");
-                            image_icon = rs.getBytes("image");
-                            if (image_icon != null) {
+                            if (rs.getObject("image_icon") != null && !rs.wasNull()) {
+                                image_icon = rs.getBytes("image_icon");
                                 image = DbBitmapUtility.getImage(image_icon);
                             }
 
                             recipeListModel = new RecipeListModel(id, title, image, duration);
                             Log.println(Log.INFO, "updateRecipeCollection", recipeListModel.toString());
                             list.add(recipeListModel);
+
+                            image_icon = null;
                         }
 
                         stmt.close();
@@ -429,6 +434,125 @@ public class UserDao {
         }
 
         return list;
+    }
+
+
+    /**
+     * Add new recipe to the database, add the recipeID to the user_recipe table with state 1 and
+     * return recipeID. If the user does not own the recipe, simply add the recipeID to the
+     * user_recipe table with state 0
+     * @param recipe
+     * @return result code
+     */
+    public int updateRecipe(final Recipe recipe) {
+        recipeID = recipe.getId();
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try  {
+                    connect();
+                    PreparedStatement stmt = null;
+                    ResultSet rs = null;
+
+                    // do not commit after every query
+                    conn.setAutoCommit(false);
+
+                    try {
+                        List<Ingredient> ingredients = null;
+                        List<String> tags = null;
+                        String directions = null;
+                        byte[] image_ba = null;
+                        Bitmap image = null;
+
+                        // insert all recipe info into recipes table
+                        String query = "SELECT recipe_description, image FROM recipes r " +
+                                "WHERE r.id = " + recipeID;
+
+                        stmt = conn.prepareStatement(query);
+                        rs = stmt.executeQuery();
+                        if (rs.next()) {
+                            directions = rs.getString("recipe_description");
+                            if (rs.getObject("image") != null && !rs.wasNull()) {
+                                image_ba = rs.getBytes("image");
+                                image = DbBitmapUtility.getImage(image_ba);
+                            }
+
+                            recipe.setDirections(directions);
+                            recipe.setImage(image);
+                            Log.println(Log.INFO, "updateRecipe", recipe.toString());
+                        }
+
+                        // get ingredients
+                        query = "SELECT name, quantity, unit FROM ingredients i " +
+                                "WHERE i.recipe_id = " + recipeID;
+
+                        stmt = conn.prepareStatement(query);
+                        rs = stmt.executeQuery();
+                        if (rs.isBeforeFirst() ) {
+                            ingredients = new LinkedList<>();
+                            String name = null;
+                            double quantity = 0.0;
+                            int unit = 0;
+                            while (rs.next()) {
+                                name = rs.getString("name");
+                                quantity = Double.valueOf(rs.getString("quantity"));
+                                unit = Integer.valueOf(rs.getString("unit"));
+
+                                ingredients.add(new Ingredient(name, quantity, unit));
+                                Log.println(Log.INFO, "updateRecipe", ingredients.toString());
+                            }
+                        }
+                        recipe.setIngredients(ingredients);
+
+                        // get tags
+                        query = "SELECT tag_name FROM tag t " +
+                                "WHERE t.recipe_id = " + recipeID;
+
+                        stmt = conn.prepareStatement(query);
+                        rs = stmt.executeQuery();
+                        if (rs.isBeforeFirst() ) {
+                            tags = new LinkedList<>();
+                            String tag_name = null;
+                            while (rs.next()) {
+                                tag_name = rs.getString("tag_name");
+
+                                tags.add(tag_name);
+                                Log.println(Log.INFO, "updateRecipe", tags.toString());
+                            }
+                        }
+                        recipe.setTags(tags);
+
+                        stmt.close();
+                        conn.commit();
+
+                    } catch(SQLException e) {
+                        System.out.println("SQL error");
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            if (conn != null)
+                                conn.close();
+                        }
+                        catch(SQLException e) {
+
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        Log.println(Log.INFO, "updateRecipe", recipe.toString());
+        return 0;
     }
 
 
@@ -491,7 +615,9 @@ public class UserDao {
                             stmt.setString(5, description);
                             stmt.setBytes(6, image);
                             stmt.setBytes(7, image_icon);
-                            stmt.executeUpdate();
+                            if (stmt.executeUpdate() <= 0) {
+                                throw new SQLException("No recipe info was inserted");
+                            }
 
                             // insert all recipe's ingredients
                             for (Ingredient ingr: recipe.getIngredients()) {
@@ -514,6 +640,9 @@ public class UserDao {
                                 stmt.setInt(4, ingr.getUnit());
                                 stmt.setInt(5, recipeID);
                                 stmt.executeUpdate();
+                                if (stmt.executeUpdate() <= 0) {
+                                    throw new SQLException("No ingredient info was inserted");
+                                }
                             }
                             // insert all recipe's tags
                             for (String tag: recipe.getTags()) {
@@ -534,6 +663,9 @@ public class UserDao {
                                 stmt.setString(2, tag);
                                 stmt.setInt(3, recipeID);
                                 stmt.executeUpdate();
+                                if (stmt.executeUpdate() <= 0) {
+                                    throw new SQLException("No tag info was inserted");
+                                }
                             }
 
                         }
@@ -559,6 +691,9 @@ public class UserDao {
                         stmt.setInt(3, recipeID);
                         stmt.setInt(4, ((owner) ? 1 : 0));
                         stmt.executeUpdate();
+                        if (stmt.executeUpdate() <= 0) {
+                            throw new SQLException("No recipe id was inserted");
+                        }
 
                         // close the statement and commit all changes
                         stmt.close();

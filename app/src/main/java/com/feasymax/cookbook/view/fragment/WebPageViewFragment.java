@@ -8,12 +8,13 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 
 import com.feasymax.cookbook.R;
+import com.feasymax.cookbook.view.fragment.common.OnBackPressFragment;
 
 /**
  * Created by Olya on 2017-10-12.
  */
 
-public class WebPageViewFragment extends Fragment{
+public class WebPageViewFragment extends OnBackPressFragment {
 
     private WebView webView;
 

@@ -12,6 +12,7 @@ import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.util.Search;
 import com.feasymax.cookbook.view.DiscoverActivity;
 import com.feasymax.cookbook.view.RecipesActivity;
+import com.feasymax.cookbook.view.fragment.common.OnBackPressFragment;
 import com.feasymax.cookbook.view.list.RecipeListModel;
 
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.List;
  * Created by Olya on 2017-09-21.
  */
 
-public class RecipeSearchFragment extends Fragment {
+public class RecipeSearchFragment extends OnBackPressFragment {
 
     private SearchView searchView;
     private List<RecipeListModel> searchResults;

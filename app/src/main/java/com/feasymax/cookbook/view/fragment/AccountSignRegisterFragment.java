@@ -14,12 +14,13 @@ import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
 import com.feasymax.cookbook.view.MainActivity;
 import com.feasymax.cookbook.view.RegisterActivity;
+import com.feasymax.cookbook.view.fragment.common.OnBackPressFragment;
 
 /**
  * Created by Olya on 2017-09-21.
  */
 
-public class AccountSignRegisterFragment extends Fragment{
+public class AccountSignRegisterFragment extends OnBackPressFragment{
 
     private EditText rsUserName;
     private EditText rsUserPassword;
