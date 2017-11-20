@@ -7,6 +7,7 @@ package com.feasymax.cookbook.model.util;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.feasymax.cookbook.model.entity.Ingredient;
 import com.feasymax.cookbook.model.entity.Recipe;
 import com.feasymax.cookbook.util.DbBitmapUtility;
 import com.feasymax.cookbook.util.Graphics;
@@ -360,6 +361,7 @@ public class UserDao {
 
                     try {
                         conn.setAutoCommit(false);
+                        // select new id for the new recipe
                         stmt = conn.prepareStatement("SELECT MAX(id) AS id FROM recipes");
                         rs = stmt.executeQuery();
                         int autoID = 1;
@@ -367,7 +369,9 @@ public class UserDao {
                             autoID = rs.getInt("id") + 1;
                         }
                         Log.println(Log.INFO, "addNewRecipe", "new id = " + autoID);
+                        recipeID = autoID;
 
+                        // insert all recipe info into recipes table
                         String query = "INSERT INTO recipes (id, title, category_name, durtion_min, " +
                                 "recipe_description, image, image_icon) VALUES (?, ?, ?, ?, ?, ?, ?)";
                         stmt = conn.prepareStatement(query);
@@ -380,10 +384,10 @@ public class UserDao {
                         stmt.setBytes(7, image_icon);
                         stmt.executeUpdate();
 
-                        recipeID = autoID;
-
-                        if (recipeID != -1) {
-                            stmt = conn.prepareStatement("SELECT MAX(id) AS id FROM user_recipe");
+                        // insert all recipe's ingredients
+                        for (Ingredient ingr: recipe.getIngredients()) {
+                            // select new id for the new ingredient
+                            stmt = conn.prepareStatement("SELECT MAX(id) AS id FROM ingredients");
                             rs = stmt.executeQuery();
                             autoID = 1;
                             if (rs.next()) {
@@ -391,18 +395,61 @@ public class UserDao {
                             }
                             Log.println(Log.INFO, "addNewRecipe", "new id = " + autoID);
 
-                            query = "INSERT INTO user_recipe (id, user_id, recipe_id, states) " +
-                                    "VALUES (?, ?, ?, ?)";
+                            // insert an ingredient
+                            query = "INSERT INTO ingredients (id, name, quantity, unit, recipe_id) " +
+                                    "VALUES (?, ?, ?, ?, ?)";
                             stmt = conn.prepareStatement(query);
                             stmt.setInt(1, autoID);
-                            stmt.setInt(2, userID);
-                            stmt.setInt(3, recipeID);
-                            stmt.setInt(4, 0);
+                            stmt.setString(2, ingr.getName());
+                            stmt.setDouble(3, ingr.getQuantity());
+                            stmt.setInt(4, ingr.getUnit());
+                            stmt.setInt(5, recipeID);
                             stmt.executeUpdate();
-
-                            stmt.close();
-                            conn.commit();
                         }
+                        // insert all recipe's tags
+                        for (String tag: recipe.getTags()) {
+                            // select new id for the new ingredient
+                            stmt = conn.prepareStatement("SELECT MAX(id) AS id FROM tag");
+                            rs = stmt.executeQuery();
+                            autoID = 1;
+                            if (rs.next()) {
+                                autoID = rs.getInt("id") + 1;
+                            }
+                            Log.println(Log.INFO, "addNewRecipe", "new id = " + autoID);
+
+                            // insert an ingredient
+                            query = "INSERT INTO tag (id, tag_name, recipe_id) " +
+                                    "VALUES (?, ?, ?)";
+                            stmt = conn.prepareStatement(query);
+                            stmt.setInt(1, autoID);
+                            stmt.setString(2, tag);
+                            stmt.setInt(3, recipeID);
+                            stmt.executeUpdate();
+                        }
+
+                        // finally, insert recipe id and user id into user_recipe table to indicate
+                        // that the user has the recipe in the collection
+                        stmt = conn.prepareStatement("SELECT MAX(id) AS id FROM user_recipe");
+                        rs = stmt.executeQuery();
+                        autoID = 1;
+                        if (rs.next()) {
+                            autoID = rs.getInt("id") + 1;
+                        }
+                        Log.println(Log.INFO, "addNewRecipe", "new id = " + autoID);
+
+                        query = "INSERT INTO user_recipe (id, user_id, recipe_id, states) " +
+                                "VALUES (?, ?, ?, ?)";
+                        stmt = conn.prepareStatement(query);
+                        stmt.setInt(1, autoID);
+                        stmt.setInt(2, userID);
+                        stmt.setInt(3, recipeID);
+                        stmt.setInt(4, 0);
+                        stmt.executeUpdate();
+
+                        // close the statement and commit all changes
+                        stmt.close();
+                        conn.commit();
+
                     } catch(SQLException e) {
                         System.out.println("SQL error");
                         e.printStackTrace();
