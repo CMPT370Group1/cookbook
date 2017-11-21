@@ -179,6 +179,7 @@ public class UserDao {
                         rs = stmt.executeQuery(query);
                         // if the username is not already taken
                         if (!rs.next()) {
+                            
                             rs = stmt.executeQuery("SELECT MAX(id) AS id FROM users");
                             int autoID = 1;
                             if (rs.next()) {
@@ -594,51 +595,37 @@ public class UserDao {
                                 image_icon = DbBitmapUtility.getBytes(Graphics.resize(recipe.getImage(), 200, 200));
                             }
 
-                            // select new id for the new recipe
-                            stmt = conn.prepareStatement("SELECT MAX(id) AS id FROM recipes");
-                            rs = stmt.executeQuery();
-                            int autoID = 1;
-                            if (rs.next()) {
-                                autoID = rs.getInt("id") + 1;
-                            }
-                            Log.println(Log.INFO, "addNewRecipe", "new id = " + autoID);
-                            recipeID = autoID;
-
                             // insert all recipe info into recipes table
-                            String query = "INSERT INTO recipes (id, title, category_name, durtion_min, " +
-                                    "recipe_description, image, image_icon) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                            String query = "INSERT INTO recipes (title, category_name, durtion_min, " +
+                                    "recipe_description, image, image_icon) VALUES (?, ?, ?, ?, ?, ?) RETURNING id";
                             stmt = conn.prepareStatement(query);
-                            stmt.setInt(1, autoID);
-                            stmt.setString(2, title);
-                            stmt.setString(3, category);
-                            stmt.setInt(4, duration);
-                            stmt.setString(5, description);
-                            stmt.setBytes(6, image);
-                            stmt.setBytes(7, image_icon);
-                            if (stmt.executeUpdate() <= 0) {
+                            //stmt.setInt(1, autoID);
+                            stmt.setString(1, title);
+                            stmt.setString(2, category);
+                            stmt.setInt(3, duration);
+                            stmt.setString(4, description);
+                            stmt.setBytes(5, image);
+                            stmt.setBytes(6, image_icon);
+                            rs = stmt.executeQuery();
+                            if (!rs.next()) {
                                 throw new SQLException("No recipe info was inserted");
                             }
+                            recipeID = rs.getInt("id");
+                            Log.println(Log.INFO, "recipeID", recipeID+"");
+
 
                             // insert all recipe's ingredients
                             for (Ingredient ingr: recipe.getIngredients()) {
-                                // select new id for the new ingredient
-                                stmt = conn.prepareStatement("SELECT MAX(id) AS id FROM ingredients");
-                                rs = stmt.executeQuery();
-                                autoID = 1;
-                                if (rs.next()) {
-                                    autoID = rs.getInt("id") + 1;
-                                }
-                                Log.println(Log.INFO, "addNewRecipe", "new id = " + autoID);
 
                                 // insert an ingredient
-                                query = "INSERT INTO ingredients (id, name, quantity, unit, recipe_id) " +
-                                        "VALUES (?, ?, ?, ?, ?)";
+                                query = "INSERT INTO ingredients (name, quantity, unit, recipe_id) " +
+                                        "VALUES (?, ?, ?, ?)";
                                 stmt = conn.prepareStatement(query);
-                                stmt.setInt(1, autoID);
-                                stmt.setString(2, ingr.getName());
-                                stmt.setDouble(3, ingr.getQuantity());
-                                stmt.setInt(4, ingr.getUnit());
-                                stmt.setInt(5, recipeID);
+                                //stmt.setInt(1, autoID);
+                                stmt.setString(1, ingr.getName());
+                                stmt.setDouble(2, ingr.getQuantity());
+                                stmt.setInt(3, ingr.getUnit());
+                                stmt.setInt(4, recipeID);
                                 stmt.executeUpdate();
                                 if (stmt.executeUpdate() <= 0) {
                                     throw new SQLException("No ingredient info was inserted");
@@ -646,22 +633,14 @@ public class UserDao {
                             }
                             // insert all recipe's tags
                             for (String tag: recipe.getTags()) {
-                                // select new id for the new ingredient
-                                stmt = conn.prepareStatement("SELECT MAX(id) AS id FROM tag");
-                                rs = stmt.executeQuery();
-                                autoID = 1;
-                                if (rs.next()) {
-                                    autoID = rs.getInt("id") + 1;
-                                }
-                                Log.println(Log.INFO, "addNewRecipe", "new id = " + autoID);
 
                                 // insert an ingredient
-                                query = "INSERT INTO tag (id, tag_name, recipe_id) " +
-                                        "VALUES (?, ?, ?)";
+                                query = "INSERT INTO tag (tag_name, recipe_id) " +
+                                        "VALUES (?, ?)";
                                 stmt = conn.prepareStatement(query);
-                                stmt.setInt(1, autoID);
-                                stmt.setString(2, tag);
-                                stmt.setInt(3, recipeID);
+                                //stmt.setInt(1, autoID);
+                                stmt.setString(1, tag);
+                                stmt.setInt(2, recipeID);
                                 stmt.executeUpdate();
                                 if (stmt.executeUpdate() <= 0) {
                                     throw new SQLException("No tag info was inserted");
@@ -673,23 +652,13 @@ public class UserDao {
                             recipeID = recipe.getId();
                         }
 
-                        // finally, insert recipe id and user id into user_recipe table to indicate
-                        // that the user has the recipe in the collection
-                        stmt = conn.prepareStatement("SELECT MAX(id) AS id FROM user_recipe");
-                        rs = stmt.executeQuery();
-                        int autoID = 1;
-                        if (rs.next()) {
-                            autoID = rs.getInt("id") + 1;
-                        }
-                        Log.println(Log.INFO, "addNewRecipe", "new id = " + autoID);
-
-                        String query = "INSERT INTO user_recipe (id, user_id, recipe_id, states) " +
-                                "VALUES (?, ?, ?, ?)";
+                        String query = "INSERT INTO user_recipe (user_id, recipe_id, states) " +
+                                "VALUES (?, ?, ?)";
                         stmt = conn.prepareStatement(query);
-                        stmt.setInt(1, autoID);
-                        stmt.setInt(2, userID);
-                        stmt.setInt(3, recipeID);
-                        stmt.setInt(4, ((owner) ? 1 : 0));
+                        //stmt.setInt(1, autoID);
+                        stmt.setInt(1, userID);
+                        stmt.setInt(2, recipeID);
+                        stmt.setInt(3, ((owner) ? 1 : 0));
                         stmt.executeUpdate();
                         if (stmt.executeUpdate() <= 0) {
                             throw new SQLException("No recipe id was inserted");
