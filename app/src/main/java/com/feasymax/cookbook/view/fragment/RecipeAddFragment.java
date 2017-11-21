@@ -2,20 +2,14 @@ package com.feasymax.cookbook.view.fragment;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.TabActivity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,9 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TabHost;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.feasymax.cookbook.R;
@@ -39,15 +31,9 @@ import com.feasymax.cookbook.model.Application;
 import com.feasymax.cookbook.model.entity.Ingredient;
 import com.feasymax.cookbook.model.entity.Recipe;
 import com.feasymax.cookbook.util.Graphics;
-import com.feasymax.cookbook.view.ActivityMenuTabs;
-import com.feasymax.cookbook.view.DiscoverActivity;
 import com.feasymax.cookbook.view.RecipesActivity;
-import com.feasymax.cookbook.view.fragment.common.OnBackPressFragment;
-import com.feasymax.cookbook.view.list.RecipeListModel;
 
-import java.io.FileNotFoundException;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -59,7 +45,7 @@ import java.util.Map;
  * It has a form to add a new user recipe manually.
  */
 
-public class RecipeAddFragment extends OnBackPressFragment {
+public class RecipeAddFragment extends Fragment {
 
     private final String FRAGMENT_ID = "RecipeAddFragment";
 
@@ -77,33 +63,34 @@ public class RecipeAddFragment extends OnBackPressFragment {
     /*
      * Recipe attributes
      */
-    private EditText recipeTitle;
-    private Spinner recipeCategory;
-    private TableLayout recipeIngredientTable;
-    private Map<Integer, View> recipeIngredients;
-    private List<Ingredient> ingredientList;
-    private int ingredientIndex;
-    private EditText recipeDirections;
-    private EditText recipeDurationHour;
-    private EditText recipeDurationMin;
-    private TableLayout recipeTagTable;
-    private Map<Integer, View> recipeTags;
-    private List<String> tagList;
-    private int tagIndex;
-    private ImageView recipeImage;
-    private Bitmap recipeImageBitmap;
-    private Bitmap recipeIconBitmap;
-    private TextView recipeImageText;
+    protected EditText recipeTitle;
+    protected Spinner recipeCategory;
+    protected TableLayout recipeIngredientTable;
+    protected Map<Integer, View> recipeIngredients;
+    protected List<Ingredient> ingredientList;
+    protected int ingredientIndex;
+    protected EditText recipeDirections;
+    protected EditText recipeDurationHour;
+    protected EditText recipeDurationMin;
+    protected TableLayout recipeTagTable;
+    protected Map<Integer, View> recipeTags;
+    protected List<String> tagList;
+    protected int tagIndex;
+    protected ImageView recipeImage;
+    protected Bitmap recipeImageBitmap;
+    protected Bitmap recipeIconBitmap;
+    protected TextView recipeImageText;
 
-    private ImageButton addIngredient;
-    private ImageButton addTag;
-    private Button addRecipe;
+    protected ImageButton addIngredient;
+    protected ImageButton addTag;
+    protected Button addRecipe;
 
     /**
      * Required empty public constructor
      */
     public RecipeAddFragment() {}
 
+    //TODO: add the button to remove image
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -150,14 +137,14 @@ public class RecipeAddFragment extends OnBackPressFragment {
         addIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addNewIngredient();
+                addNewIngredient(null);
             }
         });
 
         addTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addNewTag();
+                addNewTag(null);
             }
         });
 
@@ -170,7 +157,7 @@ public class RecipeAddFragment extends OnBackPressFragment {
         addRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addRecipe();
+                addRecipe(true, -1);
             }
         });
 
@@ -180,7 +167,7 @@ public class RecipeAddFragment extends OnBackPressFragment {
     /**
      * Check for permission to read storage and read the image (requesting permission if needed)
      */
-    private void pickImage()
+    protected void pickImage()
     {
         // if permission to access storage already granted
         if (ContextCompat.checkSelfPermission(getActivity(),
@@ -272,7 +259,7 @@ public class RecipeAddFragment extends OnBackPressFragment {
     }
 
 
-    private void addNewIngredient() {
+    protected void addNewIngredient(Ingredient ingr) {
         View tr = getActivity().getLayoutInflater().inflate(R.layout.ingredient_add_layout, null, false);
 
         EditText name = tr.findViewById(R.id.ingredientName);
@@ -284,10 +271,11 @@ public class RecipeAddFragment extends OnBackPressFragment {
         adapterUnit.setDropDownViewResource(R.layout.spinner_dropdown_item);
         unit.setAdapter(adapterUnit);
 
+        EditText quantity = tr.findViewById(R.id.ingredientQuantity);
+
         // Add row to TableLayout.
         recipeIngredientTable.addView(tr, new TableLayout.LayoutParams(
                 TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
-        name.requestFocus();
 
         recipeIngredients.put(ingredientIndex, tr);
 
@@ -304,9 +292,15 @@ public class RecipeAddFragment extends OnBackPressFragment {
 
         ingredientIndex++;
 
+        if (ingr != null) {
+            name.setText(ingr.getName());
+            unit.setSelection(ingr.getUnit());
+            quantity.setText(String.valueOf(ingr.getQuantity()));
+        }
+
     }
 
-    private void addNewTag() {
+    protected void addNewTag(String tag) {
         View tr = getActivity().getLayoutInflater().inflate(R.layout.tag_add_layout, null, false);
 
         EditText tagName = tr.findViewById(R.id.tagName);
@@ -314,7 +308,6 @@ public class RecipeAddFragment extends OnBackPressFragment {
         // Add row to TableLayout.
         recipeTagTable.addView(tr, new TableLayout.LayoutParams(
                 TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
-        tagName.requestFocus();
 
         recipeTags.put(tagIndex, tr);
 
@@ -331,14 +324,21 @@ public class RecipeAddFragment extends OnBackPressFragment {
 
         tagIndex++;
 
+        if (tag != null) {
+            tagName.setText(tag);
+        }
     }
 
     /**
      *
      */
-    private void addRecipe() {
+    // TODO: check that it reads all tags and ingredients
+    protected void addRecipe(boolean isNewRecipe, int recipeId) {
         if (recipeTitle.getText().length() != 0) {
             Recipe recipe = new Recipe();
+            if (!isNewRecipe) {
+                recipe.setId(recipeId);
+            }
             recipe.setTitle(recipeTitle.getText().toString());
             recipe.setCategory(recipeCategory.getSelectedItemPosition());
             for (int ingr: recipeIngredients.keySet()) {
@@ -385,7 +385,7 @@ public class RecipeAddFragment extends OnBackPressFragment {
 
             Log.println(Log.INFO, "addRecipe", recipe.toString());
 
-            if (Application.addNewRecipe(recipe, true, recipeIconBitmap) != -1) {
+            if (Application.addNewRecipe(isNewRecipe, recipe, true, recipeIconBitmap) != -1) {
                 Log.println(Log.INFO, "addRecipe", Application.getUserCurrentRecipe().toString());
                 Log.println(Log.INFO, "addRecipe", Application.getUserCollectionRecipes().toString());
 
@@ -399,7 +399,7 @@ public class RecipeAddFragment extends OnBackPressFragment {
 
     }
 
-    private void emptyFragment() {
+    protected void emptyFragment() {
         recipeTitle.setText("");
         recipeCategory.setSelection(12);
         recipeIngredientTable.removeAllViews();
