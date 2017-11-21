@@ -271,7 +271,7 @@ public class RecipeViewFragment extends OnBackPressFragment{
 
     private void deleteRecipe() {
         if (getActivity() instanceof RecipesActivity) {
-            Application.deleteRecipe(Application.getDiscoverCurrentRecipe());
+            Application.deleteRecipe(Application.getUserCurrentRecipe().getId());
             enterRecipesFragment();
         }
     }

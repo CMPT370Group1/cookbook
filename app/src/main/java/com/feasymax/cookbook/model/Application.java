@@ -315,9 +315,10 @@ public class Application {
         return 0;
     }
 
-    public static void deleteRecipe(Recipe recipe) {
+    public static void deleteRecipe(int recipeID) {
         Log.println(Log.INFO, "deleteRecipe","deleteRecipe");
-        // delete recipe from database
+        UserDao userDao = new UserDao();
+        userDao.deleteRecipe(getUser().getUserID(), recipeID);
         // delete corresponding recipe from UserCollection.recipes
         // set the UserCollection.currentRecipe to null
     }
