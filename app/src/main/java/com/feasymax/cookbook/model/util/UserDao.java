@@ -819,12 +819,12 @@ public class UserDao {
         return recipeID;
     }
 
-   //need title, image , duration
+    //need title, image , duration
     //doing all search here
     //could be both
     //using duplicate code to make it two
     public List<RecipeListModel> searchRecipes(final boolean isUserCollection, final int userID,
-                                                       final List<String> tokens) {
+                                               final List<String> tokens) {
         list = null;
 
         Thread thread = new Thread(new Runnable() {
