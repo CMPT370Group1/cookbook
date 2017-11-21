@@ -10,7 +10,7 @@ import com.feasymax.cookbook.view.fragment.RecipeViewFragment;
  * Created by Olya on 2017-11-11.
  */
 
-public abstract class ShowRecipesFragment extends OnBackPressFragment {
+public abstract class ShowRecipesFragment extends Fragment {
 
     public void onItemClick(int mPosition) {
         enterRecipeViewFragment();

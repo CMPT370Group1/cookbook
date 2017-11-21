@@ -24,7 +24,7 @@ import java.util.ArrayList;
  * Created by Olya on 2017-09-21.
  */
 
-public class CategoriesFragment extends OnBackPressFragment{
+public class CategoriesFragment extends Fragment{
 
     private final String FRAGMENT_ID = "CategoriesFragment";
 

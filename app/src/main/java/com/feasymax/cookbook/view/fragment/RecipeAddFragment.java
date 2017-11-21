@@ -2,20 +2,14 @@ package com.feasymax.cookbook.view.fragment;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.TabActivity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,9 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TabHost;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.feasymax.cookbook.R;
@@ -39,15 +31,9 @@ import com.feasymax.cookbook.model.Application;
 import com.feasymax.cookbook.model.entity.Ingredient;
 import com.feasymax.cookbook.model.entity.Recipe;
 import com.feasymax.cookbook.util.Graphics;
-import com.feasymax.cookbook.view.ActivityMenuTabs;
-import com.feasymax.cookbook.view.DiscoverActivity;
 import com.feasymax.cookbook.view.RecipesActivity;
-import com.feasymax.cookbook.view.fragment.common.OnBackPressFragment;
-import com.feasymax.cookbook.view.list.RecipeListModel;
 
-import java.io.FileNotFoundException;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -59,7 +45,7 @@ import java.util.Map;
  * It has a form to add a new user recipe manually.
  */
 
-public class RecipeAddFragment extends OnBackPressFragment {
+public class RecipeAddFragment extends Fragment {
 
     private final String FRAGMENT_ID = "RecipeAddFragment";
 

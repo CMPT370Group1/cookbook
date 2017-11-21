@@ -1,6 +1,5 @@
 package com.feasymax.cookbook.view.fragment;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,7 +25,6 @@ import com.feasymax.cookbook.model.entity.Ingredient;
 import com.feasymax.cookbook.model.entity.Recipe;
 import com.feasymax.cookbook.view.DiscoverActivity;
 import com.feasymax.cookbook.view.RecipesActivity;
-import com.feasymax.cookbook.view.fragment.common.OnBackPressFragment;
 
 import java.text.DecimalFormat;
 import java.util.LinkedList;
@@ -41,7 +39,7 @@ import pl.charmas.android.tagview.TagView;
  * or save it (Discover activity).
  */
 
-public class RecipeViewFragment extends OnBackPressFragment{
+public class RecipeViewFragment extends Fragment{
 
     /*
      * Format to display a fraction

@@ -14,7 +14,6 @@ import android.widget.Spinner;
 
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.util.UnitConverters;
-import com.feasymax.cookbook.view.fragment.common.OnBackPressFragment;
 
 import java.text.DecimalFormat;
 
@@ -22,7 +21,7 @@ import java.text.DecimalFormat;
  * Created by Olya on 2017-09-21.
  */
 
-public class ToolsVolumeFragment extends OnBackPressFragment {
+public class ToolsVolumeFragment extends Fragment {
 
     private EditText volumeNum1;
     private EditText volumeNum2;
