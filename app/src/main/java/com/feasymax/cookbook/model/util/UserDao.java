@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.sql.*;
+import java.util.Map;
 
 import static android.R.attr.description;
 import static android.R.attr.id;
@@ -804,6 +805,14 @@ public class UserDao {
                             stmt.setString(i + 1, tokens.get(i));
                             Log.println(Log.INFO, "token", (i+1) + ": " + tokens.get(i));
                         }
+                        //create an array
+                        String[] mySearchArray;
+
+
+
+//
+                        // fill it
+                        //stmt.setArray();
 
 
                         Log.println(Log.INFO, "query", query);
