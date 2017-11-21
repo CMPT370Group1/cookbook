@@ -19,6 +19,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.sql.*;
@@ -784,7 +786,7 @@ public class UserDao {
     //using duplicate code to make it two
     public List<RecipeListModel> searchRecipes(final boolean isUserCollection, final int userID,
                                                        final List<String> tokens) {
-        list=null;
+        list = null;
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -792,7 +794,6 @@ public class UserDao {
                 //dont need to create a new list at the beginning since we will be
                 //adding searching for everything then adding up.
                 RecipeListModel recipeListModel = null;
-                LinkedList<RecipeListModel> lList = new LinkedList<>();
 
                 try {
                     connect();
@@ -800,6 +801,8 @@ public class UserDao {
                     ResultSet rs = null;
 
                     try {
+
+                        list = new LinkedList<>();
 
                         //no user id since we can't discover the ones saved by users
                         int id = -1;
@@ -816,14 +819,26 @@ public class UserDao {
                             query += " r.id IN (SELECT recipe_id FROM user_recipe " +
                                     "WHERE user_id = " + userID + ") AND ";
                         }
-                        query += "r.title = '" + String.valueOf(title) + "'";
-                        query += " OR r.recipe_description = '" + String.valueOf(description) + "'";
+                        //query += "r.title LIKE '%" + tokens.get(0) + "%'";
 
-
-
-
+                        query += "r.title IN (?";
+                        for (int i = 1; i < tokens.size(); i++) {
+                            query += ", ?";
+                        }
+                        query += ")";
 
                         stmt = conn.prepareStatement(query);
+                        stmt.setString(1, tokens.get(0));
+                        Log.println(Log.INFO, "token", "1: " + tokens.get(0));
+
+                        for (int i = 1; i < tokens.size(); i++) {
+                            stmt.setString(i + 1, tokens.get(i));
+                            Log.println(Log.INFO, "token", (i+1) + ": " + tokens.get(i));
+                        }
+
+
+                        Log.println(Log.INFO, "query", query);
+                        //stmt = conn.prepareStatement(query);
                         rs = stmt.executeQuery();
                         if (!rs.isBeforeFirst()) {
                             throw new SQLException("No data found");
@@ -846,7 +861,6 @@ public class UserDao {
                             image_icon = null;
                         }
                         stmt.close();
-                        conn.commit();
 
                     } catch (SQLException e) {
                         System.out.println("SQL ERROR for discover recipes");
