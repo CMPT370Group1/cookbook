@@ -782,6 +782,13 @@ public class UserDao {
                         Bitmap image = null;
 
                         //discover recipes has  to display title,duration and image
+                        String searchQuery = "~* '("+tokens.get(0);
+
+                        for (int i = 1; i < tokens.size(); i++)
+                        {
+                            searchQuery += "|"+tokens.get(i);
+                        }
+                        searchQuery += ")'";
 
                         String query = "SELECT id, title, durtion_min, image_icon FROM recipes r WHERE ";
 
@@ -789,28 +796,13 @@ public class UserDao {
                             query += " r.id IN (SELECT recipe_id FROM user_recipe " +
                                     "WHERE user_id = " + userID + ") AND ";
                         }
-                        //query += "r.title LIKE '%" + tokens.get(0) + "%'";
 
-//                        query += "r.title IN (?";
-//                        for (int i = 1; i < tokens.size(); i++) {
-//                            query += ", ?";
-//                        }
-//                        query += ")";
-                        query+="SELECT *  FROM r.title WHERE title ~";
+                        query+="r.title " + searchQuery + " OR r.recipe_description " + searchQuery;
+                        Log.println(Log.INFO, "query", query);
 
                         stmt = conn.prepareStatement(query);
-                        stmt.setString(1, tokens.get(0));
-                        Log.println(Log.INFO, "token", "1: " + tokens.get(0));
-
-                        for (int i = 1; i < tokens.size(); i++) {
-                            stmt.setString(i + 1, tokens.get(i));
-                            Log.println(Log.INFO, "token", (i+1) + ": " + tokens.get(i));
-                        }
-//
 
 
-
-                        Log.println(Log.INFO, "query", query);
                         //stmt = conn.prepareStatement(query);
                         rs = stmt.executeQuery();
                         if (!rs.isBeforeFirst()) {
