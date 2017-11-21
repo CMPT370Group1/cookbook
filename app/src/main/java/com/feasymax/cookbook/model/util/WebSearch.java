@@ -1,57 +1,88 @@
 package com.feasymax.cookbook.model.util;
-
+import android.graphics.Bitmap;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.SearchView;
+import android.provider.DocumentsContract;
 import android.util.Log;
 
-import com.feasymax.cookbook.view.list.RecipeListModel;
-
-import java.io.IOException;
-import java.util.List;
+import com.feasymax.cookbook.model.entity.WebpageInfo;
 
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.w3c.dom.Document;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.LinkedList;
+import java.util.List;
+
 
 /**
  * Created by Olya on 2017-10-12.
  */
 
 public class WebSearch {
+    private static List<WebpageInfo> results;
 
     private WebSearch() {}
 
-    public static List<RecipeListModel> getSearchResults(String searchString){
-        // TODO: tokenize searchString or simply substitute delimiters but '+' to use the
-        // resulting string for the address in connect()
+    public static List<WebpageInfo> getWebSearch(final String input) {
 
-        Document doc;
-        try{
-            doc = Jsoup.connect("https://www.google.ca/search?q=bread+recipe").userAgent("Mozilla").ignoreHttpErrors(true).timeout(0).get();
-            Elements links = doc.select("div[class=g]");
-            for (Element link : links) {
-                Elements titles = link.select("h3[class=r]");
-                String title = titles.text();
+        results = null;
 
-                Elements bodies = link.select("span[class=st]");
-                String body = bodies.text();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-                Elements addrs = link.select("a[href]");
-                String addr = addrs.attr("abs:href");
+                try {
+                    org.jsoup.nodes.Document doc;
 
-                // TODO: also save an image
+                    String searchTokens = "";
+                    for (String retval : input.split(" ")) {
+                        searchTokens += retval + "+";
+                    }
+                    searchTokens = searchTokens.substring(0, searchTokens.length() - 1);
+                    Log.println(Log.INFO, "searchTokens", searchTokens);
 
-                Log.println(Log.INFO, "getSearchResults", "Title: " + title);
-                Log.println(Log.INFO, "getSearchResults", "Body: "+body);
-                Log.println(Log.INFO, "getSearchResults", "Link: "+addr+"\n");
+                    doc = Jsoup.connect("https://www.google.com/search?q=" + searchTokens).get();
+                    Elements links = doc.select("div[class=g]");
+                    //Log.println(Log.INFO, "elements", links.toString());
+                    for (Element link : links) {
+                        Elements titles = link.select("h3[class=r]");
+                        String title = titles.text();
+
+                        Elements bodies = link.select("span[class=st]");
+                        String body = bodies.text();
+
+                        Elements addrs = link.select("a[href]");
+                        String addr = addrs.attr("abs:href");
+                        //results.
+                        // TODO: also save an image
+
+                        Log.println(Log.INFO, "getSearchResults", "Title: " + title);
+                        Log.println(Log.INFO, "getSearchResults", "Body: " + body);
+                        Log.println(Log.INFO, "getSearchResults", "Link: " + addr + "\n");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
-        }
-        catch (IOException e) {
+
+        });
+
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        // TODO: create a LinkedList<LinkInfo>, put every link info there and return it
-        return null;
-    }
+        return results;
 
+    }
 
 }
