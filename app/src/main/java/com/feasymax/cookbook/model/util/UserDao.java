@@ -805,8 +805,77 @@ public class UserDao {
                             stmt.setString(i + 1, tokens.get(i));
                             Log.println(Log.INFO, "token", (i+1) + ": " + tokens.get(i));
                         }
-                        //create an array
-                        String[] mySearchArray;
+//                        //create an array
+//                        Array mySearchArray=new Array() {
+//                            @Override
+//                            public String getBaseTypeName() throws SQLException {
+//                                return null;
+//                            }
+//
+//                            @Override
+//                            public int getBaseType() throws SQLException {
+//                                return 0;
+//                            }
+//
+//                            @Override
+//                            public Object getArray() throws SQLException {
+//                                return null;
+//                            }
+//
+//                            @Override
+//                            public Object getArray(Map<String, Class<?>> map) throws SQLException {
+//                                return null;
+//                            }
+//
+//                            @Override
+//                            public Object getArray(long l, int i) throws SQLException {
+//                                return null;
+//                            }
+//
+//                            @Override
+//                            public Object getArray(long l, int i, Map<String, Class<?>> map) throws SQLException {
+//                                return null;
+//                            }
+//
+//                            @Override
+//                            public ResultSet getResultSet() throws SQLException {
+//                                return null;
+//                            }
+//
+//                            @Override
+//                            public ResultSet getResultSet(Map<String, Class<?>> map) throws SQLException {
+//                                return null;
+//                            }
+//
+//                            @Override
+//                            public ResultSet getResultSet(long l, int i) throws SQLException {
+//                                return null;
+//                            }
+//
+//                            @Override
+//                            public ResultSet getResultSet(long l, int i, Map<String, Class<?>> map) throws SQLException {
+//                                return null;
+//                            }
+//
+//                            @Override
+//                            public void free() throws SQLException {
+//
+//                            }
+//                        };
+//                        while (rs.next()){
+//                            mySearchArray.
+//                        }
+//
+//
+//
+//                            stmt.setArray(,mySearchArray);
+//                            //Log.println(Log.INFO, "token", (i+1) + ": " + tokens.get(i));
+
+
+
+                        //Log.println(Log.INFO, "token", "1: " + tokens.get(0));
+
+
 
 
 
