@@ -279,7 +279,7 @@ public class RecipeViewFragment extends OnBackPressFragment{
     private void addRecipe() {
         if (getActivity() instanceof DiscoverActivity) {
             if (Application.isUserSignedIn()) {
-                Application.addNewRecipe(Application.getDiscoverCurrentRecipe(), false, null);
+                Application.addNewRecipe(true, Application.getDiscoverCurrentRecipe(), false, null);
             } else {
                 Log.println(Log.INFO, "addRecipe","user is not signed in");
             }

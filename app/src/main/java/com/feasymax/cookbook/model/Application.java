@@ -287,15 +287,18 @@ public class Application {
     }
 
 
-    public static int addNewRecipe(Recipe recipe, boolean owner, Bitmap image_icon) {
+    public static int addNewRecipe(boolean isNewRecipe, Recipe recipe, boolean owner, Bitmap image_icon) {
         UserDao userDao = new UserDao();
 
-        int id = userDao.addNewRecipe(recipe, getUser().getUserID(), owner);
+        int id = userDao.addNewRecipe(isNewRecipe, recipe, getUser().getUserID(), owner);
         if (id == -1) {
             return -1;
         }
 
-        recipe.setId(id);
+        if (isNewRecipe) {
+            recipe.setId(id);
+
+        }
         setUserCurrentRecipe(recipe);
 
         if (recipe.getCategory() == getUserCollection().getCategory()) {

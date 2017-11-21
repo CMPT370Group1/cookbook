@@ -558,8 +558,6 @@ public class UserDao {
         return 0;
     }
 
-
-
     /**
      *
      * @param userID
@@ -655,7 +653,7 @@ public class UserDao {
      * @param owner does the user own the recipe
      * @return recipeID
      */
-    public int addNewRecipe(final Recipe recipe, final int userID, final boolean owner) {
+    public int addNewRecipe(final boolean isNewRecipe, final Recipe recipe, final int userID, final boolean owner) {
         recipeID = -1;
 
         Thread thread = new Thread(new Runnable() {
@@ -683,9 +681,18 @@ public class UserDao {
                                 image_icon = DbBitmapUtility.getBytes(Graphics.resize(recipe.getImage(), 200, 200));
                             }
 
+                            String query;
+                            if (isNewRecipe) {
+                                query = "INSERT INTO recipes (title, category_name, durtion_min, " +
+                                        "recipe_description, image, image_icon) VALUES (?, ?, ?, ?, ?, ?) RETURNING id";
+                            }
+                            else {
+                                query = "UPDATE recipes SET title = ?, category_name = ?, " +
+                                        "durtion_min = ?, recipe_description = ?, image = ?, " +
+                                        "image_icon = ? WHERE id = " + recipe.getId() + " RETURNING id";
+
+                            }
                             // insert all recipe info into recipes table
-                            String query = "INSERT INTO recipes (title, category_name, durtion_min, " +
-                                    "recipe_description, image, image_icon) VALUES (?, ?, ?, ?, ?, ?) RETURNING id";
                             stmt = conn.prepareStatement(query);
                             //stmt.setInt(1, autoID);
                             stmt.setString(1, title);
@@ -701,19 +708,30 @@ public class UserDao {
                             recipeID = rs.getInt("id");
                             Log.println(Log.INFO, "recipeID", recipeID+"");
 
-
+                            //TODO: change
                             // insert all recipe's ingredients
                             for (Ingredient ingr: recipe.getIngredients()) {
 
                                 // insert an ingredient
-                                query = "INSERT INTO ingredients (name, quantity, unit, recipe_id) " +
-                                        "VALUES (?, ?, ?, ?)";
+                                if (isNewRecipe) {
+                                    query = "INSERT INTO ingredients (name, quantity, unit, " +
+                                            "recipe_id) VALUES (?, ?, ?, ?)";
+                                }
+                                else {
+                                    query = "UPDATE ingredients SET name = ?, quantity = ?, " +
+                                            "unit = ? WHERE recipe_id = " +
+                                            recipe.getId();
+
+                                }
+
                                 stmt = conn.prepareStatement(query);
                                 //stmt.setInt(1, autoID);
                                 stmt.setString(1, ingr.getName());
                                 stmt.setDouble(2, ingr.getQuantity());
                                 stmt.setInt(3, ingr.getUnit());
-                                stmt.setInt(4, recipeID);
+                                if (isNewRecipe) {
+                                    stmt.setInt(4, recipeID);
+                                }
                                 stmt.executeUpdate();
                                 if (stmt.executeUpdate() <= 0) {
                                     throw new SQLException("No ingredient info was inserted");
@@ -721,16 +739,26 @@ public class UserDao {
                             }
                             removeDuplicates("ingredients", new String[]{"name", "quantity", "unit", "recipe_id"});
 
+                            //TODO: change
                             // insert all recipe's tags
                             for (String tag: recipe.getTags()) {
 
                                 // insert an ingredient
-                                query = "INSERT INTO tag (tag_name, recipe_id) " +
-                                        "VALUES (?, ?)";
+                                if (isNewRecipe) {
+                                    query = "INSERT INTO tag (tag_name, recipe_id) " +
+                                            "VALUES (?, ?)";
+                                }
+                                else {
+                                    query = "UPDATE tag SET tag_name = ? WHERE recipe_id = " +
+                                            recipe.getId();
+
+                                }
+
                                 stmt = conn.prepareStatement(query);
-                                //stmt.setInt(1, autoID);
                                 stmt.setString(1, tag);
-                                stmt.setInt(2, recipeID);
+                                if (isNewRecipe) {
+                                    stmt.setInt(2, recipeID);
+                                }
                                 stmt.executeUpdate();
                                 if (stmt.executeUpdate() <= 0) {
                                     throw new SQLException("No tag info was inserted");
@@ -743,18 +771,20 @@ public class UserDao {
                             recipeID = recipe.getId();
                         }
 
-                        String query = "INSERT INTO user_recipe (user_id, recipe_id, states) " +
-                                "VALUES (?, ?, ?)";
-                        stmt = conn.prepareStatement(query);
-                        //stmt.setInt(1, autoID);
-                        stmt.setInt(1, userID);
-                        stmt.setInt(2, recipeID);
-                        stmt.setInt(3, ((owner) ? 1 : 0));
-                        stmt.executeUpdate();
-                        if (stmt.executeUpdate() <= 0) {
-                            throw new SQLException("No recipe id was inserted");
+                        if (isNewRecipe) {
+                            String query = "INSERT INTO user_recipe (user_id, recipe_id, states) " +
+                                    "VALUES (?, ?, ?)";
+                            stmt = conn.prepareStatement(query);
+                            //stmt.setInt(1, autoID);
+                            stmt.setInt(1, userID);
+                            stmt.setInt(2, recipeID);
+                            stmt.setInt(3, ((owner) ? 1 : 0));
+                            stmt.executeUpdate();
+                            if (stmt.executeUpdate() <= 0) {
+                                throw new SQLException("No recipe id was inserted");
+                            }
+                            removeDuplicates("user_recipe", new String[]{"user_id", "recipe_id"});
                         }
-                        removeDuplicates("user_recipe", new String[]{"user_id", "recipe_id"});
 
                         // close the statement and commit all changes
                         stmt.close();
@@ -914,7 +944,7 @@ public class UserDao {
             Log.println(Log.INFO, "removeDuplicates", query);
             PreparedStatement stmt = conn.prepareStatement(query);
             if (stmt.executeUpdate() <= 0) {
-                throw new SQLException("No duplicate data deleted");
+                Log.println(Log.INFO, "removeDuplicates", "No duplicate data deleted from " + table);
             }
         }
         catch (SQLException e){
