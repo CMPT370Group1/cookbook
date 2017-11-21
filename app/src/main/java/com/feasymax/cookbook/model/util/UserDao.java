@@ -796,6 +796,7 @@ public class UserDao {
 //                            query += ", ?";
 //                        }
 //                        query += ")";
+                        query+="SELECT *  FROM r.title WHERE title ~";
 
                         stmt = conn.prepareStatement(query);
                         stmt.setString(1, tokens.get(0));
