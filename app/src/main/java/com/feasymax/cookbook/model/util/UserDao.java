@@ -2,6 +2,7 @@ package com.feasymax.cookbook.model.util;
 
 /**
  * Created by kristine042 on 2017-10-09.
+ * The class manages database access and all functionality related to it.
  */
 
 import android.graphics.Bitmap;
@@ -58,6 +59,12 @@ public class UserDao {
         }
     }
 
+    /**
+     * Get user's id
+     * @param user
+     * @param password
+     * @return
+     */
     public int getUserID(final String user, final String password) {
         userID = 0;
         Thread thread = new Thread(new Runnable() {
@@ -102,6 +109,15 @@ public class UserDao {
         return userID;
     }
 
+    /**
+     * Register new user
+     * @param user
+     * @param password
+     * @param email
+     * @param firstName
+     * @param lastName
+     * @return
+     */
     public int regUser(final String user, final String password, final String email, final String firstName, final String lastName) {
         userID = 0;
         Thread thread = new Thread(new Runnable() {
@@ -158,6 +174,15 @@ public class UserDao {
         return userID;
     }
 
+    /**
+     * Update user's account info
+     * @param userID
+     * @param user
+     * @param userEmail
+     * @param oldPassword
+     * @param newPassword
+     * @return
+     */
     public String update(final int userID, final String user, final String userEmail,
                          final String oldPassword, final String newPassword) {
         updateRes = "";
@@ -240,6 +265,11 @@ public class UserDao {
         return updateRes;
     }
 
+    /**
+     * Get user's email address
+     * @param userID
+     * @return
+     */
     public String getEmail(final int userID) {
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -284,9 +314,7 @@ public class UserDao {
 
 
     /**
-     * Add new recipe to the database, add the recipeID to the user_recipe table with state 1 and
-     * return recipeID. If the user does not own the recipe, simply add the recipeID to the
-     * user_recipe table with state 0
+     * Get recipes in a category
      * @param isUserCollection
      * @param userID
      * @param category
@@ -378,10 +406,8 @@ public class UserDao {
 
 
     /**
-     * Add new recipe to the database, add the recipeID to the user_recipe table with state 1 and
-     * return recipeID. If the user does not own the recipe, simply add the recipeID to the
-     * user_recipe table with state 0
-     * @param recipe
+     * Get full recipe from short recipe info
+     * @param recipe incomplete recipe to be filled
      * @return result code
      */
     public int updateRecipe(final Recipe recipe) {
@@ -496,7 +522,9 @@ public class UserDao {
     }
 
     /**
-     *
+     * Delete recipe from user's collection: if it's was not originally the user's recipe, just
+     * remove the reference in user_recipes table, otherwise make the recipe belong to admin so that
+     * it stays in discover collection
      * @param userID
      * @param recipeID
      * @return result code
@@ -755,10 +783,13 @@ public class UserDao {
         return recipeID;
     }
 
-    //need title, image , duration
-    //doing all search here
-    //could be both
-    //using duplicate code to make it two
+    /**
+     * Searching recipes by list of keywords
+     * @param isUserCollection is it user or discover collection
+     * @param userID
+     * @param tokens list of keywords
+     * @return
+     */
     public List<RecipeListModel> searchRecipes(final boolean isUserCollection, final int userID,
                                                final List<String> tokens) {
         list = null;
@@ -766,7 +797,7 @@ public class UserDao {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                //dont need to create a new list at the beginning since we will be
+                //don't need to create a new list at the beginning since we will be
                 //adding searching for everything then adding up.
                 RecipeListModel recipeListModel = null;
 
@@ -806,9 +837,6 @@ public class UserDao {
                         Log.println(Log.INFO, "query", query);
 
                         stmt = conn.prepareStatement(query);
-
-
-                        //stmt = conn.prepareStatement(query);
                         rs = stmt.executeQuery();
                         if (!rs.isBeforeFirst()) {
                             throw new SQLException("No data found");
@@ -826,8 +854,6 @@ public class UserDao {
                             recipeListModel = new RecipeListModel(id, title, image, duration);
                             Log.println(Log.INFO, "discover Recipes", recipeListModel.toString());
                             list.add(recipeListModel);
-
-
                             image_icon = null;
                         }
                         stmt.close();
@@ -856,7 +882,6 @@ public class UserDao {
         thread.start();
 
         try {
-
             thread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -867,6 +892,11 @@ public class UserDao {
 
     }
 
+    /**
+     * Remove duplicate rows in a table with filelds
+     * @param table
+     * @param fields
+     */
     private void removeDuplicates(final String table, final String[] fields) {
         try {
             String query = "DELETE FROM " + table + " a USING " + table + " b WHERE a.id < b.id";

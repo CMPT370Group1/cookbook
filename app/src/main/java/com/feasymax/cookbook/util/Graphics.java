@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 
 /**
  * Created by Olya on 2017-11-14.
+ * The class manages image decoding and resizing.
  */
 
 public class Graphics {

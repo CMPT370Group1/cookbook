@@ -18,9 +18,9 @@ public class WebSearch {
     private WebSearch() {}
 
     /**
-     * 
+     * Send a query to google and get the first page of results
      * @param input
-     * @return
+     * @return a list of WebpageInfo
      */
     public static List<WebpageInfo> getWebSearch(final String input) {
 

@@ -15,6 +15,7 @@ import java.util.List;
 
 /**
  * Created by Olya on 2017-10-08.
+ * A controller class that manages most of application functionality between classes.
  */
 
 public class Application {
@@ -138,7 +139,7 @@ public class Application {
     }
 
     /**
-     *
+     * Get all recipes in a category in user's collection
      * @return
      */
     public static List<RecipeListModel> getUserCollectionRecipes() {
@@ -146,7 +147,7 @@ public class Application {
     }
 
     /**
-     *
+     * Get the current recipe in user's collection
      * @return
      */
     public static Recipe getUserCurrentRecipe() {
@@ -154,7 +155,7 @@ public class Application {
     }
 
     /**
-     *
+     * Add a recipe to a category
      * @param recipeInfo
      */
     public static void addUserRecipe(RecipeListModel recipeInfo) {
@@ -169,7 +170,7 @@ public class Application {
         discoverCollection = discCollection;
     }
     /**
-     *
+     * Set the current recipe in Discover collection
      * @param recipe
      */
     public static void setDiscoverCurrentRecipe(Recipe recipe) {
@@ -178,7 +179,7 @@ public class Application {
     }
 
     /**
-     *
+     * Get the current recipe in Discover collection
      * @return
      */
     public static Recipe getDiscoverCurrentRecipe() {
@@ -186,7 +187,7 @@ public class Application {
     }
 
     /**
-     *
+     * Get recipes in a category from database
      * @return
      */
     public static List<RecipeListModel> getCollectionFromDB(final boolean userCollection,
@@ -196,6 +197,14 @@ public class Application {
     }
 
 
+    /**
+     * Add new recipe to database
+     * @param isNewRecipe is the recipe new or being edited
+     * @param recipe the recipe to add
+     * @param owner is the recipe new or saved from discover collection
+     * @param image_icon
+     * @return 0 on success, -1 on failure
+     */
     public static int addNewRecipe(boolean isNewRecipe, Recipe recipe, boolean owner, Bitmap image_icon) {
         UserDao userDao = new UserDao();
 
@@ -227,6 +236,10 @@ public class Application {
         return 0;
     }
 
+    /**
+     * Delete recipe from user's collection
+     * @param recipeID
+     */
     public static void deleteRecipe(int recipeID) {
         Log.println(Log.INFO, "deleteRecipe","deleteRecipe");
         UserDao userDao = new UserDao();
@@ -235,7 +248,11 @@ public class Application {
         // set the UserCollection.currentRecipe to null
     }
 
-    // TODO: change the stub to actual function
+    /**
+     * Get a full recipe from its short info
+     * @param rlm
+     * @return recipe
+     */
     public static Recipe getRecipeFromShortInfo(RecipeListModel rlm) {
         Recipe recipe = new Recipe(rlm.getRecipeId(), rlm.getRecipeTitle(), rlm.getRecipeDuration());
         UserDao userDao = new UserDao();

@@ -11,6 +11,9 @@ import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
 import com.feasymax.cookbook.model.entity.DiscoverCollection;
 
+/**
+ * The activity for the main screen of application.
+ */
 public class MainActivity extends ActivityMenu {
 
     private static final String TAG = "MainActivity";
