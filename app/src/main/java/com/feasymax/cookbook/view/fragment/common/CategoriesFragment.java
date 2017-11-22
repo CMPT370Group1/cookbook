@@ -18,6 +18,9 @@ import com.feasymax.cookbook.view.DiscoverActivity;
 import com.feasymax.cookbook.view.RecipesActivity;
 import com.feasymax.cookbook.view.fragment.RecipesFragment;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 /**
@@ -28,25 +31,15 @@ public class CategoriesFragment extends Fragment{
 
     private final String FRAGMENT_ID = "CategoriesFragment";
 
-    private ImageButton btnBreakfast;
-    private ImageButton btnSnack;
-    private ImageButton btnSoup;
-    private ImageButton btnAppetizer;
-    private ImageButton btnSalad;
-    private ImageButton btnBread;
-    private ImageButton btnBeverage;
-    private ImageButton btnDessert;
-    private ImageButton btnMainDish;
-    private ImageButton btnSideDish;
-    private ImageButton btnSauce;
-    private ImageButton btnVegetable;
-
     private ArrayList<ImageButton> categoryButtons;
 
     private View.OnClickListener categoryOnClickListener;
 
+    /**
+     * Required empty public constructor
+     */
     public CategoriesFragment() {
-        // Required empty public constructor
+
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

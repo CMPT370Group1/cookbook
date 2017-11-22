@@ -120,9 +120,4 @@ public class Graphics {
         return BitmapFactory.decodeStream(
                 activity.getContentResolver().openInputStream(selectedImage), null, options);
     }
-
-    public static int dpToPx(Resources res, int dp) {
-        DisplayMetrics displayMetrics = res.getDisplayMetrics();
-        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-    }
 }

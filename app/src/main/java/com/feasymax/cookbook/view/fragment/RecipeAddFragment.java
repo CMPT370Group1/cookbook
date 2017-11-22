@@ -259,6 +259,10 @@ public class RecipeAddFragment extends Fragment {
     }
 
 
+    /**
+     * Add a row for a new ingredient in layout and set its field to ingr's attributes if not null
+     * @param ingr
+     */
     protected void addNewIngredient(Ingredient ingr) {
         View tr = getActivity().getLayoutInflater().inflate(R.layout.ingredient_add_layout, null, false);
 
@@ -300,6 +304,10 @@ public class RecipeAddFragment extends Fragment {
 
     }
 
+    /**
+     * Add a row for a new tag in layout and set its text to tag if not null
+     * @param tag
+     */
     protected void addNewTag(String tag) {
         View tr = getActivity().getLayoutInflater().inflate(R.layout.tag_add_layout, null, false);
 
@@ -330,7 +338,9 @@ public class RecipeAddFragment extends Fragment {
     }
 
     /**
-     *
+     * Add new recipe
+     * @param isNewRecipe is it a new user recipe or saved from Discover collection
+     * @param recipeId
      */
     // TODO: check that it reads all tags and ingredients
     protected void addRecipe(boolean isNewRecipe, int recipeId) {
@@ -399,6 +409,9 @@ public class RecipeAddFragment extends Fragment {
 
     }
 
+    /**
+     * Empty all fragment's views
+     */
     protected void emptyFragment() {
         recipeTitle.setText("");
         recipeCategory.setSelection(12);
@@ -440,6 +453,9 @@ public class RecipeAddFragment extends Fragment {
         return false;
     }
 
+    /**
+     * Go to fragment that displays recipe
+     */
     protected void enterRecipeViewFragment() {
         ((RecipesActivity)getActivity()).navigateFragment(0, FRAGMENT_ID);
     }

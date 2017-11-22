@@ -26,21 +26,6 @@ public class UserAccount {
      */
     private String email;
 
-    /**
-     * A public constructor that initializes all user's attributes
-     * @param userID
-     * @param recipeIDs
-     */
-    public UserAccount(int userID, List<Integer> recipeIDs) {
-        this.userID = userID;
-        this.recipeIDs = recipeIDs;
-    }
-
-    public UserAccount(int userID, String username) {
-        this.userID = userID;
-        this.username = username;
-    }
-
     public UserAccount(int userID, String username, String email) {
         this.userID = userID;
         this.username = username;

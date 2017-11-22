@@ -3,18 +3,14 @@ package com.feasymax.cookbook.model;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.entity.DiscoverCollection;
-import com.feasymax.cookbook.model.entity.Ingredient;
 import com.feasymax.cookbook.model.entity.Recipe;
-import com.feasymax.cookbook.model.entity.RecipeShortInfo;
 import com.feasymax.cookbook.model.entity.UserAccount;
 import com.feasymax.cookbook.model.entity.UserCollection;
 import com.feasymax.cookbook.model.util.UserDao;
 import com.feasymax.cookbook.util.Graphics;
 import com.feasymax.cookbook.view.list.RecipeListModel;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -45,20 +41,6 @@ public class Application {
         return user;
     }
 
-    public static String getUserName() {
-        return getUser().getUsername();
-    }
-
-    public static String getUserEmail() {
-        UserDao userDao = new UserDao();
-        String email = userDao.getEmail(getUser().getUserID());
-        if (email == null) {
-            return "";
-        } else {
-            return email;
-        }
-    }
-
     /**
      * Sign in an existing user
      * @param username the username of the existing user
@@ -73,24 +55,6 @@ public class Application {
         String email = userDao.getEmail(userID);
         if (userID != 0) {
             user = new UserAccount(userID, username, email);
-            userCollection = new UserCollection();
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Register a new user with given username and password
-     * @param username the username of the new user
-     * @param password the password of the new user
-     * @return true on success, false on failure to register
-     */
-    public static boolean userRegister(String username, String password){
-        UserDao userDao = new UserDao();
-        int userID = userDao.regUser(username, password);
-        if (userID != 0) {
-            user = new UserAccount(userID, username);
             userCollection = new UserCollection();
             return true;
         } else {
@@ -165,18 +129,6 @@ public class Application {
         return userCollection;
     }
 
-    public static void setUserCollection(UserCollection userCollection) {
-        Application.userCollection = userCollection;
-    }
-
-    /**
-     *
-     * @param recipes
-     */
-    public static void setUserCollectionRecipes(List<RecipeListModel> recipes) {
-        userCollection.setRecipes(recipes);
-    }
-
     /**
      *
      * @param recipe
@@ -209,31 +161,13 @@ public class Application {
         userCollection.addNewRecipe(recipeInfo);
     }
 
-    /**
-     *
-     * @param recipeInfo
-     * @return
-     */
-    public static boolean removeUserRecipe(RecipeListModel recipeInfo) {
-        return userCollection.removeRecipe(recipeInfo);
-    }
-
     public static DiscoverCollection getDiscoverCollection() {
         return discoverCollection;
     }
 
-    public static void setDiscoverCollection(DiscoverCollection discoverCollection) {
-        Application.discoverCollection = discoverCollection;
+    public static void setDiscoverCollection(DiscoverCollection discCollection){
+        discoverCollection = discCollection;
     }
-
-    /**
-     *
-     * @param recipes
-     */
-    public static void setDiscoverCollectionRecipes(List<RecipeListModel> recipes) {
-        discoverCollection.setRecipes(recipes);
-    }
-
     /**
      *
      * @param recipe
@@ -241,31 +175,6 @@ public class Application {
     public static void setDiscoverCurrentRecipe(Recipe recipe) {
         Log.println(Log.INFO, "setCurrentRecipe", recipe.toString());
         discoverCollection.setCurRecipe(recipe);
-    }
-
-    /**
-     *
-     * @return
-     */
-    public static List<RecipeListModel> getDiscoverCollectionRecipes() {
-        return discoverCollection.getRecipes();
-    }
-
-    /**
-     *
-     * @param recipeInfo
-     */
-    public static void addDiscoverRecipe(RecipeListModel recipeInfo) {
-        discoverCollection.addNewRecipe(recipeInfo);
-    }
-
-    /**
-     *
-     * @param recipeInfo
-     * @return
-     */
-    public static boolean removeDiscoverRecipe(RecipeListModel recipeInfo) {
-        return discoverCollection.removeRecipe(recipeInfo);
     }
 
     /**
@@ -324,12 +233,6 @@ public class Application {
         userDao.deleteRecipe(getUser().getUserID(), recipeID);
         // delete corresponding recipe from UserCollection.recipes
         // set the UserCollection.currentRecipe to null
-    }
-
-    public static void editRecipe(Recipe recipe) {
-        Log.println(Log.INFO, "editRecipe","editRecipe");
-        // save recipe to database
-        // update recipe info in UserCollection.recipes with the same id
     }
 
     // TODO: change the stub to actual function

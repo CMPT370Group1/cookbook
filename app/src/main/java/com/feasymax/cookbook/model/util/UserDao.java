@@ -49,7 +49,7 @@ public class UserDao {
      * Get a connection to database
      * @return Connection object
      */
-    public void connect() {
+    private void connect() {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
@@ -83,60 +83,6 @@ public class UserDao {
                         rs = stmt.executeQuery(query);
                         if (rs.next()) {
                             userID = rs.getInt("id");
-                        }
-                    } catch(SQLException e) {
-                        System.out.println("SQL error");
-                        e.printStackTrace();
-                    } finally {
-                        try {
-                            if (conn != null)
-                                conn.close();
-                        }
-                        catch(SQLException e) {
-
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        thread.start();
-        try {
-            Thread.sleep(1800);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return userID;
-    }
-
-    public int regUser(final String user, final String password) {
-        userID = 0;
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try  {
-                    connect();
-                    Statement stmt = null;
-                    ResultSet rs = null;
-                    try {
-                        String query = "SELECT * FROM users u WHERE u.username = '"
-                                + user + "'";
-                        stmt = conn.createStatement();
-                        rs = stmt.executeQuery(query);
-                        // if the username is not already taken
-                        if (!rs.next()) {
-                            rs = stmt.executeQuery("SELECT MAX(id) AS id FROM users");
-                            int autoID = 1;
-                            if (rs.next()) {
-                                autoID = rs.getInt("id") + 1;
-                            }
-                            query = "INSERT INTO users (id, username, passwords) VALUES ("
-                                    + autoID + ", '" + user + "', '" + password + "')";
-                            stmt = conn.createStatement();
-                            stmt.execute(query);
-                            userID = autoID;
                         }
                     } catch(SQLException e) {
                         System.out.println("SQL error");

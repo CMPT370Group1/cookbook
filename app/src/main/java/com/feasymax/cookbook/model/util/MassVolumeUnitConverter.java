@@ -7,7 +7,7 @@ package com.feasymax.cookbook.model.util;
 public class MassVolumeUnitConverter {
 
     // use mass and volume converters
-    public MassVolumeUnitConverter() {
+    private MassVolumeUnitConverter() {
     }
 
     public static double MassToVolume(double quanA, int unitA, int unitB, double substance, String unitAType){

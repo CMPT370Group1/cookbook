@@ -18,7 +18,7 @@ import com.feasymax.cookbook.model.Application;
  * Created by Olya on 2017-10-08.
  */
 
-public abstract class ActivityMenu extends AppCompatActivity {
+public abstract class                                             ActivityMenu extends AppCompatActivity {
 
     protected Button btnRecipes;
     protected Button btnDiscover;
