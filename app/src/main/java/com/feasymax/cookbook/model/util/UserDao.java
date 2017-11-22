@@ -6,30 +6,20 @@ package com.feasymax.cookbook.model.util;
 
 import android.graphics.Bitmap;
 import android.util.Log;
-
 import com.feasymax.cookbook.model.entity.Ingredient;
 import com.feasymax.cookbook.model.entity.Recipe;
 import com.feasymax.cookbook.util.DbBitmapUtility;
 import com.feasymax.cookbook.util.Graphics;
 import com.feasymax.cookbook.view.list.RecipeListModel;
-
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.sql.*;
-import java.util.Map;
 
-import static android.R.attr.description;
-import static android.R.attr.id;
-import static android.R.attr.password;
-import static java.util.jar.Pack200.Packer.PASS;
 
 public class UserDao {
 

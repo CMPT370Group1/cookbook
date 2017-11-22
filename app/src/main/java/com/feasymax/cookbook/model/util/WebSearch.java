@@ -1,22 +1,10 @@
 package com.feasymax.cookbook.model.util;
-import android.graphics.Bitmap;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.SearchView;
-import android.provider.DocumentsContract;
 import android.util.Log;
-
 import com.feasymax.cookbook.model.entity.WebpageInfo;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.w3c.dom.Document;
-
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.LinkedList;
 import java.util.List;
 
 
