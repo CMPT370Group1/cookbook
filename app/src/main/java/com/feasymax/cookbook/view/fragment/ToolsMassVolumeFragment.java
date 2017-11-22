@@ -15,7 +15,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.feasymax.cookbook.R;
+import com.feasymax.cookbook.model.util.MassVolumeUnitConverter;
+import com.feasymax.cookbook.model.util.UnitConverters;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +36,8 @@ public class ToolsMassVolumeFragment extends Fragment {
     private Spinner massVolumeIngredient;
     private EditText massVolumeNewIngredient;
     private Button btnMassVolumeAdd;
+
+    final DecimalFormat DF = new DecimalFormat("#.############");
 
     private List<String> list = new ArrayList<>();
 
@@ -76,11 +81,14 @@ public class ToolsMassVolumeFragment extends Fragment {
                     list.add(massVolumeNewIngredient.getText().toString());
                     // TODO: Application.AddNewMassVolumeConversion(5 parameters);
                     // convert
+                    //check whether unitA is a mass or a volume
+                    double result = MassVolumeUnitConverter.MassToVolume(UnitConverters.ParseFraction(massVolumeNum1.getText().toString()),massVolumeUnit1.getSelectedItemPosition(),massVolumeUnit2.getSelectedItemPosition(),0,"Mass");
 
                     // set selection on the new ingredient
                     massVolumeIngredient.setSelection(list.size() - 1);
                     massVolumeNum1.setText("0");
-                    massVolumeNum2.setText("0");
+
+                    massVolumeNum2.setText(DF.format(result));
                 }
             }
         });

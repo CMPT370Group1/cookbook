@@ -6,29 +6,20 @@ package com.feasymax.cookbook.model.util;
 
 import android.graphics.Bitmap;
 import android.util.Log;
-
 import com.feasymax.cookbook.model.entity.Ingredient;
 import com.feasymax.cookbook.model.entity.Recipe;
 import com.feasymax.cookbook.util.DbBitmapUtility;
 import com.feasymax.cookbook.util.Graphics;
 import com.feasymax.cookbook.view.list.RecipeListModel;
-
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.sql.*;
 
-import static android.R.attr.description;
-import static android.R.attr.id;
-import static android.R.attr.password;
-import static java.util.jar.Pack200.Packer.PASS;
 
 public class UserDao {
 
@@ -764,12 +755,12 @@ public class UserDao {
         return recipeID;
     }
 
-   //need title, image , duration
+    //need title, image , duration
     //doing all search here
     //could be both
     //using duplicate code to make it two
     public List<RecipeListModel> searchRecipes(final boolean isUserCollection, final int userID,
-                                                       final List<String> tokens) {
+                                               final List<String> tokens) {
         list = null;
 
         Thread thread = new Thread(new Runnable() {
@@ -796,6 +787,13 @@ public class UserDao {
                         Bitmap image = null;
 
                         //discover recipes has  to display title,duration and image
+                        String searchQuery = "~* '("+tokens.get(0);
+
+                        for (int i = 1; i < tokens.size(); i++)
+                        {
+                            searchQuery += "|"+tokens.get(i);
+                        }
+                        searchQuery += ")'";
 
                         String query = "SELECT id, title, durtion_min, image_icon FROM recipes r WHERE ";
 
@@ -803,25 +801,13 @@ public class UserDao {
                             query += " r.id IN (SELECT recipe_id FROM user_recipe " +
                                     "WHERE user_id = " + userID + ") AND ";
                         }
-                        //query += "r.title LIKE '%" + tokens.get(0) + "%'";
 
-                        query += "r.title IN (?";
-                        for (int i = 1; i < tokens.size(); i++) {
-                            query += ", ?";
-                        }
-                        query += ")";
+                        query+="r.title " + searchQuery + " OR r.recipe_description " + searchQuery;
+                        Log.println(Log.INFO, "query", query);
 
                         stmt = conn.prepareStatement(query);
-                        stmt.setString(1, tokens.get(0));
-                        Log.println(Log.INFO, "token", "1: " + tokens.get(0));
-
-                        for (int i = 1; i < tokens.size(); i++) {
-                            stmt.setString(i + 1, tokens.get(i));
-                            Log.println(Log.INFO, "token", (i+1) + ": " + tokens.get(i));
-                        }
 
 
-                        Log.println(Log.INFO, "query", query);
                         //stmt = conn.prepareStatement(query);
                         rs = stmt.executeQuery();
                         if (!rs.isBeforeFirst()) {
