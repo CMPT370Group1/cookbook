@@ -17,6 +17,7 @@ import com.feasymax.cookbook.view.RegisterActivity;
 
 /**
  * Created by Olya on 2017-09-21.
+ * Fragment for sign in /registration (accessed in main app screen)
  */
 
 public class AccountSignRegisterFragment extends Fragment {

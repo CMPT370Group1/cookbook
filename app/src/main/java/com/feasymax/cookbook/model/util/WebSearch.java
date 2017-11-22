@@ -42,7 +42,7 @@ public class WebSearch {
 
                     doc = Jsoup.connect("https://www.google.com/search?q=" + searchTokens).get();
                     Elements links = doc.select("div[class=g]");
-                    //Log.println(Log.INFO, "elements", links.toString());
+
                     for (Element link : links) {
                         Elements titles = link.select("h3[class=r]");
                         String title = titles.text();
@@ -52,7 +52,7 @@ public class WebSearch {
 
                         Elements addrs = link.select("a[href]");
                         String addr = addrs.attr("abs:href");
-                        //results.
+
                         // TODO: also save an image
 
                         Log.println(Log.INFO, "getSearchResults", "Title: " + title);

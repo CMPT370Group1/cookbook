@@ -18,6 +18,7 @@ import java.util.List;
 
 /**
  * Created by Olya on 2017-09-21.
+ * Fragment for Webserach tab in Discover screen
  */
 
 public class DiscoverWebsearchFragment extends Fragment {

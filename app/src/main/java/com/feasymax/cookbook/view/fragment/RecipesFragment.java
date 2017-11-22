@@ -21,6 +21,7 @@ import com.feasymax.cookbook.model.entity.Recipe;
 import com.feasymax.cookbook.util.Graphics;
 import com.feasymax.cookbook.view.DiscoverActivity;
 import com.feasymax.cookbook.view.RecipesActivity;
+import com.feasymax.cookbook.view.fragment.common.CategoriesFragment;
 import com.feasymax.cookbook.view.fragment.common.ShowRecipesFragment;
 import com.feasymax.cookbook.view.list.RecipeListAdapter;
 import com.feasymax.cookbook.view.list.RecipeListModel;
@@ -123,7 +124,7 @@ public class RecipesFragment extends ShowRecipesFragment{
     }
 
     private void enterAllCategoriesFragment() {
-        RecipeCategoriesFragment a2Fragment = new RecipeCategoriesFragment();
+        CategoriesFragment a2Fragment = new CategoriesFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
         // Store the Fragment in stack

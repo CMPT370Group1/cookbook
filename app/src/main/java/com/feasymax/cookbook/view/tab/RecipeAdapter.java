@@ -4,13 +4,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.feasymax.cookbook.view.fragment.RecipeAddFragment;
-import com.feasymax.cookbook.view.fragment.RecipeCategoriesFragment;
 import com.feasymax.cookbook.view.fragment.RecipeLinksFragment;
 import com.feasymax.cookbook.view.fragment.RecipeSearchFragment;
+import com.feasymax.cookbook.view.fragment.common.CategoriesFragment;
 
 /**
  * Created by Olya on 2017-09-21.
@@ -29,7 +28,7 @@ public class RecipeAdapter extends FragmentStatePagerAdapter {
         Fragment frag= null;
 
         if(position ==0){
-            frag = new RecipeCategoriesFragment();
+            frag = new CategoriesFragment();
         }else if(position == 1){
             frag = new RecipeAddFragment();
         }else if(position == 2){

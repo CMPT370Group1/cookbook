@@ -1,11 +1,12 @@
 package com.feasymax.cookbook.model.entity;
 
 /**
- * Created by CLAVIGER on 2017-11-21.
+ * Created by Chase Crawford on 2017-11-21.
+ * Class for file parsing
  */
 
 public class ConversionFactor {
-    //Personal Class for file parsing
+
     public String name;
     public double factor;
 

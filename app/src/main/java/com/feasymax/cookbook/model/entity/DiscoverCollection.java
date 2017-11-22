@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * Created by Olya on 2017-10-12.
+ * Collection of all users recipes.
  */
 
 public class DiscoverCollection {

@@ -23,43 +23,18 @@ public class Search {
          List<RecipeListModel> results;
 
          List<String> searchTokens = new LinkedList<>();
-         for(String retval : input.split(" ")){
+         for (String retval : input.split(" ")) {
              searchTokens.add(retval);
          }
 
-         //searchTokens.add(input);
-         //tokenize the input
-
-         if (activity == 0){
+         if (activity == 0) {
              int userId = Application.getUser().getUserID();
 
              results = userDao.searchRecipes(true, userId, searchTokens);
-         }
-         else {
+         } else {
              results = userDao.searchRecipes(false, -1, searchTokens);
          }
 
          return results;
-         //return title ,duration(int) and bitmap(image)
      }
-
-//    Take a string, connect database, search , then return a list
-//    This is from discover page
-
-
-
 }
-
-//the function the layout will be calling should be static
-
-//MYRECIPES
-//MUST LOGIN BEFORE SEARCHING
-// WILL SEARCH RECIPEID that was saved.
-
-//DISCOVER
-//CALL ONE FUNCTION
-
-//search ingredients table, tags table and recipes table
-//at least one match,
-//factorial n!
-//

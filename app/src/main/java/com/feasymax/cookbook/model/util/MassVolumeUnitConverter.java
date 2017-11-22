@@ -16,7 +16,6 @@ import java.util.List;
 
 public class MassVolumeUnitConverter {
 
-
     //For representing stored substance conversions factors to the view screen
     public static List<ConversionFactor> makeListFromFile(String filename, Context context){
         String toParse = "";

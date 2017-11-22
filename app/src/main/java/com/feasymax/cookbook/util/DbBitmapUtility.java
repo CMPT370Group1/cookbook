@@ -7,6 +7,7 @@ import java.io.ByteArrayOutputStream;
 
 /**
  * Created by Olya on 2017-11-19.
+ * Converts image to byte array accepted by database and back
  */
 
 public class DbBitmapUtility {

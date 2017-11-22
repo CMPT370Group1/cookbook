@@ -3,7 +3,7 @@ package com.feasymax.cookbook.model.entity;
 import android.graphics.Bitmap;
 
 /**
- * Created by zhangxuesong on 2017-11-19.
+ * Created by Xuesong Zhang on 2017-11-19.
  */
 
 public class WebpageInfo {

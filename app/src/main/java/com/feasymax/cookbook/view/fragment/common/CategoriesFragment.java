@@ -25,6 +25,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Olya on 2017-09-21.
+ * Fragment for categories layout (ALL in MyRecipes and Discover screens in app)
  */
 
 public class CategoriesFragment extends Fragment{

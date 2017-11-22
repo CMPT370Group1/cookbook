@@ -98,7 +98,7 @@ public abstract class ActivityMenuTabs extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), RecipesActivity.class);
                 startActivity(intent);
-                finish();
+                //finish();
             }
         });
         btnDiscover.setOnClickListener(new View.OnClickListener() {
@@ -106,7 +106,7 @@ public abstract class ActivityMenuTabs extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), DiscoverActivity.class);
                 startActivity(intent);
-                finish();
+                //finish();
             }
         });
         btnTools.setOnClickListener(new View.OnClickListener() {
@@ -114,7 +114,7 @@ public abstract class ActivityMenuTabs extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), ToolsActivity.class);
                 startActivity(intent);
-                finish();
+                //finish();
             }
         });
     }
