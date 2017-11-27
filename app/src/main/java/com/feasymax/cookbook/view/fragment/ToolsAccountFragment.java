@@ -21,6 +21,8 @@ import com.feasymax.cookbook.view.RegisterActivity;
 
 public class ToolsAccountFragment extends Fragment {
 
+    public static final String FRAGMENT_ID = "ToolsAccountFragment";
+
     boolean isAccountEdited = false;
 
     // variables for sign/register fragment

@@ -4,12 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
              android:id="@+id/categories_main_layout">
-<!--
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/background_light">
--->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -33,70 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
-        <!--
-            <RelativeLayout
-                android:id="@+id/recipe1_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp">
 
-                <ImageView
-                    android:id="@+id/recipeImage1"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_marginRight="20dp"
-                    android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/dessert"/>
-
-                <TextView
-                    android:id="@+id/recipeTitle1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/recipeImage1"
-                    android:text="Recipe Title"
-                    android:textSize="24sp"/>
-
-                <TextView
-                    android:id="@+id/recipeCaption1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/recipeTitle1"
-                    android:layout_toRightOf="@id/recipeImage1"
-                    android:text="Some sentenses about the recipe."/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp">
-
-                <ImageView
-                    android:id="@+id/recipeImage2"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_marginRight="20dp"
-                    android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/soup"/>
-
-                <TextView
-                    android:id="@+id/recipeTitle2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/recipeImage2"
-                    android:text="Recipe Title"
-                    android:textSize="24sp"/>
-
-                <TextView
-                    android:id="@+id/recipeCaption2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/recipeTitle2"
-                    android:layout_toRightOf="@id/recipeImage2"
-                    android:text="Some sentenses about the recipe."/>
-            </RelativeLayout>
--->
     </LinearLayout>
-<!--
-    </ScrollView>
--->
+
 </FrameLayout>

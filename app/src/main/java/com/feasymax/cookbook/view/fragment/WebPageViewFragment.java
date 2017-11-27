@@ -15,6 +15,8 @@ import com.feasymax.cookbook.R;
 
 public class WebPageViewFragment extends Fragment {
 
+    public static final String FRAGMENT_ID = "WebPageViewFragment";
+
     private WebView webView;
 
     public WebPageViewFragment() {

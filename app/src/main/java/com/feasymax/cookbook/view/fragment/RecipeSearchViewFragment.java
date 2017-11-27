@@ -40,7 +40,7 @@ import pl.charmas.android.tagview.TagView;
  * or save it (Discover activity).
  */
 
-public class RecipeViewFragment extends Fragment {
+public class RecipeSearchViewFragment extends Fragment {
 
     public static final String FRAGMENT_ID = "RecipeViewFragment";
 
@@ -72,7 +72,7 @@ public class RecipeViewFragment extends Fragment {
     /**
      * Required empty public constructor
      */
-    public RecipeViewFragment() {}
+    public RecipeSearchViewFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

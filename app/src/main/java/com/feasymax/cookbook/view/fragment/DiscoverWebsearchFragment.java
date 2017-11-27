@@ -22,6 +22,9 @@ import java.util.List;
  */
 
 public class DiscoverWebsearchFragment extends Fragment {
+
+    public static final String FRAGMENT_ID = "DiscoverWebsearchFragment";
+
     android.widget.SearchView searchView;
     private List<WebpageInfo> searchResults;
 

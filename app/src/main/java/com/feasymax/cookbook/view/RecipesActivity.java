@@ -3,6 +3,7 @@ package com.feasymax.cookbook.view;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -66,7 +67,7 @@ public class RecipesActivity extends ActivityMenuTabs {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         // Store the Fragment in stack
-        transaction.addToBackStack(id);
+        transaction.addToBackStack(null);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
 
     }

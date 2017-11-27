@@ -17,7 +17,7 @@ import com.feasymax.cookbook.model.entity.Recipe;
 
 public class RecipeEditFragment extends RecipeAddFragment {
 
-    private final String FRAGMENT_ID = "RecipeEditFragment";
+    public static final String FRAGMENT_ID = "RecipeEditFragment";
 
     private Recipe editedRecipe;
 

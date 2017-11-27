@@ -22,6 +22,8 @@ import com.feasymax.cookbook.view.RegisterActivity;
 
 public class AccountSignRegisterFragment extends Fragment {
 
+    public static final String FRAGMENT_ID = "AccountSignRegisterFragment";
+
     private EditText rsUserName;
     private EditText rsUserPassword;
     private Button btnSignIn;

@@ -1,9 +1,7 @@
 package com.feasymax.cookbook.view.list;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +12,6 @@ import android.widget.TextView;
 
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.util.Graphics;
-import com.feasymax.cookbook.view.fragment.RecipesFragment;
 import com.feasymax.cookbook.view.fragment.common.ShowRecipesFragment;
 
 import java.util.List;
@@ -23,7 +20,7 @@ import java.util.List;
  * Created by Olya on 2017-11-06.
  */
 
-public class RecipeListAdapter extends BaseAdapter implements View.OnClickListener {
+public class LinksListAdapter extends BaseAdapter implements View.OnClickListener {
     /*********** Declare Used Variables *********/
     private ShowRecipesFragment fragment;
     private List data;
@@ -33,7 +30,7 @@ public class RecipeListAdapter extends BaseAdapter implements View.OnClickListen
     int i = 0;
 
     /*************  CustomAdapter Constructor *****************/
-    public RecipeListAdapter(ShowRecipesFragment a, List d, Resources resLocal) {
+    public LinksListAdapter(ShowRecipesFragment a, List d, Resources resLocal) {
 
         /********** Take passed values **********/
         fragment = a;
@@ -123,7 +120,6 @@ public class RecipeListAdapter extends BaseAdapter implements View.OnClickListen
 
             vi.setOnClickListener(new OnItemClickListener( position ));
         }
-
         return vi;
     }
 

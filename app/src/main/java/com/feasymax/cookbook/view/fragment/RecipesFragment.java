@@ -21,6 +21,7 @@ import com.feasymax.cookbook.model.entity.Recipe;
 import com.feasymax.cookbook.util.Graphics;
 import com.feasymax.cookbook.view.DiscoverActivity;
 import com.feasymax.cookbook.view.RecipesActivity;
+import com.feasymax.cookbook.view.ViewTransactions;
 import com.feasymax.cookbook.view.fragment.common.CategoriesFragment;
 import com.feasymax.cookbook.view.fragment.common.ShowRecipesFragment;
 import com.feasymax.cookbook.view.list.RecipeListAdapter;
@@ -36,7 +37,7 @@ import java.util.List;
 
 public class RecipesFragment extends ShowRecipesFragment{
 
-    private final String FRAGMENT_ID = "RecipesFragment";
+    public static final String FRAGMENT_ID = "RecipesFragment";
 
     private Button btnAllCategories;
 
@@ -69,12 +70,9 @@ public class RecipesFragment extends ShowRecipesFragment{
         // Take some data in list ( CustomListViewValuesArr )
         setListData();
 
-        Resources res = getResources();
-        list = ( ListView )view.findViewById( R.id.list );
+        list = view.findViewById( R.id.list );
 
-        // Create Custom Adapter
-        adapter = new RecipeListAdapter( this, CustomListViewValuesArr, res );
-        list.setAdapter( adapter );
+        setAdapter();
 
         return view ;
     }
@@ -90,6 +88,15 @@ public class RecipesFragment extends ShowRecipesFragment{
             CustomListViewValuesArr = Application.getCollectionFromDB(false, -1,
                     Application.getDiscoverCollection().getCategory());
         }
+    }
+
+    public void setAdapter() {
+        // Create Custom Adapter
+        Resources res = getResources();
+        adapter = null;
+        adapter = new RecipeListAdapter( this, CustomListViewValuesArr, res );
+        list.setAdapter( adapter );
+
     }
 
 
@@ -119,7 +126,8 @@ public class RecipesFragment extends ShowRecipesFragment{
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
         // Store the Fragment in stack
-        transaction.addToBackStack(FRAGMENT_ID);
+        ViewTransactions.getViews().add(FRAGMENT_ID);
+        transaction.addToBackStack(null);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
 
@@ -128,7 +136,8 @@ public class RecipesFragment extends ShowRecipesFragment{
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
         // Store the Fragment in stack
-        transaction.addToBackStack(FRAGMENT_ID);
+        ViewTransactions.getViews().add(FRAGMENT_ID);
+        transaction.addToBackStack(null);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
 

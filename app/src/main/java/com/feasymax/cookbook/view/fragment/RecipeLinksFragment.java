@@ -13,12 +13,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.feasymax.cookbook.R;
+import com.feasymax.cookbook.view.ViewTransactions;
 
 /**
  * Created by Olya on 2017-09-21.
  */
 
 public class RecipeLinksFragment extends Fragment {
+
+    public static final String FRAGMENT_ID = "RecipeLinksFragment";
 
     private Button openWebpage;
 
@@ -57,6 +60,7 @@ public class RecipeLinksFragment extends Fragment {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
         // Store the Fragment in stack
+        ViewTransactions.getViews().add(FRAGMENT_ID);
         transaction.addToBackStack(null);
         transaction.replace(R.id.links_main_layout, a2Fragment).commit();
     }

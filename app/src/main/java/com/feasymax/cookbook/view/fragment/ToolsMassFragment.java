@@ -23,6 +23,8 @@ import java.text.DecimalFormat;
 
 public class ToolsMassFragment extends Fragment {
 
+    public static final String FRAGMENT_ID = "ToolsMassFragment";
+
     private EditText massNum1;
     private EditText massNum2;
     private Spinner massUnit1;

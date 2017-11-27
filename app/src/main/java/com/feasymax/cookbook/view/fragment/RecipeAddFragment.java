@@ -32,6 +32,7 @@ import com.feasymax.cookbook.model.entity.Ingredient;
 import com.feasymax.cookbook.model.entity.Recipe;
 import com.feasymax.cookbook.util.Graphics;
 import com.feasymax.cookbook.view.RecipesActivity;
+import com.feasymax.cookbook.view.ViewTransactions;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -47,7 +48,7 @@ import java.util.Map;
 
 public class RecipeAddFragment extends Fragment {
 
-    private final String FRAGMENT_ID = "RecipeAddFragment";
+    public static final String FRAGMENT_ID = "RecipeAddFragment";
 
     /*
      * Format to display a fraction
@@ -457,6 +458,7 @@ public class RecipeAddFragment extends Fragment {
      * Go to fragment that displays recipe
      */
     protected void enterRecipeViewFragment() {
+        ViewTransactions.getViews().add(FRAGMENT_ID);
         ((RecipesActivity)getActivity()).navigateFragment(0, FRAGMENT_ID);
     }
 }

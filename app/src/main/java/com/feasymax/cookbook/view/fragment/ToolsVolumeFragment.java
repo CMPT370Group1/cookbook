@@ -23,6 +23,8 @@ import java.text.DecimalFormat;
 
 public class ToolsVolumeFragment extends Fragment {
 
+    public static final String FRAGMENT_ID = "ToolsVolumeFragment";
+
     private EditText volumeNum1;
     private EditText volumeNum2;
     private Spinner volumeUnit1;

@@ -28,6 +28,8 @@ import java.util.List;
 
 public class ToolsMassVolumeFragment extends Fragment {
 
+    public static final String FRAGMENT_ID = "ToolsMassVolumeFragment";
+
     private EditText massVolumeNum1;
     private EditText massVolumeNum2;
     private EditText massVolumeNum2Editable;

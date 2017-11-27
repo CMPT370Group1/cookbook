@@ -23,6 +23,8 @@ import java.text.DecimalFormat;
 
 public class ToolsTemperatureFragment extends Fragment {
 
+    public static final String FRAGMENT_ID = "ToolsTemperatureFragment";
+
     private EditText tempNum1;
     private EditText tempNum2;
     private Spinner tempUnit1;

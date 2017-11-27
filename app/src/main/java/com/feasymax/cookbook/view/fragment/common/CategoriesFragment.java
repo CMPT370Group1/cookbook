@@ -16,6 +16,7 @@ import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
 import com.feasymax.cookbook.view.DiscoverActivity;
 import com.feasymax.cookbook.view.RecipesActivity;
+import com.feasymax.cookbook.view.ViewTransactions;
 import com.feasymax.cookbook.view.fragment.RecipesFragment;
 
 import java.io.File;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 
 public class CategoriesFragment extends Fragment{
 
-    private final String FRAGMENT_ID = "CategoriesFragment";
+    public static final String FRAGMENT_ID = "CategoriesFragment";
 
     private ArrayList<ImageButton> categoryButtons;
 
@@ -95,7 +96,8 @@ public class CategoriesFragment extends Fragment{
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
         // Store the Fragment in stack
-        transaction.addToBackStack(FRAGMENT_ID);
+        ViewTransactions.getViews().add(FRAGMENT_ID);
+        transaction.addToBackStack(null);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
 

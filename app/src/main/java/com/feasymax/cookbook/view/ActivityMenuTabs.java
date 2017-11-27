@@ -3,11 +3,15 @@ package com.feasymax.cookbook.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +19,8 @@ import android.widget.Button;
 
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
+
+import java.util.List;
 
 /**
  * Created by Olya on 2017-10-08.
@@ -98,7 +104,7 @@ public abstract class ActivityMenuTabs extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), RecipesActivity.class);
                 startActivity(intent);
-                //finish();
+                finish();
             }
         });
         btnDiscover.setOnClickListener(new View.OnClickListener() {
@@ -106,7 +112,7 @@ public abstract class ActivityMenuTabs extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), DiscoverActivity.class);
                 startActivity(intent);
-                //finish();
+                finish();
             }
         });
         btnTools.setOnClickListener(new View.OnClickListener() {
@@ -114,9 +120,45 @@ public abstract class ActivityMenuTabs extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), ToolsActivity.class);
                 startActivity(intent);
-                //finish();
+                finish();
             }
         });
+    }
+
+    private boolean onBackPressed(FragmentManager fm) {
+        if (fm != null) {
+            Log.println(Log.INFO, "fm fragments", fm.getFragments().toString());
+            if (fm.getBackStackEntryCount() > 0) {
+                fm.popBackStack();
+                return true;
+            }
+
+            List<Fragment> fragList = fm.getFragments();
+            if (fragList != null && fragList.size() > 0) {
+                for (Fragment frag : fragList) {
+                    if (frag == null) {
+                        continue;
+                    }
+                    if (frag.isVisible()) {
+                        if (onBackPressed(frag.getChildFragmentManager())) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.println(Log.INFO, "onBackPressed", "activity");
+        Log.println(Log.INFO, "fragments", ViewTransactions.getViews().toString());
+        FragmentManager fm = getSupportFragmentManager();
+        if (onBackPressed(fm)) {
+            return;
+        }
+        super.onBackPressed();
     }
 
 }

@@ -19,7 +19,7 @@
             android:drawablePadding="@dimen/tiny_margin"
             android:drawableStart="@drawable/ic_arrow_back"
             android:padding="@dimen/tiny_margin"
-            android:text="Category"
+            android:text="Back"
             android:textAlignment="textStart"
             android:textColor="?android:attr/textColorSecondaryNoDisable"/>
 

@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.feasymax.cookbook.view.ViewTransactions;
 import com.feasymax.cookbook.view.fragment.DiscoverWebsearchFragment;
 import com.feasymax.cookbook.view.fragment.RecipeSearchFragment;
 import com.feasymax.cookbook.view.fragment.common.CategoriesFragment;
@@ -24,14 +25,17 @@ public class DiscoverAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        Fragment frag= null;
+        Fragment frag = null;
 
-        if(position ==0){
+        if(position == 0) {
             frag = new CategoriesFragment();
-        }else if(position == 1){
+            ViewTransactions.getViews().add("CategoriesFragment");
+        } else if(position == 1) {
             frag = new RecipeSearchFragment();
-        }else if(position == 2){
+            ViewTransactions.getViews().add("RecipeSearchFragment");
+        } else if(position == 2) {
             frag = new DiscoverWebsearchFragment();
+            ViewTransactions.getViews().add("DiscoverWebsearchFragment");
         }
 
         Bundle b = new Bundle();
