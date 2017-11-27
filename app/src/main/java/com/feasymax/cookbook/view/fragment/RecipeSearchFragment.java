@@ -121,7 +121,7 @@ public class RecipeSearchFragment extends ShowRecipesFragment {
 
     @Override
     protected void enterRecipeViewFragment() {
-        RecipeViewFragment a2Fragment = new RecipeViewFragment();
+        RecipeViewFragment a2Fragment = new RecipeSearchViewFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
         // Store the Fragment in stack

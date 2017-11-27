@@ -52,22 +52,22 @@ public class RecipeViewFragment extends Fragment {
     /*
      * Button to go back to the recipes in a category
      */
-    private Button btnCategory;
+    protected Button btnCategory;
 
     /*
      * Recipe attributes
      */
-    private ImageView recipeImage;
-    private TextView recipeTitle;
-    private TagView recipeDuration;
-    private TableLayout recipeIngredients;
-    private TextView recipeDirections;
-    private TagView recipeTags;
+    protected ImageView recipeImage;
+    protected TextView recipeTitle;
+    protected TagView recipeDuration;
+    protected TableLayout recipeIngredients;
+    protected TextView recipeDirections;
+    protected TagView recipeTags;
 
     /**
      * Current recipe displayed in the fragment (scaled)
      */
-    private Recipe currentRecipe = null;
+    protected Recipe currentRecipe = null;
 
     /**
      * Required empty public constructor
@@ -184,7 +184,7 @@ public class RecipeViewFragment extends Fragment {
     /**
      * Go back to all recipes in a category
      */
-    private void enterRecipesFragment() {
+    protected void enterRecipesFragment() {
         RecipesFragment a2Fragment = new RecipesFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
@@ -197,7 +197,7 @@ public class RecipeViewFragment extends Fragment {
     /**
      * Go back to all recipes in a category
      */
-    private void enterRecipeEditFragment() {
+    protected void enterRecipeEditFragment() {
         RecipeEditFragment a2Fragment = new RecipeEditFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
@@ -210,7 +210,7 @@ public class RecipeViewFragment extends Fragment {
     /**
      * Go back to all recipes in a category
      */
-    private void enterPrevFragment() {
+    protected void enterPrevFragment() {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         // Store the Fragment in stack
         ViewTransactions.getViews().add(FRAGMENT_ID);
@@ -225,7 +225,7 @@ public class RecipeViewFragment extends Fragment {
      * @param duration preparation duration in minutes
      * @return string representation of duration in hours and minutes
      */
-    private String displayDuration(int duration) {
+    protected String displayDuration(int duration) {
         if (duration == 0) {
             return "unspecified";
         }
@@ -278,21 +278,21 @@ public class RecipeViewFragment extends Fragment {
         return false;
     }
 
-    private void editRecipe() {
+    protected void editRecipe() {
         if (getActivity() instanceof RecipesActivity) {
             enterRecipeEditFragment();
             //Application.editRecipe(Application.getDiscoverCurrentRecipe());
         }
     }
 
-    private void deleteRecipe() {
+    protected void deleteRecipe() {
         if (getActivity() instanceof RecipesActivity) {
             Application.deleteRecipe(Application.getUserCurrentRecipe().getId());
             enterRecipesFragment();
         }
     }
 
-    private void addRecipe() {
+    protected void addRecipe() {
         if (getActivity() instanceof DiscoverActivity) {
             if (Application.isUserSignedIn()) {
                 Application.addNewRecipe(true, Application.getDiscoverCurrentRecipe(), false, null);
