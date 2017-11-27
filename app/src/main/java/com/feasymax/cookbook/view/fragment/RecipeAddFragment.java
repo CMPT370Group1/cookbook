@@ -291,7 +291,7 @@ public class RecipeAddFragment extends Fragment {
             public void onClick(View v) {
                 View row = recipeIngredients.get((int)v.getTag());
                 row.setVisibility(View.GONE);
-                recipeIngredients.remove(row);
+                recipeIngredients.remove((int)v.getTag());
             }
         });
 
@@ -319,6 +319,7 @@ public class RecipeAddFragment extends Fragment {
                 TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
 
         recipeTags.put(tagIndex, tr);
+        Log.println(Log.INFO, "recipeTags adding", recipeTags.toString());
 
         ImageButton deleteTag = tr.findViewById(R.id.buttonDeleteTag);
         deleteTag.setTag(tagIndex);
@@ -327,7 +328,7 @@ public class RecipeAddFragment extends Fragment {
             public void onClick(View v) {
                 View row = recipeTags.get((int)v.getTag());
                 row.setVisibility(View.GONE);
-                recipeTags.remove(row);
+                recipeTags.remove((int)v.getTag());
             }
         });
 
@@ -365,6 +366,7 @@ public class RecipeAddFragment extends Fragment {
                     Ingredient ingredient = new Ingredient(name.getText().toString(),
                             ingrQuantity, unit.getSelectedItemPosition());
                     ingredientList.add(ingredient);
+                    Log.println(Log.INFO, "ingredientList", ingredientList.toString());
                 }
             }
             recipe.setIngredients(ingredientList);
@@ -383,7 +385,7 @@ public class RecipeAddFragment extends Fragment {
                     String tagName = name.getText().toString();
                     tagList.add(tagName);
                     
-                    Log.println(Log.INFO, "ADD INGRED", name.getText().toString());
+                    Log.println(Log.INFO, "tagList", tagList.toString());
                 }
             }
 

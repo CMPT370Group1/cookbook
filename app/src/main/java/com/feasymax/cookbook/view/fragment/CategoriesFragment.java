@@ -1,4 +1,4 @@
-package com.feasymax.cookbook.view.fragment.common;
+package com.feasymax.cookbook.view.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

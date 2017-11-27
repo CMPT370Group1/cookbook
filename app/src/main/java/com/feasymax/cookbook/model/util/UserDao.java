@@ -673,30 +673,27 @@ public class UserDao {
                             recipeID = rs.getInt("id");
                             Log.println(Log.INFO, "recipeID", recipeID+"");
 
-                            //TODO: change
+                            Log.println(Log.INFO, "recipe ingredients", recipe.getIngredients().toString());
+
+                            // if editing the recipe, remove all ingredients to add them all again
+                            if (!isNewRecipe) {
+                                query = "DELETE FROM ingredients WHERE recipe_id = " + recipeID;
+                                stmt = conn.prepareStatement(query);
+                                stmt.executeUpdate();
+                            }
+
                             // insert all recipe's ingredients
                             for (Ingredient ingr: recipe.getIngredients()) {
 
                                 // insert an ingredient
-                                if (isNewRecipe) {
-                                    query = "INSERT INTO ingredients (name, quantity, unit, " +
-                                            "recipe_id) VALUES (?, ?, ?, ?)";
-                                }
-                                else {
-                                    query = "UPDATE ingredients SET name = ?, quantity = ?, " +
-                                            "unit = ? WHERE recipe_id = " +
-                                            recipe.getId();
-
-                                }
-
+                                query = "INSERT INTO ingredients (name, quantity, unit, " +
+                                        "recipe_id) VALUES (?, ?, ?, ?)";
                                 stmt = conn.prepareStatement(query);
                                 //stmt.setInt(1, autoID);
                                 stmt.setString(1, ingr.getName());
                                 stmt.setDouble(2, ingr.getQuantity());
                                 stmt.setInt(3, ingr.getUnit());
-                                if (isNewRecipe) {
-                                    stmt.setInt(4, recipeID);
-                                }
+                                stmt.setInt(4, recipeID);
                                 stmt.executeUpdate();
                                 if (stmt.executeUpdate() <= 0) {
                                     throw new SQLException("No ingredient info was inserted");
@@ -704,26 +701,23 @@ public class UserDao {
                             }
                             removeDuplicates("ingredients", new String[]{"name", "quantity", "unit", "recipe_id"});
 
-                            //TODO: change
+                            Log.println(Log.INFO, "recipe tags", recipe.getTags().toString());
+                            // if editing the recipe, remove all tags to add them all again
+                            if (!isNewRecipe) {
+                                query = "DELETE FROM tag WHERE recipe_id = " + recipeID;
+                                stmt = conn.prepareStatement(query);
+                                stmt.executeUpdate();
+                            }
+
                             // insert all recipe's tags
                             for (String tag: recipe.getTags()) {
 
-                                // insert an ingredient
-                                if (isNewRecipe) {
-                                    query = "INSERT INTO tag (tag_name, recipe_id) " +
+                                // insert a tag
+                                query = "INSERT INTO tag (tag_name, recipe_id) " +
                                             "VALUES (?, ?)";
-                                }
-                                else {
-                                    query = "UPDATE tag SET tag_name = ? WHERE recipe_id = " +
-                                            recipe.getId();
-
-                                }
-
                                 stmt = conn.prepareStatement(query);
                                 stmt.setString(1, tag);
-                                if (isNewRecipe) {
-                                    stmt.setInt(2, recipeID);
-                                }
+                                stmt.setInt(2, recipeID);
                                 stmt.executeUpdate();
                                 if (stmt.executeUpdate() <= 0) {
                                     throw new SQLException("No tag info was inserted");

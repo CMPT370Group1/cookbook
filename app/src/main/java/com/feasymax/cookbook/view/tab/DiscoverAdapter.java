@@ -9,7 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.feasymax.cookbook.view.ViewTransactions;
 import com.feasymax.cookbook.view.fragment.DiscoverWebsearchFragment;
 import com.feasymax.cookbook.view.fragment.RecipeSearchFragment;
-import com.feasymax.cookbook.view.fragment.common.CategoriesFragment;
+import com.feasymax.cookbook.view.fragment.CategoriesFragment;
 
 /**
  * Created by Olya on 2017-09-21.

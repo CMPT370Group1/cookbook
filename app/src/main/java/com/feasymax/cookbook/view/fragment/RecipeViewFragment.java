@@ -87,7 +87,7 @@ public class RecipeViewFragment extends Fragment {
         btnCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                enterPrevFragment();
+                enterRecipesFragment();
             }
         });
 

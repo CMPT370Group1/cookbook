@@ -1,8 +1,6 @@
 package com.feasymax.cookbook.view.fragment;
 
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -18,17 +16,13 @@ import android.widget.ListView;
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
 import com.feasymax.cookbook.model.entity.Recipe;
-import com.feasymax.cookbook.util.Graphics;
 import com.feasymax.cookbook.view.DiscoverActivity;
 import com.feasymax.cookbook.view.RecipesActivity;
 import com.feasymax.cookbook.view.ViewTransactions;
-import com.feasymax.cookbook.view.fragment.common.CategoriesFragment;
 import com.feasymax.cookbook.view.fragment.common.ShowRecipesFragment;
 import com.feasymax.cookbook.view.list.RecipeListAdapter;
 import com.feasymax.cookbook.view.list.RecipeListModel;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
