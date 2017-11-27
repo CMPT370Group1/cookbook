@@ -12,47 +12,11 @@ import java.util.List;
  * Collection of all users recipes.
  */
 
-public class DiscoverCollection {
-
-    private List<RecipeListModel> recipes;
-    private Recipe curRecipe;
-    private int category;
+public class DiscoverCollection extends UserCollection {
 
     public DiscoverCollection() {
+        super();
         curRecipe = null;
-        recipes = new LinkedList<>();
         category = -1;
-    }
-
-    public List<RecipeListModel> getRecipes() {
-        return recipes;
-    }
-
-    public void setRecipes(List<RecipeListModel> recipes) {
-        this.recipes = recipes;
-    }
-
-    public Recipe getCurRecipe() {
-        return curRecipe;
-    }
-
-    public void setCurRecipe(Recipe curRecipe) {
-        this.curRecipe = curRecipe;
-    }
-
-    public int getCategory() {
-        return category;
-    }
-
-    public void setCategory(int category) {
-        this.category = category;
-    }
-
-    public void addNewRecipe(RecipeListModel recipeInfo) {
-        this.recipes.add(recipeInfo);
-    }
-
-    public boolean removeRecipe(RecipeListModel recipeInfo) {
-        return this.recipes.remove(recipeInfo);
     }
 }

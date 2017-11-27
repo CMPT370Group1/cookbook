@@ -75,11 +75,11 @@ public class RecipesFragment extends ShowRecipesFragment{
     public void setListData()
     {
         if (getActivity() instanceof RecipesActivity){
-            CustomListViewValuesArr = Application.getCollectionFromDB(true,
+            CustomListViewValuesArr = Application.getCollectionRecipes(true,
                     Application.getUser().getUserID(), Application.getUserCollection().getCategory());
         }
         else if (getActivity() instanceof DiscoverActivity) {
-            CustomListViewValuesArr = Application.getCollectionFromDB(false, -1,
+            CustomListViewValuesArr = Application.getCollectionRecipes(false, -1,
                     Application.getDiscoverCollection().getCategory());
         }
     }

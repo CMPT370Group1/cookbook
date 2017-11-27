@@ -400,7 +400,8 @@ public class RecipeAddFragment extends Fragment {
 
             if (Application.addNewRecipe(isNewRecipe, recipe, true, recipeIconBitmap) != -1) {
                 Log.println(Log.INFO, "addRecipe", Application.getUserCurrentRecipe().toString());
-                Log.println(Log.INFO, "addRecipe", Application.getUserCollectionRecipes().toString());
+                Log.println(Log.INFO, "addRecipe", Application.getUserCollection().
+                        getCategoryRecipes(recipe.getCategory()).toString());
 
                 emptyFragment();
                 enterRecipeViewFragment();

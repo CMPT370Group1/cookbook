@@ -139,27 +139,11 @@ public class Application {
     }
 
     /**
-     * Get all recipes in a category in user's collection
-     * @return
-     */
-    public static List<RecipeListModel> getUserCollectionRecipes() {
-        return userCollection.getRecipes();
-    }
-
-    /**
      * Get the current recipe in user's collection
      * @return
      */
     public static Recipe getUserCurrentRecipe() {
         return userCollection.getCurRecipe();
-    }
-
-    /**
-     * Add a recipe to a category
-     * @param recipeInfo
-     */
-    public static void addUserRecipe(RecipeListModel recipeInfo) {
-        userCollection.addNewRecipe(recipeInfo);
     }
 
     public static DiscoverCollection getDiscoverCollection() {
@@ -190,10 +174,39 @@ public class Application {
      * Get recipes in a category from database
      * @return
      */
-    public static List<RecipeListModel> getCollectionFromDB(final boolean userCollection,
+    public static List<RecipeListModel> getCollectionRecipes(final boolean isUserCollection,
                                                             final int userID, int category) {
+        if (isUserCollection) {
+            if (getUserCollection().getCategoryRecipes(category) != null) {
+                return getUserCollection().getCategoryRecipes(category);
+            }
+            else {
+                return getRecipesFromDB(isUserCollection, userID, category);
+            }
+        }
+        else {
+            if (getDiscoverCollection().getCategoryRecipes(category) != null) {
+                return getDiscoverCollection().getCategoryRecipes(category);
+            }
+            else {
+                return getRecipesFromDB(isUserCollection, userID, category);
+            }
+        }
+    }
+
+    public static List<RecipeListModel> getRecipesFromDB(final boolean isUserCollection,
+                                                             final int userID, int category) {
         UserDao userDao = new UserDao();
-        return userDao.updateRecipeCollection(userCollection, userID, category);
+        List<RecipeListModel> collectionRecipes = userDao.updateRecipeCollection(isUserCollection,
+                userID, category);
+        if (isUserCollection){
+            getUserCollection().setRecipes(collectionRecipes, category);
+        }
+        else {
+            getDiscoverCollection().setRecipes(collectionRecipes, category);
+        }
+
+        return collectionRecipes;
     }
 
 
@@ -219,33 +232,32 @@ public class Application {
         }
         setUserCurrentRecipe(recipe);
 
-        if (recipe.getCategory() == getUserCollection().getCategory()) {
-            RecipeListModel recipeModel = new RecipeListModel();
-            recipeModel.setRecipeId(recipe.getId());
-            recipeModel.setRecipeTitle(recipe.getTitle());
-            recipeModel.setRecipeDuration(recipe.getDuration());
-            if (recipe.getImage() != null) {
-                recipeModel.setRecipeImage(Graphics.resize(recipe.getImage(), 200, 200));
-            }
-            else {
-                recipeModel.setRecipeImage(image_icon);
-            }
-            addUserRecipe(recipeModel);
+        RecipeListModel recipeModel = new RecipeListModel();
+        recipeModel.setRecipeId(recipe.getId());
+        recipeModel.setRecipeTitle(recipe.getTitle());
+        recipeModel.setRecipeDuration(recipe.getDuration());
+        if (recipe.getImage() != null) {
+            recipeModel.setRecipeImage(Graphics.resize(recipe.getImage(), 200, 200));
         }
+        else {
+            recipeModel.setRecipeImage(image_icon);
+        }
+        getUserCollection().addNewRecipe(recipeModel, recipe.getCategory());
+        getDiscoverCollection().addNewRecipe(recipeModel, recipe.getCategory());
 
         return 0;
     }
 
     /**
      * Delete recipe from user's collection
-     * @param recipeID
+     * @param recipe
      */
-    public static void deleteRecipe(int recipeID) {
+    public static void deleteRecipe(Recipe recipe) {
         Log.println(Log.INFO, "deleteRecipe","deleteRecipe");
         UserDao userDao = new UserDao();
-        userDao.deleteRecipe(getUser().getUserID(), recipeID);
-        // delete corresponding recipe from UserCollection.recipes
-        // set the UserCollection.currentRecipe to null
+        userDao.deleteRecipe(getUser().getUserID(), recipe.getId());
+        getUserCollection().removeRecipe(recipe.getId(), recipe.getCategory());
+        getUserCollection().setCurRecipe(null);
     }
 
     /**

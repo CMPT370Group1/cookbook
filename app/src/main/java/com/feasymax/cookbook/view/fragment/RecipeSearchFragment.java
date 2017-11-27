@@ -129,6 +129,4 @@ public class RecipeSearchFragment extends ShowRecipesFragment {
         transaction.addToBackStack(null);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
-
-    //
 }
