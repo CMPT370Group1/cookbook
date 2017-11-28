@@ -31,6 +31,7 @@ public class UserDao {
     private static final String DB_NAME = "cmpt370_feasymax";
     private static final String PASSWORD = "v0vAecsxvf0gzgCIlFPN";
     private static final String USERNAME = "cmpt370_feasymax";
+    private static final int ADMIN_ID = 1;
     private volatile int userID = 0;
     private volatile int recipeID = -1;
     private volatile String updateRes = "";
@@ -575,19 +576,45 @@ public class UserDao {
 
                         Log.println(Log.INFO, "deleting recipe", "id " + id + " owner " + owner);
 
+                        if (owner == 1) {
+                            if (userID != ADMIN_ID) {
+                                query = "UPDATE user_recipe SET user_id = 1 WHERE id = " + id;
+                                stmt = conn.prepareStatement(query);
+                                if (stmt.executeUpdate() <= 0) {
+                                    throw new SQLException("No data updated");
+                                }
+                            }
+                            else {
+                                query = "DELETE FROM user_recipe WHERE user_id = " + userID + " AND " +
+                                        "recipe_id = " + recipeID;
+                                stmt = conn.prepareStatement(query);
+                                if (stmt.executeUpdate() <= 0) {
+                                    throw new SQLException("No data deleted");
+                                }
+
+                                query = "DELETE FROM ingredients WHERE recipe_id = " + recipeID;
+                                stmt = conn.prepareStatement(query);
+                                stmt.executeUpdate();
+
+                                query = "DELETE FROM tag WHERE recipe_id = " + recipeID;
+                                stmt = conn.prepareStatement(query);
+                                stmt.executeUpdate();
+
+                                query = "DELETE FROM recipes WHERE id = " + recipeID;
+                                stmt = conn.prepareStatement(query);
+                                if (stmt.executeUpdate() <= 0) {
+                                    throw new SQLException("No data deleted");
+                                }
+                            }
+
+                        }
                         if (owner == 0) {
+
                             query = "DELETE FROM user_recipe WHERE user_id = " + userID + " AND " +
                                     "recipe_id = " + recipeID;
                             stmt = conn.prepareStatement(query);
                             if (stmt.executeUpdate() <= 0) {
                                 throw new SQLException("No data deleted");
-                            }
-                        }
-                        else {
-                            query = "UPDATE user_recipe SET user_id = 1 WHERE id = " + id;
-                            stmt = conn.prepareStatement(query);
-                            if (stmt.executeUpdate() <= 0) {
-                                throw new SQLException("No data updated");
                             }
                         }
 

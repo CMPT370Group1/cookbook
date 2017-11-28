@@ -162,6 +162,7 @@ public class RecipesFragment extends ShowRecipesFragment{
     @Override
     public void onResume() {
         super.onResume();
+        CustomListViewValuesArr = null;
         setListData();
         if (CustomListViewValuesArr.size() != 0) {
             noItemsLayout.setVisibility(View.GONE);
