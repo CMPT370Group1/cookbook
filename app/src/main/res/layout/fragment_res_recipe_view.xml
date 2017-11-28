@@ -90,8 +90,8 @@
 
                         <ImageButton
                             android:id="@+id/ibScale"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/small_square_button_side"
+                            android:layout_height="@dimen/small_square_button_side"
                             android:layout_alignParentRight="true"
                             android:layout_below="@+id/ingredientsDivider"
                             android:background="@color/colorAccent"

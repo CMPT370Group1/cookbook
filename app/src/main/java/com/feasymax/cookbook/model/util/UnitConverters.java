@@ -82,6 +82,10 @@ public class UnitConverters {
         return quanB;
     }
 
+    public static double getRatio(double quanA, double quanB)  {
+        return quanA / quanB;
+    }
+
     public static double ParseFraction(String s){
         double result;
         if(s.contains("/")){

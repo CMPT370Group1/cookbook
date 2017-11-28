@@ -7,8 +7,7 @@
     <EditText
         android:id="@+id/quantity"
         android:layout_marginRight="@dimen/tiny_margin"
-        android:inputType="none"
-        android:editable="false"
+        android:inputType="numberDecimal"
         android:textAlignment="viewEnd"
         android:textSize="16sp"/>
 
@@ -18,7 +17,7 @@
         android:layout_marginRight="@dimen/tiny_margin"
         android:text="TextView"
         android:textSize="16sp"
-        android:focusable="false"/>
+        android:textColor="@android:color/black"/>
 
     <TextView
         android:id="@+id/name"
