@@ -7,15 +7,18 @@
     <EditText
         android:id="@+id/quantity"
         android:layout_marginRight="@dimen/tiny_margin"
-        android:inputType="numberDecimal"
+        android:inputType="none"
+        android:editable="false"
         android:textAlignment="viewEnd"
         android:textSize="16sp"/>
 
     <Spinner
         android:id="@+id/unit"
+        android:layout_height="match_parent"
         android:layout_marginRight="@dimen/tiny_margin"
         android:text="TextView"
-        android:textSize="16sp"/>
+        android:textSize="16sp"
+        android:focusable="false"/>
 
     <TextView
         android:id="@+id/name"

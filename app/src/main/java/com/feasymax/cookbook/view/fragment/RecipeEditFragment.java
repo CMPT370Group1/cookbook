@@ -1,13 +1,17 @@
 package com.feasymax.cookbook.view.fragment;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
 import com.feasymax.cookbook.model.entity.Ingredient;
 import com.feasymax.cookbook.model.entity.Recipe;
+import com.feasymax.cookbook.view.ViewTransactions;
 
 /**
  * Created by Olya on 21/09/2017.
@@ -20,6 +24,7 @@ public class RecipeEditFragment extends RecipeAddFragment {
     public static final String FRAGMENT_ID = "RecipeEditFragment";
 
     private int prevCategory;
+    private Button btnCancel;
 
     /**
      * Required empty public constructor
@@ -32,6 +37,8 @@ public class RecipeEditFragment extends RecipeAddFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = super.onCreateView(inflater, container, savedInstanceState);
+
+        btnCancel = view.findViewById(R.id.buttonCancel);
 
         editedRecipe = Application.getUserCurrentRecipe();
         prevCategory = editedRecipe.getCategory();
@@ -58,13 +65,34 @@ public class RecipeEditFragment extends RecipeAddFragment {
         }
 
 
-        addRecipe.setOnClickListener(new View.OnClickListener() {
+        btnAddRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addRecipe(false, editedRecipe.getId(), prevCategory);
             }
         });
+        btnAddRecipe.setText("Save Recipe");
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                enterPrevFragment();
+            }
+        });
+        btnCancel.setVisibility(View.VISIBLE);
+
 
         return view ;
+    }
+
+    /**
+     * Go back to all recipes in a category
+     */
+    protected void enterPrevFragment() {
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        // Store the Fragment in stack
+        ViewTransactions.getViews().add(FRAGMENT_ID);
+        transaction.addToBackStack(null);
+        transaction.detach(this).commit();
     }
 }

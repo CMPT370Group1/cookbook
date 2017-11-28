@@ -82,9 +82,9 @@ public class RecipeAddFragment extends Fragment {
     protected Bitmap recipeIconBitmap;
     protected TextView recipeImageText;
 
-    protected ImageButton addIngredient;
-    protected ImageButton addTag;
-    protected Button addRecipe;
+    protected ImageButton ibtnAddIngredient;
+    protected ImageButton ibtnAddTag;
+    protected Button btnAddRecipe;
 
     protected Recipe editedRecipe = null;
 
@@ -113,9 +113,9 @@ public class RecipeAddFragment extends Fragment {
         recipeImage = view.findViewById(R.id.recipeImageAdd);
         recipeImageText = view.findViewById(R.id.myImageViewTextAdd);
 
-        addIngredient = view.findViewById(R.id.buttonAddIngredient);
-        addTag = view.findViewById(R.id.buttonAddTag);
-        addRecipe = view.findViewById(R.id.buttonAddRecipe);
+        ibtnAddIngredient = view.findViewById(R.id.buttonAddIngredient);
+        ibtnAddTag = view.findViewById(R.id.buttonAddTag);
+        btnAddRecipe = view.findViewById(R.id.buttonAddRecipe);
 
         recipeIngredients = new HashMap<>();
         ingredientList = new LinkedList<>();
@@ -137,14 +137,14 @@ public class RecipeAddFragment extends Fragment {
         recipeImage.setColorFilter(ContextCompat.getColor(getContext(), R.color.colorPrimary),
                 android.graphics.PorterDuff.Mode.MULTIPLY);
 
-        addIngredient.setOnClickListener(new View.OnClickListener() {
+        ibtnAddIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addNewIngredient(null);
             }
         });
 
-        addTag.setOnClickListener(new View.OnClickListener() {
+        ibtnAddTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addNewTag(null);
@@ -157,7 +157,7 @@ public class RecipeAddFragment extends Fragment {
         adapterCategory.setDropDownViewResource(R.layout.spinner_dropdown_item);
         recipeCategory.setAdapter(adapterCategory);
 
-        addRecipe.setOnClickListener(new View.OnClickListener() {
+        btnAddRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addRecipe(true, -1, -1);

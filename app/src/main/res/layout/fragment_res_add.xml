@@ -250,6 +250,17 @@
                 android:textColor="@android:color/white"
                 android:textSize="18sp"/>
 
+            <Button
+                android:id="@+id/buttonCancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/tiny_margin"
+                android:background="@color/colorAccent"
+                android:text="Cancel"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:visibility="gone"/>
+
         </LinearLayout>
 
     </ScrollView>
