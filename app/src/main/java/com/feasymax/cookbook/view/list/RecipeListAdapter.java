@@ -1,9 +1,7 @@
 package com.feasymax.cookbook.view.list;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +12,6 @@ import android.widget.TextView;
 
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.util.Graphics;
-import com.feasymax.cookbook.view.fragment.RecipesFragment;
 import com.feasymax.cookbook.view.fragment.common.ShowRecipesFragment;
 
 import java.util.List;
@@ -80,10 +77,10 @@ public class RecipeListAdapter extends BaseAdapter implements View.OnClickListen
 
         if(convertView == null){
 
-            /****** Inflate tabitem.xml file for each row ( Defined below ) *******/
-            vi = inflater.inflate(R.layout.tabitem, null);
+            /****** Inflate tabitem_recipe_recipe.xml file for each row ( Defined below ) *******/
+            vi = inflater.inflate(R.layout.tabitem_recipe, null);
 
-            /****** View Holder Object to contain tabitem.xml file elements ******/
+            /****** View Holder Object to contain tabitem_recipe.xmlipe.xml file elements ******/
 
             holder = new ViewHolder();
             holder.recipeTitle = (TextView) vi.findViewById(R.id.recipeTitle);

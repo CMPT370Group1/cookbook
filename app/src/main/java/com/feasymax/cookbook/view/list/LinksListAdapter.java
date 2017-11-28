@@ -11,8 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.feasymax.cookbook.R;
+import com.feasymax.cookbook.model.entity.WebpageInfo;
 import com.feasymax.cookbook.util.Graphics;
-import com.feasymax.cookbook.view.fragment.common.ShowRecipesFragment;
+import com.feasymax.cookbook.view.fragment.common.ShowWebpagesFragment;
 
 import java.util.List;
 
@@ -22,15 +23,15 @@ import java.util.List;
 
 public class LinksListAdapter extends BaseAdapter implements View.OnClickListener {
     /*********** Declare Used Variables *********/
-    private ShowRecipesFragment fragment;
+    private ShowWebpagesFragment fragment;
     private List data;
     private static LayoutInflater inflater = null;
     public Resources res;
-    RecipeListModel tempValues = null;
+    WebpageInfo tempValues = null;
     int i = 0;
 
     /*************  CustomAdapter Constructor *****************/
-    public LinksListAdapter(ShowRecipesFragment a, List d, Resources resLocal) {
+    public LinksListAdapter(ShowWebpagesFragment a, List d, Resources resLocal) {
 
         /********** Take passed values **********/
         fragment = a;
@@ -63,9 +64,9 @@ public class LinksListAdapter extends BaseAdapter implements View.OnClickListene
     /********* Create a holder Class to contain inflated xml file elements *********/
     public static class ViewHolder{
 
-        public TextView recipeTitle;
-        public TextView recipeDuration;
-        public ImageView recipeImage;
+        public TextView webpageTitle;
+        public TextView webpageWebsite;
+        public ImageView webpageImage;
 
     }
 
@@ -77,15 +78,15 @@ public class LinksListAdapter extends BaseAdapter implements View.OnClickListene
 
         if(convertView == null){
 
-            /****** Inflate tabitem.xml file for each row ( Defined below ) *******/
-            vi = inflater.inflate(R.layout.tabitem, null);
+            /****** Inflate tabitem_recipe_recipe.xml file for each row ( Defined below ) *******/
+            vi = inflater.inflate(R.layout.tabitem_webpage, null);
 
-            /****** View Holder Object to contain tabitem.xml file elements ******/
+            /****** View Holder Object to contain tabitem_recipe.xmlipe.xml file elements ******/
 
             holder = new ViewHolder();
-            holder.recipeTitle = (TextView) vi.findViewById(R.id.recipeTitle);
-            holder.recipeDuration =(TextView)vi.findViewById(R.id.recipeCaption);
-            holder.recipeImage =(ImageView)vi.findViewById(R.id.recipeImage);
+            holder.webpageTitle = (TextView) vi.findViewById(R.id.webpageTitle);
+            holder.webpageWebsite =(TextView)vi.findViewById(R.id.webpageWebsite);
+            holder.webpageImage =(ImageView)vi.findViewById(R.id.webpageImage);
 
             /************  Set holder with LayoutInflater ************/
             vi.setTag( holder );
@@ -95,24 +96,24 @@ public class LinksListAdapter extends BaseAdapter implements View.OnClickListene
 
         if(getCount() == 0)
         {
-            holder.recipeTitle.setText("No Data");
+            holder.webpageTitle.setText("No Data");
 
         }
         else
         {
             /***** Get each Model object from list ********/
             tempValues = null;
-            tempValues = ( RecipeListModel ) data.get( position );
+            tempValues = ( WebpageInfo ) data.get( position );
 
             /************  Set Model values in Holder elements ***********/
 
-            holder.recipeTitle.setText( tempValues.getRecipeTitle() );
-            holder.recipeDuration.setText( displayDuration(tempValues.getRecipeDuration()) );
-            if (tempValues.getRecipeImage() != null) {
-                holder.recipeImage.setImageBitmap(tempValues.getRecipeImage());
+            holder.webpageTitle.setText( tempValues.getTitle() );
+            holder.webpageWebsite.setText( tempValues.getWebsiteName() );
+            if (tempValues.getImage() != null) {
+                holder.webpageImage.setImageBitmap(tempValues.getImage());
             }
             else {
-                holder.recipeImage.setImageBitmap(Graphics.decodeSampledBitmapFromResource(res, R.drawable.no_image420, 200, 200));
+                holder.webpageImage.setImageBitmap(Graphics.decodeSampledBitmapFromResource(res, R.drawable.no_image420, 200, 200));
             }
 
 
@@ -143,20 +144,6 @@ public class LinksListAdapter extends BaseAdapter implements View.OnClickListene
 
             fragment.onItemClick(mPosition);
 
-        }
-    }
-
-    private String displayDuration(int duration) {
-        if (duration == 0) {
-            return "Duration: unspecified";
-        }
-        int hours = duration / 60;
-        int min = duration % 60;
-        if (hours == 0) {
-            return "Duration: " + min + " min";
-        }
-        else {
-            return "Duration: " + hours + " h " + min + " min";
         }
     }
 

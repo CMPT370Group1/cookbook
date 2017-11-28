@@ -81,9 +81,7 @@ public class RecipeSearchFragment extends ShowRecipesFragment {
 
 
         CustomListView = this;
-
         list = view.findViewById( R.id.list );
-
         setAdapter();
 
         return view ;

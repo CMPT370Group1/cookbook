@@ -5,6 +5,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -38,26 +41,47 @@ public class WebSearch {
                         searchTokens += retval + "+";
                     }
                     searchTokens = searchTokens.substring(0, searchTokens.length() - 1);
-                    Log.println(Log.INFO, "searchTokens", searchTokens);
 
                     doc = Jsoup.connect("https://www.google.com/search?q=" + searchTokens).get();
                     Elements links = doc.select("div[class=g]");
+                    results = new LinkedList<>();
+                    WebpageInfo webpageInfo = null;
 
                     for (Element link : links) {
+
                         Elements titles = link.select("h3[class=r]");
                         String title = titles.text();
+                        try {
+                            title = title.substring(0, title.lastIndexOf(" | "));
+                        }
+                        catch (Exception e){}
+                        try {
+                            title = title.substring(0, title.lastIndexOf(" - "));
+                        }
+                        catch (Exception e){}
+                        title = title.trim();
 
                         Elements bodies = link.select("span[class=st]");
                         String body = bodies.text();
 
                         Elements addrs = link.select("a[href]");
-                        String addr = addrs.attr("abs:href");
+                        String url = addrs.attr("abs:href");
+
+                        String website = "";
+                        website = url.replace("https://", "");
+                        website = website.replace("http://", "");
+                        website = website.replace("www.", "");
+                        try {
+                            website = website.substring(0, website.indexOf('/'));
+                        } catch (Exception e) {}
 
                         // TODO: also save an image
 
-                        Log.println(Log.INFO, "getSearchResults", "Title: " + title);
-                        Log.println(Log.INFO, "getSearchResults", "Body: " + body);
-                        Log.println(Log.INFO, "getSearchResults", "Link: " + addr + "\n");
+                        webpageInfo = new WebpageInfo(title,url, website, body);
+                        if (!results.contains(webpageInfo)) {
+                            results.add(webpageInfo);
+                        }
+
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -75,7 +99,6 @@ public class WebSearch {
         }
 
         return results;
-
     }
 
 }
