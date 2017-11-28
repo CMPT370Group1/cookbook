@@ -274,7 +274,7 @@ public class RecipeAddFragment extends Fragment {
         Spinner unit = tr.findViewById(R.id.ingredientUnit);
         // correctly display recipe categories in the dropdown spinner
         ArrayAdapter adapterUnit = ArrayAdapter.createFromResource(this.getContext(),
-                R.array.mass_volume_units, R.layout.spinner_item_left);
+                R.array.all_units, R.layout.spinner_item_left);
         adapterUnit.setDropDownViewResource(R.layout.spinner_dropdown_item);
         unit.setAdapter(adapterUnit);
 
@@ -353,7 +353,7 @@ public class RecipeAddFragment extends Fragment {
             if (!isNewRecipe) {
                 recipe.setId(recipeId);
             }
-            recipe.setTitle(recipeTitle.getText().toString());
+            recipe.setTitle(recipeTitle.getText().toString().trim());
             recipe.setCategory(recipeCategory.getSelectedItemPosition());
             for (int ingr: recipeIngredients.keySet()) {
                 View tr = recipeIngredients.get(ingr);
@@ -372,7 +372,7 @@ public class RecipeAddFragment extends Fragment {
                 }
             }
             recipe.setIngredients(ingredientList);
-            recipe.setDirections(recipeDirections.getText().toString());
+            recipe.setDirections(recipeDirections.getText().toString().trim());
             if (recipeDurationHour.getText().length() != 0) {
                 recipe.setDuration(Integer.parseInt(recipeDurationHour.getText().toString())*60);
             }
@@ -400,7 +400,10 @@ public class RecipeAddFragment extends Fragment {
 
             Log.println(Log.INFO, "addRecipe", recipe.toString());
 
-            boolean isOwner = (editedRecipe != null) ? editedRecipe.isOwner() : false;
+            boolean isOwner = true;
+            if (!isNewRecipe) {
+                isOwner = (editedRecipe != null) ? editedRecipe.isOwner() : false;
+            }
 
             if (Application.addNewRecipe(isNewRecipe, recipe, isOwner, recipeIconBitmap, category) != -1) {
                 Log.println(Log.INFO, "addRecipe", Application.getUserCurrentRecipe().toString());

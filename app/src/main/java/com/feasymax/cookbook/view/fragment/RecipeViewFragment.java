@@ -32,6 +32,7 @@ import com.feasymax.cookbook.view.RecipesActivity;
 import com.feasymax.cookbook.view.ViewTransactions;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -155,48 +156,60 @@ public class RecipeViewFragment extends Fragment {
         }
 
         recipeTitle.setText(currentRecipe.getTitle());
-        recipeDirections.setText(currentRecipe.getDirections());
+        if (!currentRecipe.getDirections().equals("")) {
+            recipeDirections.setText(currentRecipe.getDirections());
+        }
+        else {
+            view.findViewById(R.id.directionsLayout).setVisibility(View.GONE);
+        }
 
         TagView.Tag[] duration = { new TagView.Tag(displayDuration(currentRecipe.getDuration()),
                 Color.parseColor("#808080")) };
         recipeDuration.setTags(duration, " ");
 
-        ingredientRows = new LinkedList<>();
+
         // Fill the table layout recipeIngredients with rows, one for each ingredient
         if (currentRecipe.getIngredients() != null) {
-            Log.println(Log.INFO, "In RecipeViewFragment", "Ingredients: " + currentRecipe.getIngredients().toString());
+            if (currentRecipe.getIngredients().size() != 0) {
+                Log.println(Log.INFO, "In RecipeViewFragment", "Ingredients: " + currentRecipe.getIngredients().toString());
+                ingredientRows = new LinkedList<>();
+                for (Ingredient ingredient : currentRecipe.getIngredients()) {
+                    View tr = inflater.inflate(R.layout.ingredient_view_layout, null, false);
 
-            for (Ingredient ingredient : currentRecipe.getIngredients()) {
-                View tr = inflater.inflate(R.layout.ingredient_view_layout, null, false);
+                    // Fill the row with ingredient info
+                    EditText quantity = tr.findViewById(R.id.quantity);
+                    quantity.setText(DF.format(ingredient.getQuantity()));
+                    quantity.setInputType(InputType.TYPE_NULL);
 
-                // Fill the row with ingredient info
-                EditText quantity = tr.findViewById(R.id.quantity);
-                quantity.setText(DF.format(ingredient.getQuantity()));
-                quantity.setInputType(InputType.TYPE_NULL);
+                    Spinner unit = tr.findViewById(R.id.unit);
+                    unit.setEnabled(false);
 
-                Spinner unit = tr.findViewById(R.id.unit);
-                unit.setEnabled(false);
+                    // correctly display ingredient's units in the dropdown spinner
+                    setIngredientAdapter(ingredient.getUnit(), unit);
 
-                // correctly display ingredient's units in the dropdown spinner
-                setIngredientAdapter(ingredient.getUnit(), unit);
+                    TextView name = tr.findViewById(R.id.name);
+                    name.setText(ingredient.getName());
 
-                TextView name = tr.findViewById(R.id.name);
-                name.setText(ingredient.getName());
-
-                // Add row to TableLayout.
-                recipeIngredients.addView(tr, new TableLayout.LayoutParams(
-                        TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
-                ingredientRows.add(tr);
+                    // Add row to TableLayout.
+                    recipeIngredients.addView(tr, new TableLayout.LayoutParams(
+                            TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+                    ingredientRows.add(tr);
+                }
+            }
+            else {
+                Log.println(Log.INFO, "In RecipeViewFragment", "Ingredients: empty");
+                view.findViewById(R.id.ingredientsLayout).setVisibility(View.GONE);
             }
         }
         else {
             Log.println(Log.INFO, "In RecipeViewFragment", "Ingredients: null");
+            view.findViewById(R.id.ingredientsLayout).setVisibility(View.GONE);
         }
 
         // Set up the recipe tags
-        LinkedList<TagView.Tag> tags = new LinkedList<>();
         if (currentRecipe.getTags() != null) {
             Log.println(Log.INFO, "In RecipeViewFragment", "Tags: " + currentRecipe.getTags().toString());
+            LinkedList<TagView.Tag> tags = new LinkedList<>();
             for (String content : currentRecipe.getTags()) {
                 tags.add(new TagView.Tag(content, Color.parseColor("#ff4081"))); // color is colorAccent
             }
@@ -210,19 +223,33 @@ public class RecipeViewFragment extends Fragment {
     }
 
     protected void setIngredientAdapter(int ingredientUnit, Spinner unit) {
-        if (ingredientUnit < 5) {
+        if (ingredientUnit < 2) {
+            ArrayList<String> spinnerArray = new ArrayList<>(1);
+            if (ingredientUnit == 0) {
+                spinnerArray.add("none");
+            }
+            else {
+                spinnerArray.add("unit");
+            }
+            ArrayAdapter adapterUnit = new ArrayAdapter(this.getContext(),
+                    R.layout.spinner_item_center, spinnerArray);
+            adapterUnit.setDropDownViewResource(R.layout.spinner_dropdown_item);
+            unit.setAdapter(adapterUnit);
+            unit.setSelection(0);
+        }
+        else if (ingredientUnit < 7) {
             ArrayAdapter adapterUnit = ArrayAdapter.createFromResource(this.getContext(),
                     R.array.mass_units, R.layout.spinner_item_center);
             adapterUnit.setDropDownViewResource(R.layout.spinner_dropdown_item);
             unit.setAdapter(adapterUnit);
-            unit.setSelection(ingredientUnit);
+            unit.setSelection(ingredientUnit - 2);
         }
         else {
             ArrayAdapter adapterUnit = ArrayAdapter.createFromResource(this.getContext(),
                     R.array.volume_units, R.layout.spinner_item_center);
             adapterUnit.setDropDownViewResource(R.layout.spinner_dropdown_item);
             unit.setAdapter(adapterUnit);
-            unit.setSelection(ingredientUnit - 5);
+            unit.setSelection(ingredientUnit - 7);
         }
     }
 
