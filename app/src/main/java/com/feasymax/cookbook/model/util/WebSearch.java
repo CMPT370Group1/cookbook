@@ -40,9 +40,9 @@ public class WebSearch {
                     for (String retval : input.split(" ")) {
                         searchTokens += retval + "+";
                     }
-                    searchTokens = searchTokens.substring(0, searchTokens.length() - 1);
+                    searchTokens += "recipe";
 
-                    doc = Jsoup.connect("https://www.google.com/search?q=" + searchTokens).get();
+                            doc = Jsoup.connect("https://www.google.com/search?q=" + searchTokens).get();
                     Elements links = doc.select("div[class=g]");
                     results = new LinkedList<>();
                     WebpageInfo webpageInfo = null;

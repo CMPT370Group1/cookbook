@@ -22,7 +22,6 @@ public class Graphics {
         if (maxHeight > 0 && maxWidth > 0) {
             float ratioImg = (float) image.getWidth() / (float) image.getHeight();
             float ratioMax = (float) maxWidth / (float) maxHeight;
-            Log.println(Log.INFO, "imageDimensions", image.getHeight() + " x " + image.getWidth());
 
             int finalWidth = maxWidth;
             int finalHeight = maxHeight;
@@ -32,7 +31,6 @@ public class Graphics {
                 finalHeight = (int) ((float)maxWidth / ratioImg);
             }
             image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
-            Log.println(Log.INFO, "imageDimensions", image.getHeight() + " x " + image.getWidth());
             return image;
         } else {
             return image;
@@ -53,8 +51,6 @@ public class Graphics {
         final int width = options.outWidth;
         int inSampleSize = 1;
 
-        Log.println(Log.INFO, "imageDimensions", height + " x " + width);
-
         if (height > reqHeight || width > reqWidth) {
 
             final int halfHeight = height / 2;
@@ -67,8 +63,6 @@ public class Graphics {
                 inSampleSize *= 2;
             }
         }
-
-        Log.println(Log.INFO, "imageDimensions", (height / inSampleSize) + " x " + (width / inSampleSize));
 
         return inSampleSize;
     }

@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.feasymax.cookbook.view.list.RecipeListModel;
 
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,9 +15,19 @@ import java.util.List;
 
 public class DiscoverCollection extends UserCollection {
 
+    private String websearchResult;
+
     public DiscoverCollection() {
         super();
         curRecipe = null;
         category = -1;
+    }
+
+    public String getWebsearchResult() {
+        return websearchResult;
+    }
+
+    public void setWebsearchResult(String websearchResult) {
+        this.websearchResult = websearchResult;
     }
 }

@@ -92,6 +92,7 @@ public class DiscoverWebsearchFragment extends ShowWebpagesFragment {
     public void onItemClick(int mPosition)
     {
         WebpageInfo tempValues = CustomListViewValuesArr.get(mPosition);
+        Application.getDiscoverCollection().setWebsearchResult(tempValues.getUrl());
         enterWebpageViewFragment();
     }
 

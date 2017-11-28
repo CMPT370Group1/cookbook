@@ -2,12 +2,18 @@ package com.feasymax.cookbook.view.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.Button;
 
 import com.feasymax.cookbook.R;
+import com.feasymax.cookbook.model.Application;
+import com.feasymax.cookbook.view.ViewTransactions;
 
 /**
  * Created by Olya on 2017-10-12.
@@ -18,6 +24,7 @@ public class WebPageViewFragment extends Fragment {
     public static final String FRAGMENT_ID = "WebPageViewFragment";
 
     private WebView webView;
+    private Button btnBack;
 
     public WebPageViewFragment() {
         // Required empty public constructor
@@ -30,16 +37,33 @@ public class WebPageViewFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_webpage, container, false);
 
         webView = view.findViewById(R.id.web_view);
-        webView.loadUrl("http://allrecipes.com/recipe/17481/simple-white-cake/");
-
-        //FloatingActionButton fab = (FloatingActionButton)view.findViewById(R.id.fab);
-        /*fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Intent intent = new Intent(getActivity(), TambahTemanActivity.class);
-                //startActivity(intent);
+        webView.setWebViewClient(new WebViewClient() {
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                Log.println(Log.ERROR, "setWebViewClient", "Error code: " + errorCode + "(" +
+                        description + ")");
             }
-        });*/
+        });
+        webView.loadUrl(Application.getDiscoverCollection().getWebsearchResult());
+
+        btnBack = view.findViewById(R.id.buttonBack);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                enterPrevFragment();
+            }
+        });
+
         return view;
+    }
+
+    /**
+     * Go back to all recipes in a category
+     */
+    protected void enterPrevFragment() {
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        // Store the Fragment in stack
+        ViewTransactions.getViews().add(FRAGMENT_ID);
+        transaction.addToBackStack(null);
+        transaction.detach(this).commit();
     }
 }
