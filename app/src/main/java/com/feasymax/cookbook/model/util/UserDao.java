@@ -410,7 +410,7 @@ public class UserDao {
      * @param recipe incomplete recipe to be filled
      * @return result code
      */
-    public int updateRecipe(final Recipe recipe) {
+    public int updateRecipe(final Recipe recipe, final int userID) {
         recipeID = recipe.getId();
 
         Thread thread = new Thread(new Runnable() {
@@ -488,6 +488,23 @@ public class UserDao {
                             }
                         }
                         recipe.setTags(tags);
+
+                        if (userID != -1) {
+                            // get isOwner flag
+                            query = "SELECT states FROM user_recipe " +
+                                    "WHERE recipe_id = " + recipeID + " AND user_id = " + userID;
+
+                            stmt = conn.prepareStatement(query);
+                            rs = stmt.executeQuery();
+                            boolean isOwner = false;
+                            if (rs.next()) {
+                                int state = rs.getInt("states");
+                                if (state == 1) {
+                                    isOwner = true;
+                                }
+                            }
+                            recipe.setOwner(isOwner);
+                        }
 
                         stmt.close();
                         conn.commit();
@@ -613,12 +630,15 @@ public class UserDao {
      * Add new recipe to the database, add the recipeID to the user_recipe table with state 1 and
      * return recipeID. If the user does not own the recipe, simply add the recipeID to the
      * user_recipe table with state 0
+     * @param isNewRecipe
      * @param recipe
      * @param userID
-     * @param owner does the user own the recipe
+     * @param isOwner does the user own the recipe
+     * @param prevRecipeID
      * @return recipeID
      */
-    public int addNewRecipe(final boolean isNewRecipe, final Recipe recipe, final int userID, final boolean owner) {
+    public int addNewRecipe(final boolean isNewRecipe, final Recipe recipe, final int userID,
+                            final boolean isOwner, final int prevRecipeID) {
         recipeID = -1;
 
         Thread thread = new Thread(new Runnable() {
@@ -633,7 +653,7 @@ public class UserDao {
                     conn.setAutoCommit(false);
 
                     try {
-                        if (owner == true) {
+                        if (isOwner) {
 
                             String title = recipe.getTitle();
                             String category = String.valueOf(recipe.getCategory());
@@ -731,13 +751,20 @@ public class UserDao {
                         }
 
                         if (isNewRecipe) {
+                            if (prevRecipeID != -1) {
+                                String query = "DELETE FROM user_recipe WHERE user_id = " +
+                                        userID + " AND recipe_id = " + prevRecipeID;
+                                stmt = conn.prepareStatement(query);
+                                stmt.executeUpdate();
+                            }
+
                             String query = "INSERT INTO user_recipe (user_id, recipe_id, states) " +
                                     "VALUES (?, ?, ?)";
                             stmt = conn.prepareStatement(query);
                             //stmt.setInt(1, autoID);
                             stmt.setInt(1, userID);
                             stmt.setInt(2, recipeID);
-                            stmt.setInt(3, ((owner) ? 1 : 0));
+                            stmt.setInt(3, ((isOwner) ? 1 : 0));
                             stmt.executeUpdate();
                             if (stmt.executeUpdate() <= 0) {
                                 throw new SQLException("No recipe id was inserted");

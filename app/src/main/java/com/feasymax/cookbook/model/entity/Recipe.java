@@ -41,6 +41,8 @@ public class Recipe {
      */
     private Bitmap image;
 
+    private boolean isOwner;
+
     /**
      * A public constructor that initializes all recipe's attributes
      * @param title
@@ -50,7 +52,8 @@ public class Recipe {
      * @param duration
      * @param tags
      */
-    public Recipe(int id, String title, int category, List<Ingredient> ingredients, String directions, int duration, List<String> tags, Bitmap image) {
+    public Recipe(int id, String title, int category, List<Ingredient> ingredients, String directions,
+                  int duration, List<String> tags, Bitmap image, boolean isOwner) {
         this.id = id;
         this.title = title;
         this.category = category;
@@ -59,6 +62,7 @@ public class Recipe {
         this.duration = duration;
         this.tags = tags;
         this.image = image;
+        this.isOwner = isOwner;
     }
 
     public Recipe(int id, String title, int duration) {
@@ -84,6 +88,7 @@ public class Recipe {
         this.duration = 0;
         this.tags = null;
         this.image = null;
+        this.isOwner = false;
     }
 
     public int getId() {
@@ -214,9 +219,18 @@ public class Recipe {
         this.image = image;
     }
 
+    public boolean isOwner() {
+        return isOwner;
+    }
+
+    public void setOwner(boolean owner) {
+        isOwner = owner;
+    }
+
     @Override
     public String toString() {
         return "Recipe{" + id +
+                ", isOwner = " + isOwner +
                 ", title='" + title + '\'' +
                 ", category = " + category +
                 ", ingredients = " + ingredients +

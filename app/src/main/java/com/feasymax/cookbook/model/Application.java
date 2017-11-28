@@ -214,14 +214,22 @@ public class Application {
      * Add new recipe to database
      * @param isNewRecipe is the recipe new or being edited
      * @param recipe the recipe to add
-     * @param owner is the recipe new or saved from discover collection
+     * @param isOwner is the recipe new or saved from discover collection
      * @param image_icon
      * @return 0 on success, -1 on failure
      */
-    public static int addNewRecipe(boolean isNewRecipe, Recipe recipe, boolean owner, Bitmap image_icon) {
+    public static int addNewRecipe(boolean isNewRecipe, Recipe recipe, boolean isOwner,
+                                   Bitmap image_icon, int prevCategory) {
+        Log.println(Log.INFO, "addNewRecipe", "isNewRecipe: " + isNewRecipe + ", isOwner: " + isOwner);
+        int prevRecipeID = -1;
+        if (!isNewRecipe && !isOwner) {
+            isNewRecipe = true;
+            isOwner = true;
+            prevRecipeID = recipe.getId();
+        }
+        Log.println(Log.INFO, "addNewRecipe", "isNewRecipe: " + isNewRecipe + ", isOwner: " + isOwner);
         UserDao userDao = new UserDao();
-
-        int id = userDao.addNewRecipe(isNewRecipe, recipe, getUser().getUserID(), owner);
+        int id = userDao.addNewRecipe(isNewRecipe, recipe, getUser().getUserID(), isOwner, prevRecipeID);
         if (id == -1) {
             return -1;
         }
@@ -241,6 +249,9 @@ public class Application {
         }
         else {
             recipeModel.setRecipeImage(image_icon);
+        }
+        if (!isNewRecipe && recipe.getCategory() != prevCategory) {
+            getUserCollection().removeRecipe(recipeModel.getRecipeId(), prevCategory);
         }
         getUserCollection().addNewRecipe(recipeModel, recipe.getCategory());
         getDiscoverCollection().addNewRecipe(recipeModel, recipe.getCategory());
@@ -268,7 +279,13 @@ public class Application {
     public static Recipe getRecipeFromShortInfo(RecipeListModel rlm) {
         Recipe recipe = new Recipe(rlm.getRecipeId(), rlm.getRecipeTitle(), rlm.getRecipeDuration());
         UserDao userDao = new UserDao();
-        userDao.updateRecipe(recipe);
+        if (isUserSignedIn()) {
+            userDao.updateRecipe(recipe, getUser().getUserID());
+        }
+        else {
+            userDao.updateRecipe(recipe, -1);
+        }
+
         return recipe;
     }
 }

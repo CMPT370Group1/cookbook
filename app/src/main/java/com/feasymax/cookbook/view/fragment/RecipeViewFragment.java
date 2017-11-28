@@ -295,7 +295,7 @@ public class RecipeViewFragment extends Fragment {
     protected void addRecipe() {
         if (getActivity() instanceof DiscoverActivity) {
             if (Application.isUserSignedIn()) {
-                Application.addNewRecipe(true, Application.getDiscoverCurrentRecipe(), false, null);
+                Application.addNewRecipe(true, Application.getDiscoverCurrentRecipe(), false, null, -1);
             } else {
                 Log.println(Log.INFO, "addRecipe","user is not signed in");
             }

@@ -86,6 +86,8 @@ public class RecipeAddFragment extends Fragment {
     protected ImageButton addTag;
     protected Button addRecipe;
 
+    protected Recipe editedRecipe = null;
+
     /**
      * Required empty public constructor
      */
@@ -158,7 +160,7 @@ public class RecipeAddFragment extends Fragment {
         addRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addRecipe(true, -1);
+                addRecipe(true, -1, -1);
             }
         });
 
@@ -345,7 +347,7 @@ public class RecipeAddFragment extends Fragment {
      * @param recipeId
      */
     // TODO: check that it reads all tags and ingredients
-    protected void addRecipe(boolean isNewRecipe, int recipeId) {
+    protected void addRecipe(boolean isNewRecipe, int recipeId, int category) {
         if (recipeTitle.getText().length() != 0) {
             Recipe recipe = new Recipe();
             if (!isNewRecipe) {
@@ -398,7 +400,9 @@ public class RecipeAddFragment extends Fragment {
 
             Log.println(Log.INFO, "addRecipe", recipe.toString());
 
-            if (Application.addNewRecipe(isNewRecipe, recipe, true, recipeIconBitmap) != -1) {
+            boolean isOwner = (editedRecipe != null) ? editedRecipe.isOwner() : false;
+
+            if (Application.addNewRecipe(isNewRecipe, recipe, isOwner, recipeIconBitmap, category) != -1) {
                 Log.println(Log.INFO, "addRecipe", Application.getUserCurrentRecipe().toString());
                 Log.println(Log.INFO, "addRecipe", Application.getUserCollection().
                         getCategoryRecipes(recipe.getCategory()).toString());

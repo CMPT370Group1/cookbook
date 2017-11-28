@@ -69,13 +69,6 @@ public class RecipesFragment extends ShowRecipesFragment{
         list = view.findViewById( R.id.list );
 
         CustomListView = this;
-        // Take some data in list ( CustomListViewValuesArr )
-        setListData();
-        if (CustomListViewValuesArr.size() != 0) {
-            noItemsLayout.setVisibility(View.GONE);
-            list.setVisibility(View.VISIBLE);
-            setAdapter();
-        }
 
         return view ;
     }
@@ -91,6 +84,7 @@ public class RecipesFragment extends ShowRecipesFragment{
             CustomListViewValuesArr = Application.getCollectionRecipes(false, -1,
                     Application.getDiscoverCollection().getCategory());
         }
+        Log.println(Log.INFO, "setListData: recipes", CustomListViewValuesArr.toString());
     }
 
     public void setAdapter() {
@@ -163,5 +157,16 @@ public class RecipesFragment extends ShowRecipesFragment{
         }
 
         return false;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setListData();
+        if (CustomListViewValuesArr.size() != 0) {
+            noItemsLayout.setVisibility(View.GONE);
+            list.setVisibility(View.VISIBLE);
+            setAdapter();
+        }
     }
 }

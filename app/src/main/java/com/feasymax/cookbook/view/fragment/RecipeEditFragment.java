@@ -19,7 +19,7 @@ public class RecipeEditFragment extends RecipeAddFragment {
 
     public static final String FRAGMENT_ID = "RecipeEditFragment";
 
-    private Recipe editedRecipe;
+    private int prevCategory;
 
     /**
      * Required empty public constructor
@@ -34,6 +34,7 @@ public class RecipeEditFragment extends RecipeAddFragment {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
         editedRecipe = Application.getUserCurrentRecipe();
+        prevCategory = editedRecipe.getCategory();
 
         recipeTitle.setText(editedRecipe.getTitle());
         recipeCategory.setSelection(editedRecipe.getCategory());
@@ -60,21 +61,10 @@ public class RecipeEditFragment extends RecipeAddFragment {
         addRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addRecipe(false, editedRecipe.getId());
+                addRecipe(false, editedRecipe.getId(), prevCategory);
             }
         });
 
         return view ;
     }
-/*
-    @Override
-    protected void enterRecipeViewFragment() {
-        RecipeViewFragment a2Fragment = new RecipeViewFragment();
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-
-        // Store the Fragment in stack
-        transaction.addToBackStack(FRAGMENT_ID);
-        transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
-    }
-    */
 }
