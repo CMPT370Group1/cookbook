@@ -9,7 +9,8 @@
     <string name="action_info">Page Info</string>
     <string name="action_recipe_edit">Edit Recipe</string>
     <string name="action_recipe_delete">Delete Recipe</string>
-    <string name="action_recipe_add">Add Recipe</string>
+    <string name="action_recipe_add">Save Recipe</string>
+    <string name="action_link_add">Save Link</string>
 
     <string-array name="categories">
         <item>Breakfast</item>

@@ -109,6 +109,7 @@ public class RecipeViewFragment extends Fragment {
                     EditText quantity = tr.findViewById(R.id.quantity);
                     Spinner unit = tr.findViewById(R.id.unit);
 
+                    // make ingredient fields modifiable to scale the recipe
                     if (!isBeingScaled) {
                         quantity.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                         unit.setEnabled(true);
@@ -116,6 +117,7 @@ public class RecipeViewFragment extends Fragment {
                         Drawable icon = getResources().getDrawable(android.R.drawable.ic_delete);
                         ibtnScaleRecipe.setImageDrawable(icon);
                     }
+                    // make ingredient fields non-modifiable
                     else {
                         quantity.setInputType(InputType.TYPE_NULL);
                         unit.setEnabled(false);
@@ -196,11 +198,13 @@ public class RecipeViewFragment extends Fragment {
                     ingredientRows.add(tr);
                 }
             }
+            // make ingredients section invisible
             else {
                 Log.println(Log.INFO, "In RecipeViewFragment", "Ingredients: empty");
                 view.findViewById(R.id.ingredientsLayout).setVisibility(View.GONE);
             }
         }
+        // make ingredients section invisible
         else {
             Log.println(Log.INFO, "In RecipeViewFragment", "Ingredients: null");
             view.findViewById(R.id.ingredientsLayout).setVisibility(View.GONE);
@@ -324,6 +328,13 @@ public class RecipeViewFragment extends Fragment {
             Log.println(Log.ERROR, "MENU","unexpected activity");
         }
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        if (getActivity() instanceof DiscoverActivity && !Application.isUserSignedIn()) {
+            menu.findItem(R.id.action_recipe_add).setEnabled(false);
+        }
     }
 
     @Override

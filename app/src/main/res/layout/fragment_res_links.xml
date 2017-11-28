@@ -1,125 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
              android:orientation="vertical"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             android:id="@+id/links_main_layout">
+             android:id="@+id/categories_main_layout">
 
-    <ScrollView android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-        <LinearLayout
+    <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:background="@android:color/background_light">
 
-            <Button
-                android:id="@+id/buttonAllCategories"
-                android:layout_width="match_parent"
+        <Button
+            android:id="@+id/buttonAllCategories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorControlHighlight"
+            android:padding="10dp"
+            android:text="Add new"
+            android:textAlignment="textEnd"/>
+
+        <RelativeLayout
+            android:id="@+id/noItemsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?attr/colorControlHighlight"
-                android:padding="10dp"
-                android:text="Add new"
-                android:textAlignment="textEnd"/>
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="No items to display"/>
+        </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/recipe1_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp">
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="gone"/>
 
-                <ImageView
-                    android:id="@+id/recipeImage1"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_marginRight="20dp"
-                    app:srcCompat="@drawable/dessert"/>
+    </LinearLayout>
 
-                <TextView
-                    android:id="@+id/recipeTitle1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/recipeImage1"
-                    android:text="Awesome Cake"
-                    android:textSize="24sp"/>
-
-                <TextView
-                    android:id="@+id/recipeLink1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/recipeTitle1"
-                    android:layout_toRightOf="@id/recipeImage1"
-                    android:maxLines="1"
-                    android:text="www.cakes.ru/awesomecake"/>
-
-                <Button
-                    android:id="@+id/buttonOpen1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_toEndOf="@+id/recipeImage1"
-                    android:text="Open"/>
-
-                <Button
-                    android:id="@+id/buttonCopy1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_toEndOf="@+id/buttonOpen1"
-                    android:text="Copy"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp">
-
-                <ImageView
-                    android:id="@+id/recipeImage2"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_marginRight="20dp"
-                    app:srcCompat="@drawable/soup"/>
-
-                <TextView
-                    android:id="@+id/recipeTitle2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/recipeImage2"
-                    android:text="Nice Soup"
-                    android:textSize="24sp"/>
-
-                <TextView
-                    android:id="@+id/recipeLink2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/recipeTitle2"
-                    android:layout_toRightOf="@id/recipeImage2"
-                    android:maxLines="1"
-                    android:text="homecooking.com/recipes/soup"/>
-
-                <Button
-                    android:id="@+id/buttonOpen2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_toEndOf="@+id/recipeImage2"
-                    android:text="Open"/>
-
-                <Button
-                    android:id="@+id/buttonCopy2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_toEndOf="@+id/buttonOpen2"
-                    android:text="Copy"/>
-            </RelativeLayout>
-
-        </LinearLayout>
-
-    </ScrollView>
 
 </FrameLayout>
