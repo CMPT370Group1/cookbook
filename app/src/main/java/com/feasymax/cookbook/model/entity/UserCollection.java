@@ -1,7 +1,9 @@
 package com.feasymax.cookbook.model.entity;
 
+import android.util.Log;
 import android.util.SparseArray;
 
+import com.feasymax.cookbook.model.Application;
 import com.feasymax.cookbook.view.list.RecipeListModel;
 
 import java.util.ArrayList;
@@ -59,14 +61,23 @@ public class UserCollection {
     }
 
     public void addNewRecipe(RecipeListModel recipeInfo, int category) {
-        for (RecipeListModel recipe: this.recipes.get(category)) {
-            if (recipe.getRecipeId() == recipeInfo.getRecipeId()) {
-                int index = this.recipes.get(category).indexOf(recipe);
-                this.recipes.get(category).set(index, recipeInfo);
-                return;
+        if (this.recipes.get(category) == null) {
+            boolean isUserCollection = false;
+            if (this.getClass() != UserCollection.class) {
+                isUserCollection = true;
+            }
+            this.recipes.put(category, Application.getRecipesFromDB(isUserCollection, Application.getUser().getUserID(), category));
+            Log.println(Log.INFO, "addNewRecipe: recipes", this.recipes.get(category).toString());
+        }
+        else {
+            for (RecipeListModel recipe: this.recipes.get(category)) {
+                if (recipe.getRecipeId() == recipeInfo.getRecipeId()) {
+                    int index = this.recipes.get(category).indexOf(recipe);
+                    this.recipes.get(category).set(index, recipeInfo);
+                    return;
+                }
             }
         }
-        this.recipes.get(category).add(recipeInfo);
     }
 
     public boolean removeRecipe(int recipeId, int category) {

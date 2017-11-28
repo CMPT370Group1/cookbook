@@ -1,5 +1,6 @@
 package com.feasymax.cookbook.view.fragment;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -10,8 +11,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
@@ -34,6 +37,7 @@ public class RecipesFragment extends ShowRecipesFragment{
     public static final String FRAGMENT_ID = "RecipesFragment";
 
     private Button btnAllCategories;
+    private RelativeLayout noItemsLayout;
 
     ListView list;
     RecipeListAdapter adapter;
@@ -52,6 +56,8 @@ public class RecipesFragment extends ShowRecipesFragment{
 
         setHasOptionsMenu(true);
 
+        noItemsLayout = view.findViewById(R.id.noItemsLayout);
+
         btnAllCategories = (Button) view.findViewById(R.id.buttonAllCategories);
         btnAllCategories.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,13 +66,16 @@ public class RecipesFragment extends ShowRecipesFragment{
             }
         });
 
+        list = view.findViewById( R.id.list );
+
         CustomListView = this;
         // Take some data in list ( CustomListViewValuesArr )
         setListData();
-
-        list = view.findViewById( R.id.list );
-
-        setAdapter();
+        if (CustomListViewValuesArr.size() != 0) {
+            noItemsLayout.setVisibility(View.GONE);
+            list.setVisibility(View.VISIBLE);
+            setAdapter();
+        }
 
         return view ;
     }

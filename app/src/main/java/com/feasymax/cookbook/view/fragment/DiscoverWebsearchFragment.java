@@ -1,5 +1,6 @@
 package com.feasymax.cookbook.view.fragment;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,7 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
@@ -36,6 +39,7 @@ public class DiscoverWebsearchFragment extends ShowWebpagesFragment {
     public static final String FRAGMENT_ID = "DiscoverWebsearchFragment";
 
     private android.widget.SearchView searchView;
+    private RelativeLayout noItemsLayout;
 
     ListView list;
     LinksListAdapter adapter;
@@ -53,14 +57,23 @@ public class DiscoverWebsearchFragment extends ShowWebpagesFragment {
 
         setHasOptionsMenu(true);
 
+        noItemsLayout = view.findViewById(R.id.noItemsLayout);
+
         searchView = view.findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 Log.println(Log.INFO, "websearch", s);
                 CustomListViewValuesArr = WebSearch.getWebSearch(s);
-                Log.println(Log.INFO, "websearch", CustomListViewValuesArr.toString());
-                setAdapter();
+                if (CustomListViewValuesArr.size() != 0) {
+                    noItemsLayout.setVisibility(View.GONE);
+                    list.setVisibility(View.VISIBLE);
+                    setAdapter();
+                    // hide keyboard
+                    InputMethodManager imm = (InputMethodManager)getActivity().
+                            getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
+                }
 
                 return true;
             }

@@ -1,5 +1,6 @@
 package com.feasymax.cookbook.view.fragment;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,7 +9,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 
 import com.feasymax.cookbook.R;
@@ -33,6 +36,7 @@ public class RecipeSearchFragment extends ShowRecipesFragment {
     public static final String FRAGMENT_ID = "RecipeSearchFragment";
 
     private SearchView searchView;
+    private RelativeLayout noItemsLayout;
 
     ListView list;
     RecipeListAdapter adapter;
@@ -51,6 +55,8 @@ public class RecipeSearchFragment extends ShowRecipesFragment {
 
         setHasOptionsMenu(true);
 
+        noItemsLayout = view.findViewById(R.id.noItemsLayout);
+
         searchView = view.findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -67,8 +73,20 @@ public class RecipeSearchFragment extends ShowRecipesFragment {
                 }
 
                 CustomListViewValuesArr = Search.getSearchResults(s, activity);
-                Log.println(Log.INFO, "search", CustomListViewValuesArr.toString());
-                setAdapter();
+                if (CustomListViewValuesArr.size() != 0) {
+                    noItemsLayout.setVisibility(View.GONE);
+                    list.setVisibility(View.VISIBLE);
+                    setAdapter();
+                    // hide keyboard
+                    InputMethodManager imm = (InputMethodManager)getActivity().
+                            getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
+                }
+                else {
+                    noItemsLayout.setVisibility(View.VISIBLE);
+                    list.setVisibility(View.GONE);
+                }
+
 
                 return false;
             }
