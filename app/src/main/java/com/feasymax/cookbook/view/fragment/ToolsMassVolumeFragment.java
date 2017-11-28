@@ -2,6 +2,7 @@ package com.feasymax.cookbook.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Debug;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,9 +16,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.feasymax.cookbook.R;
+import com.feasymax.cookbook.model.entity.ConversionFactor;
 import com.feasymax.cookbook.model.util.MassVolumeUnitConverter;
 import com.feasymax.cookbook.model.util.UnitConverters;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,8 +63,11 @@ public class ToolsMassVolumeFragment extends Fragment {
         massVolumeIngredient = view.findViewById(R.id.massVolumeIngredient);
         massVolumeNewIngredient = view.findViewById(R.id.massVolumeNewIngredient);
         btnMassVolumeAdd = view.findViewById(R.id.buttonAddConversion);
-
-        // TODO: build list from saved conversions from the database
+        try {
+            List<ConversionFactor> cfs = MassVolumeUnitConverter.makeListFromFile(view.getContext());
+        }catch(IOException e){
+            Log.println(Log.ERROR,"getConversionFactors", "ERROR: unable to get conversionFactors from file"+ e.toString());
+        }
         ArrayAdapter<String> adp1 = new ArrayAdapter<String>(view.getContext(),
                 android.R.layout.simple_list_item_1, list);
         adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -81,7 +87,14 @@ public class ToolsMassVolumeFragment extends Fragment {
                     // add the new ingredient to the list
                     // use massVolumeNum2Editable instead of massVolumeNum2
                     list.add(massVolumeNewIngredient.getText().toString());
-                    // TODO: Application.AddNewMassVolumeConversion(5 parameters);
+
+                    double massConverted = UnitConverters.MassToMass(UnitConverters.ParseFraction(massVolumeNum1.getText().toString()),massVolumeUnit1.getSelectedItemPosition(),1);
+                    double volumeConverted = UnitConverters.VolumeToVolume(UnitConverters.ParseFraction(massVolumeNum2.getText().toString()),massVolumeUnit2.getSelectedItemPosition(),5);
+                    try {
+                        MassVolumeUnitConverter.AddConversionFactor(massVolumeNewIngredient.toString(), massConverted / volumeConverted, view.getContext());
+                    } catch(IOException e){
+                        Log.println(Log.ERROR, "addConversionFactor", "ERROR: failed to add new conversionFactor "+ e.toString());
+                    }
                     // convert
                     //check whether unitA is a mass or a volume
                     double result = MassVolumeUnitConverter.MassToVolume(UnitConverters.ParseFraction(massVolumeNum1.getText().toString()),massVolumeUnit1.getSelectedItemPosition(),massVolumeUnit2.getSelectedItemPosition(),0,"Mass");
