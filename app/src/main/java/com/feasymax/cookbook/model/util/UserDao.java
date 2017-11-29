@@ -938,6 +938,132 @@ public class UserDao {
 
     }
 
+
+
+
+//    //ADVANCED SEARCH
+//
+//    public List<RecipeListModel> advancedSearchRecipes(final boolean isUserCollection,final int userID,
+//                                                       final List<String> tokens)
+//    {
+//        list=null;
+//
+//        Thread thread = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                //don't need to create a new list at the beginning since we will be
+//                //adding searching for everything then adding up.
+//                RecipeListModel recipeListModel = null;
+//
+//                try {
+//                    connect();
+//                    PreparedStatement stmt = null;
+//                    ResultSet rs = null;
+//
+//                    try {
+//
+//                        list = new LinkedList<>();
+//
+//                        //list of keywords to be searched in advanced  search apart from image
+//                        int id = -1;
+//                        String title = null;
+//                        String ingredients=null;
+//                        String tags=null;
+//                        String category=null;
+//                        int duration = 0;
+//                        byte[] image_icon = null;
+//                        Bitmap image = null;
+//
+//                        //advanced has to search for specific keywords the user puts in
+//
+//
+//
+//
+//                        String searchQuery = "~* '("+tokens.get(0);
+//
+//                        for (int i = 1; i < tokens.size(); i++)
+//                        {
+//                            searchQuery += "|"+tokens.get(i);
+//                        }
+//                        searchQuery += ")'";
+//
+//                        //Query that will search for each and every keyword
+//
+//                        String query = "SELECT id,title,category_name,ingredients,tags, durtion_min, image_icon FROM recipes r WHERE ";
+//
+//
+//
+//                        if (isUserCollection) {
+//                            query += " r.id IN (SELECT recipe_id FROM user_recipe " +
+//                                    "WHERE user_id = " + userID + ") AND ";
+//                        }
+//
+//                        //searching  through each keyword
+//                        query+="r.title " + searchQuery + " OR r.recipe_description " + searchQuery + "OR r.category_name"+ searchQuery +
+//                                "OR r.ingredients" +searchQuery + "OR r.tags" +searchQuery ;
+//
+//                        Log.println(Log.INFO, "query", query);
+//
+//                        stmt = conn.prepareStatement(query);
+//                        rs = stmt.executeQuery();
+//                        if (!rs.isBeforeFirst()) {
+//                            throw new SQLException("No data found");
+//                        }
+//                        while (rs.next()) {
+//
+//                            id = rs.getInt("id");
+//                            title = rs.getString("title");
+//                            duration = rs.getInt("durtion_min");
+//                            ingredients=rs.getString("ingredients");
+//                            category=rs.getString("category_name");
+//                            tags=rs.getString("tags");
+//                            if (rs.getObject("image_icon") != null && !rs.wasNull()) {
+//                                image_icon = rs.getBytes("image_icon");
+//                                image = DbBitmapUtility.getImage(image_icon);
+//                            }
+//
+//                            recipeListModel = new RecipeListModel(id,title,image, duration,ingredients,tags,category);
+//                            Log.println(Log.INFO, "discover Recipes", recipeListModel.toString());
+//                            list.add(recipeListModel);
+//                            image_icon = null;
+//                        }
+//                        stmt.close();
+//
+//                    } catch (SQLException e) {
+//                        System.out.println("SQL ERROR for advanced recipes");
+//                        e.printStackTrace();
+//                    } finally {
+//                        try {
+//                            if (conn != null)
+//                                conn.close();
+//                        } catch (SQLException e) {
+//                        }
+//                    }
+//
+//
+//                }
+//                catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//        });
+//        //start the thread
+//        //dont use sleep thread since it will overlap
+//        thread.start();
+//
+//        try {
+//            thread.join();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//        return list;
+//
+//    }
+//
+
     /**
      * Remove duplicate rows in a table with filelds
      * @param table
