@@ -16,6 +16,8 @@ import android.widget.Button;
 
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
+import com.feasymax.cookbook.model.entity.WebpageInfo;
+import com.feasymax.cookbook.model.util.WebSearch;
 import com.feasymax.cookbook.view.DiscoverActivity;
 import com.feasymax.cookbook.view.RecipesActivity;
 import com.feasymax.cookbook.view.ViewTransactions;
@@ -101,7 +103,11 @@ public class WebPageViewFragment extends Fragment {
                 return true;
             case R.id.action_link_add:
                 Log.println(Log.INFO, "MENU","action_link_add was clicked");
-                // TODO: call add link function
+                WebpageInfo webpageInfo = WebSearch.parsePageHeaderInfo(Application.
+                        getDiscoverCollection().getWebsearchResult());
+                if (webpageInfo != null) {
+                    Application.addLink(webpageInfo);
+                }
                 return true;
             default:
                 break;

@@ -95,8 +95,7 @@ public class RecipeLinksFragment extends ShowWebpagesFragment {
                         try {
                             WebpageInfo newWebpageInfo = WebSearch.parsePageHeaderInfo(newLink);
                             if (newWebpageInfo != null) {
-                                Application.getUserCollection().addLink(newWebpageInfo);
-                                Application.addLinkToDB(newWebpageInfo);
+                                Application.addLink(newWebpageInfo);
                                 CustomListViewValuesArr = Application.getUserCollection().getLinks();
                                 if (CustomListViewValuesArr.size() != 0) {
                                     noItemsLayout.setVisibility(View.GONE);
@@ -107,7 +106,6 @@ public class RecipeLinksFragment extends ShowWebpagesFragment {
                             else {
                                 throw new Exception("Wrong link format");
                             }
-
                         }
                         catch (Exception e) {
                             e.printStackTrace();

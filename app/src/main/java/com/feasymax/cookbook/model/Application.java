@@ -296,8 +296,9 @@ public class Application {
         return links;
     }
 
-    public static void addLinkToDB(WebpageInfo webpageInfo) {
+    public static void addLink(WebpageInfo webpageInfo) {
         UserDao userDao = new UserDao();
         userDao.addLink(getUser().getUserID(), webpageInfo);
+        getUserCollection().addLink(webpageInfo);
     }
 }
