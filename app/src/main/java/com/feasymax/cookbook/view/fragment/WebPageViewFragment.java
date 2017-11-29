@@ -91,7 +91,10 @@ public class WebPageViewFragment extends Fragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         if (!Application.isUserSignedIn()) {
-            menu.findItem(R.id.action_link_add).setEnabled(false);
+            MenuItem item = menu.findItem(R.id.action_link_add);
+            if (item != null) {
+                item.setEnabled(false);
+            }
         }
     }
 

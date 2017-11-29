@@ -45,6 +45,22 @@ public class UserCollection {
         this.recipes.put(category, recipes);
     }
 
+    public void updateRecipes(int category) {
+        Log.d("category "+category+" before", String.valueOf(this.recipes.get(category) == null));
+        if (this.recipes.get(category) != null) {
+            this.recipes.delete(category);
+        }
+        Log.d("category "+category+" deleted", String.valueOf(this.recipes.get(category) == null));
+        boolean isUserCollection = false;
+        int userID = -1;
+        if (this.getClass() == UserCollection.class) {
+            isUserCollection = true;
+            userID = Application.getUser().getUserID();
+        }
+        this.recipes.put(category, Application.getRecipesFromDB(isUserCollection, userID, category));
+        Log.d("category "+category+" after", this.recipes.get(category).toString());
+    }
+
     public Recipe getCurRecipe() {
         return curRecipe;
     }
@@ -64,10 +80,12 @@ public class UserCollection {
     public void addNewRecipe(RecipeListModel recipeInfo, int category) {
         if (this.recipes.get(category) == null) {
             boolean isUserCollection = false;
-            if (this.getClass() != UserCollection.class) {
+            int userID = -1;
+            if (this.getClass() == UserCollection.class) {
                 isUserCollection = true;
+                userID = Application.getUser().getUserID();
             }
-            this.recipes.put(category, Application.getRecipesFromDB(isUserCollection, Application.getUser().getUserID(), category));
+            this.recipes.put(category, Application.getRecipesFromDB(isUserCollection, userID, category));
             Log.println(Log.INFO, "addNewRecipe: recipes", this.recipes.get(category).toString());
         }
         else {

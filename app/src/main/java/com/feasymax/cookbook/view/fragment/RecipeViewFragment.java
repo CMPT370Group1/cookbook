@@ -185,9 +185,13 @@ public class RecipeViewFragment extends Fragment {
 
                     Spinner unit = tr.findViewById(R.id.unit);
                     unit.setEnabled(false);
-
                     // correctly display ingredient's units in the dropdown spinner
                     setIngredientAdapter(ingredient.getUnit(), unit);
+
+                    if (ingredient.getUnit() == 0 || ingredient.getQuantity() == 0.0) {
+                        quantity.setVisibility(View.INVISIBLE);
+                        unit.setVisibility(View.INVISIBLE);
+                    }
 
                     TextView name = tr.findViewById(R.id.name);
                     name.setText(ingredient.getName());
@@ -333,7 +337,10 @@ public class RecipeViewFragment extends Fragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         if (getActivity() instanceof DiscoverActivity && !Application.isUserSignedIn()) {
-            menu.findItem(R.id.action_recipe_add).setEnabled(false);
+            MenuItem item = menu.findItem(R.id.action_recipe_add);
+            if (item != null) {
+                item.setEnabled(false);
+            }
         }
     }
 

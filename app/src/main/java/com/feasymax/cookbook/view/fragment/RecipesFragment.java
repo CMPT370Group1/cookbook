@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,6 +39,7 @@ public class RecipesFragment extends ShowRecipesFragment{
 
     private Button btnAllCategories;
     private RelativeLayout noItemsLayout;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     ListView list;
     RecipeListAdapter adapter;
@@ -58,13 +60,37 @@ public class RecipesFragment extends ShowRecipesFragment{
 
         noItemsLayout = view.findViewById(R.id.noItemsLayout);
 
-        btnAllCategories = (Button) view.findViewById(R.id.buttonAllCategories);
+        btnAllCategories = view.findViewById(R.id.buttonAllCategories);
         btnAllCategories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 enterAllCategoriesFragment();
             }
         });
+
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        Log.d("Swipe refresh", "onRefresh called from SwipeRefreshLayout");
+
+                        // This method performs the actual data-refresh operation.
+                        // The method calls setRefreshing(false) when it's finished.
+                        //myUpdateOperation();
+                        int category;
+                        if (getActivity() instanceof RecipesActivity) {
+                            category = Application.getUserCollection().getCategory();
+                            Application.getUserCollection().updateRecipes(category);
+                        }
+                        else if (getActivity() instanceof DiscoverActivity) {
+                            category = Application.getDiscoverCollection().getCategory();
+                            Application.getDiscoverCollection().updateRecipes(category);
+                        }
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                }
+        );
 
         list = view.findViewById( R.id.list );
         CustomListView = this;
