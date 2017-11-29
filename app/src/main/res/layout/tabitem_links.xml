@@ -17,20 +17,27 @@
         >
 
         <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/recipe_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:padding="@dimen/tiny_margin"
-            android:layout_margin="@dimen/tiny_margin">
+            >
+
+            <ImageView
+                android:id="@+id/webpageImage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_margin="10dp"
+                android:scaleType="centerCrop"/>
 
             <TextView
                 android:id="@+id/webpageTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/webpageImage"
                 android:text="Recipe Title"
                 android:textSize="24sp"
-                android:textAllCaps="true"
                 android:maxLines="2"/>
 
             <pl.charmas.android.tagview.TagView
@@ -38,25 +45,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/tiny_margin"
+                android:layout_toRightOf="@id/webpageImage"
                 android:layout_below="@id/webpageTitle"/>
-
-            <View
-                android:id="@+id/webpageDivider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/webpageWebsite"
-                android:layout_marginBottom="@dimen/tiny_margin"
-                android:layout_marginTop="@dimen/tiny_margin"
-                android:background="@android:color/darker_gray"/>
-
-            <TextView
-                android:id="@+id/webpageDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/webpageDivider"
-                android:text="Some sentenses about the recipe."
-                android:maxLines="2"
-                android:layout_marginBottom="@dimen/tiny_margin"/>
 
         </RelativeLayout>
 

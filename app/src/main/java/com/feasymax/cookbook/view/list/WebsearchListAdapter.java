@@ -8,12 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.entity.WebpageInfo;
-import com.feasymax.cookbook.util.Graphics;
 import com.feasymax.cookbook.view.fragment.common.ShowWebpagesFragment;
 
 import java.util.List;
@@ -24,7 +22,7 @@ import pl.charmas.android.tagview.TagView;
  * Created by Olya on 2017-11-06.
  */
 
-public class LinksListAdapter extends BaseAdapter implements View.OnClickListener {
+public class WebsearchListAdapter extends BaseAdapter implements View.OnClickListener {
     /*********** Declare Used Variables *********/
     private ShowWebpagesFragment fragment;
     private List data;
@@ -34,7 +32,7 @@ public class LinksListAdapter extends BaseAdapter implements View.OnClickListene
     int i = 0;
 
     /*************  CustomAdapter Constructor *****************/
-    public LinksListAdapter(ShowWebpagesFragment a, List d, Resources resLocal) {
+    public WebsearchListAdapter(ShowWebpagesFragment a, List d, Resources resLocal) {
 
         /********** Take passed values **********/
         fragment = a;
@@ -69,7 +67,7 @@ public class LinksListAdapter extends BaseAdapter implements View.OnClickListene
 
         public TextView webpageTitle;
         public TagView webpageWebsite;
-        public ImageView webpageImage;
+        public TextView webpageDescription;
 
     }
 
@@ -82,14 +80,14 @@ public class LinksListAdapter extends BaseAdapter implements View.OnClickListene
         if(convertView == null){
 
             /****** Inflate tabitem_recipe_recipe.xml file for each row ( Defined below ) *******/
-            vi = inflater.inflate(R.layout.tabitem_links, null);
+            vi = inflater.inflate(R.layout.tabitem_webpage, null);
 
             /****** View Holder Object to contain tabitem_recipe.xmlipe.xml file elements ******/
 
             holder = new ViewHolder();
             holder.webpageTitle = vi.findViewById(R.id.webpageTitle);
             holder.webpageWebsite = vi.findViewById(R.id.webpageWebsite);
-            holder.webpageImage =(ImageView)vi.findViewById(R.id.webpageImage);
+            holder.webpageDescription = vi.findViewById(R.id.webpageDescription);
 
             /************  Set holder with LayoutInflater ************/
             vi.setTag( holder );
@@ -114,11 +112,12 @@ public class LinksListAdapter extends BaseAdapter implements View.OnClickListene
             TagView.Tag[] website = { new TagView.Tag(tempValues.getWebsiteName(),
                     Color.parseColor("#ff4081")) };
             holder.webpageWebsite.setTags(website, " ");
-            if (tempValues.getImage() != null) {
-                holder.webpageImage.setImageBitmap(tempValues.getImage());
+            if (tempValues.getDescription().equals("")) {
+                holder.webpageDescription.setVisibility(View.GONE);
+                vi.findViewById(R.id.webpageDivider).setVisibility(View.GONE);
             }
             else {
-                holder.webpageImage.setImageBitmap(Graphics.decodeSampledBitmapFromResource(res, R.drawable.no_image420, 200, 200));
+                holder.webpageDescription.setText( tempValues.getDescription() );
             }
 
 

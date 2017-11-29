@@ -26,6 +26,7 @@ import com.feasymax.cookbook.view.fragment.common.ShowWebpagesFragment;
 import com.feasymax.cookbook.view.list.LinksListAdapter;
 import com.feasymax.cookbook.view.list.RecipeListAdapter;
 import com.feasymax.cookbook.view.list.RecipeListModel;
+import com.feasymax.cookbook.view.list.WebsearchListAdapter;
 
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class DiscoverWebsearchFragment extends ShowWebpagesFragment {
     private RelativeLayout noItemsLayout;
 
     ListView list;
-    LinksListAdapter adapter;
+    WebsearchListAdapter adapter;
     public DiscoverWebsearchFragment CustomListView = null;
     public List<WebpageInfo> CustomListViewValuesArr;
 
@@ -98,7 +99,7 @@ public class DiscoverWebsearchFragment extends ShowWebpagesFragment {
         // Create Custom Adapter
         Resources res = getResources();
         adapter = null;
-        adapter = new LinksListAdapter( this, CustomListViewValuesArr, res );
+        adapter = new WebsearchListAdapter( this, CustomListViewValuesArr, res );
         list.setAdapter( adapter );
     }
 
