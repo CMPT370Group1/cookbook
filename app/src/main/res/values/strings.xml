@@ -9,7 +9,8 @@
     <string name="action_info">Page Info</string>
     <string name="action_recipe_edit">Edit Recipe</string>
     <string name="action_recipe_delete">Delete Recipe</string>
-    <string name="action_recipe_add">Add Recipe</string>
+    <string name="action_recipe_add">Save Recipe</string>
+    <string name="action_link_add">Save Link</string>
 
     <string-array name="categories">
         <item>Breakfast</item>
@@ -27,6 +28,20 @@
         <item>Other</item>
     </string-array>
 
+    <string-array name="all_volume_units">
+        <item>none</item>
+        <item>unit</item>
+        <item>tsp</item>
+        <item>tbsp</item>
+        <item>cup</item>
+        <item>qt</item>
+        <item>l</item>
+        <item>ml</item>
+        <item>fl.oz</item>
+        <item>pt</item>
+        <item>gal</item>
+    </string-array>
+
     <string-array name="volume_units">
         <item>tsp</item>
         <item>tbsp</item>
@@ -39,6 +54,16 @@
         <item>gal</item>
     </string-array>
 
+    <string-array name="all_mass_units">
+        <item>none</item>
+        <item>unit</item>
+        <item>mg</item>
+        <item>g</item>
+        <item>kg</item>
+        <item>oz</item>
+        <item>lb</item>
+    </string-array>
+
     <string-array name="mass_units">
         <item>mg</item>
         <item>g</item>
@@ -48,6 +73,25 @@
     </string-array>
 
     <string-array name="mass_volume_units">
+        <item>mg</item>
+        <item>g</item>
+        <item>kg</item>
+        <item>oz</item>
+        <item>lb</item>
+        <item>tsp</item>
+        <item>tbsp</item>
+        <item>cup</item>
+        <item>qt</item>
+        <item>l</item>
+        <item>ml</item>
+        <item>fl.oz</item>
+        <item>pt</item>
+        <item>gal</item>
+    </string-array>
+
+    <string-array name="all_units">
+        <item>none</item>
+        <item>unit</item>
         <item>mg</item>
         <item>g</item>
         <item>kg</item>

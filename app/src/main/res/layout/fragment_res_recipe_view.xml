@@ -63,55 +63,91 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/tiny_margin"/>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginBottom="@dimen/small_margin"
-                        android:layout_marginTop="@dimen/small_margin"
-                        android:background="@android:color/darker_gray"/>
 
-                    <TextView
+
+                    <RelativeLayout
+                        android:id="@+id/ingredientsLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <View
+                            android:id="@+id/ingredientsDivider"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginBottom="@dimen/small_margin"
+                            android:layout_marginTop="@dimen/small_margin"
+                            android:background="@android:color/darker_gray"/>
+
+                        <TextView
+                            android:id="@+id/ingredientsText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/tiny_margin"
+                            android:layout_below="@+id/ingredientsDivider"
+                            android:text="Ingredients"
+                            android:textStyle="bold"
+                            android:textSize="18sp"/>
+
+                        <ImageButton
+                            android:id="@+id/ibScale"
+                            android:layout_width="@dimen/small_square_button_side"
+                            android:layout_height="@dimen/small_square_button_side"
+                            android:layout_alignParentRight="true"
+                            android:layout_below="@+id/ingredientsDivider"
+                            android:background="@color/colorAccent"
+                            android:padding="5dp"
+                            android:tint="@android:color/white"
+                            app:srcCompat="@drawable/resize_icon"/>
+
+                        <TableLayout
+                            android:id="@+id/recipeIngredients"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_below="@id/ingredientsText"/>
+
+                    </RelativeLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/directionsLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/tiny_margin"
-                        android:text="Ingredients"
-                        android:textStyle="bold"
-                        android:textSize="18sp"/>
+                        android:orientation="vertical">
 
-                    <TableLayout
-                        android:id="@+id/recipeIngredients"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"/>
+                        <View
+                            android:id="@+id/directionsDivider"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginBottom="@dimen/small_margin"
+                            android:layout_marginTop="@dimen/small_margin"
+                            android:background="@android:color/darker_gray"/>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginBottom="@dimen/small_margin"
-                        android:layout_marginTop="@dimen/small_margin"
-                        android:background="@android:color/darker_gray"/>
+                        <TextView
+                            android:id="@+id/directionsText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/tiny_margin"
+                            android:text="Directions"
+                            android:textStyle="bold"
+                            android:textSize="18sp"/>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/tiny_margin"
-                        android:text="Directions"
-                        android:textStyle="bold"
-                        android:textSize="18sp"/>
+                        <TextView
+                            android:id="@+id/recipeDirections"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/recipeIngredients"
+                            android:text="Some sentenses about the recipe."
+                            android:textSize="16sp"/>
 
-                    <TextView
-                        android:id="@+id/recipeDirections"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/recipeIngredients"
-                        android:text="Some sentenses about the recipe."
-                        android:textSize="16sp"/>
+                    </LinearLayout>
+
+
 
                     <pl.charmas.android.tagview.TagView
                         android:id="@+id/recipeTags"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/recipeDirections"
                         android:layout_marginBottom="@dimen/big_margin"
                         android:layout_marginTop="@dimen/small_margin"/>
 

@@ -5,6 +5,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -13,6 +16,8 @@ import android.widget.Button;
 
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
+import com.feasymax.cookbook.view.DiscoverActivity;
+import com.feasymax.cookbook.view.RecipesActivity;
 import com.feasymax.cookbook.view.ViewTransactions;
 
 /**
@@ -35,6 +40,8 @@ public class WebPageViewFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_webpage, container, false);
+
+        setHasOptionsMenu(true);
 
         webView = view.findViewById(R.id.web_view);
         webView.setWebViewClient(new WebViewClient() {
@@ -65,5 +72,40 @@ public class WebPageViewFragment extends Fragment {
         ViewTransactions.getViews().add(FRAGMENT_ID);
         transaction.addToBackStack(null);
         transaction.detach(this).commit();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        if (getActivity() instanceof DiscoverActivity) {
+            inflater.inflate(R.menu.menu_webpage, menu);
+        }
+        else {
+            Log.println(Log.ERROR, "MENU","unexpected activity");
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        if (!Application.isUserSignedIn()) {
+            menu.findItem(R.id.action_link_add).setEnabled(false);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_info:
+                Log.println(Log.INFO, "MENU","action_info has clicked");
+                return true;
+            case R.id.action_link_add:
+                Log.println(Log.INFO, "MENU","action_link_add was clicked");
+                // TODO: call add link function
+                return true;
+            default:
+                break;
+        }
+        return false;
     }
 }

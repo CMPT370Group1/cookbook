@@ -1,9 +1,11 @@
 package com.feasymax.cookbook.view.fragment;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,9 +16,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.feasymax.cookbook.R;
@@ -28,7 +32,9 @@ import com.feasymax.cookbook.view.RecipesActivity;
 import com.feasymax.cookbook.view.ViewTransactions;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import pl.charmas.android.tagview.TagView;
 
@@ -50,9 +56,10 @@ public class RecipeViewFragment extends Fragment {
     final DecimalFormat DF = new DecimalFormat("#.############");
 
     /*
-     * Button to go back to the recipes in a category
+     * Buttons for the layout
      */
     protected Button btnCategory;
+    protected ImageButton ibtnScaleRecipe;
 
     /*
      * Recipe attributes
@@ -64,10 +71,13 @@ public class RecipeViewFragment extends Fragment {
     protected TextView recipeDirections;
     protected TagView recipeTags;
 
+    protected List<View> ingredientRows;
+
     /**
      * Current recipe displayed in the fragment (scaled)
      */
     protected Recipe currentRecipe = null;
+    protected boolean isBeingScaled = false;
 
     /**
      * Required empty public constructor
@@ -88,6 +98,35 @@ public class RecipeViewFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 enterRecipesFragment();
+            }
+        });
+
+        ibtnScaleRecipe = view.findViewById(R.id.ibScale);
+        ibtnScaleRecipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for (View tr: ingredientRows) {
+                    EditText quantity = tr.findViewById(R.id.quantity);
+                    Spinner unit = tr.findViewById(R.id.unit);
+
+                    // make ingredient fields modifiable to scale the recipe
+                    if (!isBeingScaled) {
+                        quantity.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                        unit.setEnabled(true);
+                        ibtnScaleRecipe.setBackgroundColor(getResources().getColor(R.color.colorButtonInactive));
+                        Drawable icon = getResources().getDrawable(android.R.drawable.ic_delete);
+                        ibtnScaleRecipe.setImageDrawable(icon);
+                    }
+                    // make ingredient fields non-modifiable
+                    else {
+                        quantity.setInputType(InputType.TYPE_NULL);
+                        unit.setEnabled(false);
+                        ibtnScaleRecipe.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                        Drawable icon = getResources().getDrawable(R.drawable.resize_icon);
+                        ibtnScaleRecipe.setImageDrawable(icon);
+                    }
+                }
+                isBeingScaled = !isBeingScaled;
             }
         });
 
@@ -119,56 +158,62 @@ public class RecipeViewFragment extends Fragment {
         }
 
         recipeTitle.setText(currentRecipe.getTitle());
-        recipeDirections.setText(currentRecipe.getDirections());
+        if (!currentRecipe.getDirections().equals("")) {
+            recipeDirections.setText(currentRecipe.getDirections());
+        }
+        else {
+            view.findViewById(R.id.directionsLayout).setVisibility(View.GONE);
+        }
 
         TagView.Tag[] duration = { new TagView.Tag(displayDuration(currentRecipe.getDuration()),
                 Color.parseColor("#808080")) };
         recipeDuration.setTags(duration, " ");
 
+
         // Fill the table layout recipeIngredients with rows, one for each ingredient
         if (currentRecipe.getIngredients() != null) {
-            Log.println(Log.INFO, "In RecipeViewFragment", "Ingredients: " + currentRecipe.getIngredients().toString());
+            if (currentRecipe.getIngredients().size() != 0) {
+                Log.println(Log.INFO, "In RecipeViewFragment", "Ingredients: " + currentRecipe.getIngredients().toString());
+                ingredientRows = new LinkedList<>();
+                for (Ingredient ingredient : currentRecipe.getIngredients()) {
+                    View tr = inflater.inflate(R.layout.ingredient_view_layout, null, false);
 
-            for (Ingredient ingredient : currentRecipe.getIngredients()) {
-                View tr = inflater.inflate(R.layout.ingredient_view_layout, null, false);
+                    // Fill the row with ingredient info
+                    EditText quantity = tr.findViewById(R.id.quantity);
+                    quantity.setText(DF.format(ingredient.getQuantity()));
+                    quantity.setInputType(InputType.TYPE_NULL);
 
-                // Fill the row with ingredient info
-                EditText quantity = tr.findViewById(R.id.quantity);
-                quantity.setText(DF.format(ingredient.getQuantity()));
+                    Spinner unit = tr.findViewById(R.id.unit);
+                    unit.setEnabled(false);
 
-                Spinner unit = tr.findViewById(R.id.unit);
-                // correctly display ingredient's units in the dropdown spinner
-                if (ingredient.getUnit() < 5) {
-                    ArrayAdapter adapterUnit = ArrayAdapter.createFromResource(this.getContext(),
-                            R.array.mass_units, R.layout.spinner_item_center);
-                    adapterUnit.setDropDownViewResource(R.layout.spinner_dropdown_item);
-                    unit.setAdapter(adapterUnit);
-                    unit.setSelection(ingredient.getUnit());
+                    // correctly display ingredient's units in the dropdown spinner
+                    setIngredientAdapter(ingredient.getUnit(), unit);
+
+                    TextView name = tr.findViewById(R.id.name);
+                    name.setText(ingredient.getName());
+
+                    // Add row to TableLayout.
+                    recipeIngredients.addView(tr, new TableLayout.LayoutParams(
+                            TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+                    ingredientRows.add(tr);
                 }
-                else {
-                    ArrayAdapter adapterUnit = ArrayAdapter.createFromResource(this.getContext(),
-                            R.array.volume_units, R.layout.spinner_item_center);
-                    adapterUnit.setDropDownViewResource(R.layout.spinner_dropdown_item);
-                    unit.setAdapter(adapterUnit);
-                    unit.setSelection(ingredient.getUnit() - 5);
-                }
-
-                TextView name = tr.findViewById(R.id.name);
-                name.setText(ingredient.getName());
-
-                // Add row to TableLayout.
-                recipeIngredients.addView(tr, new TableLayout.LayoutParams(
-                        TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+            }
+            // make ingredients section invisible
+            else {
+                Log.println(Log.INFO, "In RecipeViewFragment", "Ingredients: empty");
+                view.findViewById(R.id.ingredientsLayout).setVisibility(View.GONE);
             }
         }
+        // make ingredients section invisible
         else {
             Log.println(Log.INFO, "In RecipeViewFragment", "Ingredients: null");
+            view.findViewById(R.id.ingredientsLayout).setVisibility(View.GONE);
         }
 
         // Set up the recipe tags
-        LinkedList<TagView.Tag> tags = new LinkedList<>();
         if (currentRecipe.getTags() != null) {
             Log.println(Log.INFO, "In RecipeViewFragment", "Tags: " + currentRecipe.getTags().toString());
+            LinkedList<TagView.Tag> tags = new LinkedList<>();
             for (String content : currentRecipe.getTags()) {
                 tags.add(new TagView.Tag(content, Color.parseColor("#ff4081"))); // color is colorAccent
             }
@@ -179,6 +224,37 @@ public class RecipeViewFragment extends Fragment {
         }
 
         return view ;
+    }
+
+    protected void setIngredientAdapter(int ingredientUnit, Spinner unit) {
+        if (ingredientUnit < 2) {
+            ArrayList<String> spinnerArray = new ArrayList<>(1);
+            if (ingredientUnit == 0) {
+                spinnerArray.add("none");
+            }
+            else {
+                spinnerArray.add("unit");
+            }
+            ArrayAdapter adapterUnit = new ArrayAdapter(this.getContext(),
+                    R.layout.spinner_item_center, spinnerArray);
+            adapterUnit.setDropDownViewResource(R.layout.spinner_dropdown_item);
+            unit.setAdapter(adapterUnit);
+            unit.setSelection(0);
+        }
+        else if (ingredientUnit < 7) {
+            ArrayAdapter adapterUnit = ArrayAdapter.createFromResource(this.getContext(),
+                    R.array.mass_units, R.layout.spinner_item_center);
+            adapterUnit.setDropDownViewResource(R.layout.spinner_dropdown_item);
+            unit.setAdapter(adapterUnit);
+            unit.setSelection(ingredientUnit - 2);
+        }
+        else {
+            ArrayAdapter adapterUnit = ArrayAdapter.createFromResource(this.getContext(),
+                    R.array.volume_units, R.layout.spinner_item_center);
+            adapterUnit.setDropDownViewResource(R.layout.spinner_dropdown_item);
+            unit.setAdapter(adapterUnit);
+            unit.setSelection(ingredientUnit - 7);
+        }
     }
 
     /**
@@ -252,6 +328,13 @@ public class RecipeViewFragment extends Fragment {
             Log.println(Log.ERROR, "MENU","unexpected activity");
         }
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        if (getActivity() instanceof DiscoverActivity && !Application.isUserSignedIn()) {
+            menu.findItem(R.id.action_recipe_add).setEnabled(false);
+        }
     }
 
     @Override

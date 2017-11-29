@@ -67,7 +67,6 @@ public class RecipesFragment extends ShowRecipesFragment{
         });
 
         list = view.findViewById( R.id.list );
-
         CustomListView = this;
 
         return view ;
