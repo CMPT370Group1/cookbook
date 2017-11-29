@@ -2,6 +2,7 @@ package com.feasymax.cookbook.view.list;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,8 @@ import com.feasymax.cookbook.util.Graphics;
 import com.feasymax.cookbook.view.fragment.common.ShowWebpagesFragment;
 
 import java.util.List;
+
+import pl.charmas.android.tagview.TagView;
 
 /**
  * Created by Olya on 2017-11-06.
@@ -65,8 +68,8 @@ public class LinksListAdapter extends BaseAdapter implements View.OnClickListene
     public static class ViewHolder{
 
         public TextView webpageTitle;
-        public TextView webpageWebsite;
-        public ImageView webpageImage;
+        public TagView webpageWebsite;
+        public TextView webpageDescription;
 
     }
 
@@ -84,9 +87,9 @@ public class LinksListAdapter extends BaseAdapter implements View.OnClickListene
             /****** View Holder Object to contain tabitem_recipe.xmlipe.xml file elements ******/
 
             holder = new ViewHolder();
-            holder.webpageTitle = (TextView) vi.findViewById(R.id.webpageTitle);
-            holder.webpageWebsite =(TextView)vi.findViewById(R.id.webpageWebsite);
-            holder.webpageImage =(ImageView)vi.findViewById(R.id.webpageImage);
+            holder.webpageTitle = vi.findViewById(R.id.webpageTitle);
+            holder.webpageWebsite = vi.findViewById(R.id.webpageWebsite);
+            holder.webpageDescription = vi.findViewById(R.id.webpageDescription);
 
             /************  Set holder with LayoutInflater ************/
             vi.setTag( holder );
@@ -108,12 +111,15 @@ public class LinksListAdapter extends BaseAdapter implements View.OnClickListene
             /************  Set Model values in Holder elements ***********/
 
             holder.webpageTitle.setText( tempValues.getTitle() );
-            holder.webpageWebsite.setText( tempValues.getWebsiteName() );
-            if (tempValues.getImage() != null) {
-                holder.webpageImage.setImageBitmap(tempValues.getImage());
+            TagView.Tag[] website = { new TagView.Tag(tempValues.getWebsiteName(),
+                    Color.parseColor("#ff4081")) };
+            holder.webpageWebsite.setTags(website, " ");
+            if (tempValues.getDescription().equals("")) {
+                holder.webpageDescription.setVisibility(View.GONE);
+                vi.findViewById(R.id.webpageDivider).setVisibility(View.GONE);
             }
             else {
-                holder.webpageImage.setImageBitmap(Graphics.decodeSampledBitmapFromResource(res, R.drawable.no_image420, 200, 200));
+                holder.webpageDescription.setText( tempValues.getDescription() );
             }
 
 
