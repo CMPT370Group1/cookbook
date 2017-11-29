@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.util.Log;
 import com.feasymax.cookbook.model.entity.Ingredient;
 import com.feasymax.cookbook.model.entity.Recipe;
+import com.feasymax.cookbook.model.entity.WebpageInfo;
 import com.feasymax.cookbook.util.DbBitmapUtility;
 import com.feasymax.cookbook.util.Graphics;
 import com.feasymax.cookbook.view.list.RecipeListModel;
@@ -37,6 +38,7 @@ public class UserDao {
     private volatile String updateRes = "";
     private String email;
     private List<RecipeListModel> list = null;
+    private List<WebpageInfo> links = null;
 
     /**
      * Get a connection to database
@@ -913,16 +915,12 @@ public class UserDao {
                         try {
                             if (conn != null)
                                 conn.close();
-                        } catch (SQLException e) {
-                        }
+                        } catch (SQLException e) {}
                     }
-
-
                 }
                 catch (Exception e) {
                     e.printStackTrace();
                 }
-
             }
         });
         //start the thread
@@ -961,6 +959,90 @@ public class UserDao {
             System.out.println("SQL error");
             e.printStackTrace();
         }
+
+    }
+
+    /**
+     * Get all links saved in user's collection
+     * @param userID
+     * @return linked list of links
+     */
+    public List<WebpageInfo> getLinks(final int userID) {
+
+        links = null;
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    connect();
+                    PreparedStatement stmt = null;
+                    ResultSet rs = null;
+
+                    try {
+
+                        links = new LinkedList<>();
+                        WebpageInfo webpageInfo = null;
+
+                        String title = null;
+                        String url = null;
+                        String website = null;
+                        byte[] image_icon = null;
+                        Bitmap image = null;
+
+                        String query = "SELECT title, web_add, website, image FROM links WHERE " +
+                                "user_id = " + userID;
+                        Log.println(Log.INFO, "query", query);
+
+                        stmt = conn.prepareStatement(query);
+                        rs = stmt.executeQuery();
+                        if (!rs.isBeforeFirst()) {
+                            throw new SQLException("No data found");
+                        }
+                        while (rs.next()) {
+                            title = rs.getString("title");
+                            url = rs.getString("web_add");
+                            website = rs.getString("website");
+                            if (rs.getObject("image") != null && !rs.wasNull()) {
+                                image_icon = rs.getBytes("image");
+                                image = DbBitmapUtility.getImage(image_icon);
+                            }
+
+                            webpageInfo = new WebpageInfo(title,url,website,"", image);
+                            Log.println(Log.INFO, "discover Recipes", webpageInfo.toString());
+                            links.add(webpageInfo);
+                            image_icon = null;
+                        }
+                        stmt.close();
+
+                    } catch (SQLException e) {
+                        System.out.println("SQL ERROR for discover recipes");
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            if (conn != null)
+                                conn.close();
+                        } catch (SQLException e) {}
+                    }
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        //start the thread
+        thread.start();
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+        return links;
 
     }
 

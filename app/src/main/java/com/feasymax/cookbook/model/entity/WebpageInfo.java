@@ -22,7 +22,7 @@ public class WebpageInfo {
     @Override
     public String toString() {
         return "{ Title: " + title + ", URL: " + url + ", Website: " + websiteName +
-                ",\nDescription: " + description + " }\n";
+                ", Description: " + description + " }\n";
     }
 
     public String getTitle() {

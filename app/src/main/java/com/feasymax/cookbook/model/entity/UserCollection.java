@@ -24,6 +24,7 @@ public class UserCollection {
     protected SparseArray<List<RecipeListModel>> recipes;
     protected Recipe curRecipe;
     protected int category;
+    private List<WebpageInfo> links;
 
     public UserCollection() {
         recipes = new SparseArray<>(NUM_CATEGORIES);
@@ -89,4 +90,21 @@ public class UserCollection {
         return false;
     }
 
+    public List<WebpageInfo> getLinks() {
+        if (this.links == null) {
+            this.links = Application.getLinksFromDB();
+        }
+        return links;
+    }
+
+    public void setLinks(List<WebpageInfo> links) {
+        this.links = links;
+    }
+
+    public void addLink(WebpageInfo link) {
+        if (this.links == null) {
+            this.links = Application.getLinksFromDB();
+        }
+        this.links.add(link);
+    }
 }

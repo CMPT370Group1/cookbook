@@ -7,6 +7,7 @@ import com.feasymax.cookbook.model.entity.DiscoverCollection;
 import com.feasymax.cookbook.model.entity.Recipe;
 import com.feasymax.cookbook.model.entity.UserAccount;
 import com.feasymax.cookbook.model.entity.UserCollection;
+import com.feasymax.cookbook.model.entity.WebpageInfo;
 import com.feasymax.cookbook.model.util.UserDao;
 import com.feasymax.cookbook.util.Graphics;
 import com.feasymax.cookbook.view.list.RecipeListModel;
@@ -287,5 +288,11 @@ public class Application {
         }
 
         return recipe;
+    }
+
+    public static List<WebpageInfo> getLinksFromDB() {
+        UserDao userDao = new UserDao();
+        List<WebpageInfo> links = userDao.getLinks(getUser().getUserID());
+        return links;
     }
 }

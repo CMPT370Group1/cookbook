@@ -24,6 +24,7 @@ import android.widget.TableLayout;
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
 import com.feasymax.cookbook.model.entity.WebpageInfo;
+import com.feasymax.cookbook.model.util.WebSearch;
 import com.feasymax.cookbook.util.Graphics;
 import com.feasymax.cookbook.view.ViewTransactions;
 import com.feasymax.cookbook.view.fragment.common.ShowWebpagesFragment;
@@ -48,7 +49,7 @@ public class RecipeLinksFragment extends ShowWebpagesFragment {
     public RecipeLinksFragment CustomListView = null;
     public List<WebpageInfo> CustomListViewValuesArr;
 
-    private String m_Text = "";
+    private String newLink = "";
 
     public RecipeLinksFragment() {
         // Required empty public constructor
@@ -88,8 +89,29 @@ public class RecipeLinksFragment extends ShowWebpagesFragment {
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        m_Text = input.getText().toString();
-                        Log.println(Log.INFO, "link", m_Text);
+                        newLink = input.getText().toString();
+                        Log.println(Log.INFO, "link", newLink);
+
+                        try {
+                            WebpageInfo newWebpageInfo = WebSearch.parsePageHeaderInfo(newLink);
+                            if (newWebpageInfo != null) {
+                                Application.getUserCollection().addLink(newWebpageInfo);
+                                // TODO: add to db
+                                CustomListViewValuesArr = Application.getUserCollection().getLinks();
+                                if (CustomListViewValuesArr.size() != 0) {
+                                    noItemsLayout.setVisibility(View.GONE);
+                                    list.setVisibility(View.VISIBLE);
+                                    setAdapter();
+                                }
+                            }
+                            else {
+                                throw new Exception("Wrong link format");
+                            }
+
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -107,27 +129,12 @@ public class RecipeLinksFragment extends ShowWebpagesFragment {
         CustomListView = this;
         list = view.findViewById( R.id.list );
 
-        //openWebpage = view.findViewById(R.id.buttonOpen1);
-        /*openWebpage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enterWebpageViewFragment();
-            }
-        });*/
-
         return view;
     }
 
     @Override
     public void setListData() {
-        //TODO
-        WebpageInfo link1 = new WebpageInfo("Bread", "https://www.thespruce.com/super-easy-bread-for-beginners-428108",
-                "thespruce.com", "Description Description Description Description Description Description Description Description", null);
-        WebpageInfo link2 = new WebpageInfo("Bread2", "http://allrecipes.com/recipes/156/bread/",
-                "allrecipes.com", "Description2 Description2 Description2 Description2 Description2 Description2 Description2", null);
-        CustomListViewValuesArr = new LinkedList<>();
-        CustomListViewValuesArr.add(link1);
-        CustomListViewValuesArr.add(link2);
+        CustomListViewValuesArr = Application.getUserCollection().getLinks();
     }
 
     public void setAdapter() {

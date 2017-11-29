@@ -23,7 +23,9 @@ import java.util.List;
  */
 
 public class WebSearch {
+
     private static List<WebpageInfo> results;
+    private static WebpageInfo webpageInfo;
 
     private WebSearch() {}
 
@@ -106,48 +108,62 @@ public class WebSearch {
         return results;
     }
 
-    public static WebpageInfo parsePageHeaderInfo(String urlStr) throws Exception {
+    public static WebpageInfo parsePageHeaderInfo(final String urlStr) {
 
-        Connection con = Jsoup.connect(urlStr);
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Connection con = Jsoup.connect(urlStr).referrer("http://www.google.com").
+                            userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) " +
+                                    "Gecko/20070725 Firefox/2.0.0.6");
 
-        Document doc = con.get();
+                    Document doc = con.get();
 
-        String title = null;
-        Elements metaOgTitle = doc.select("meta[property=og:title]");
-        if (metaOgTitle!=null) {
-            title = metaOgTitle.attr("content");
-        }
-        else {
-            title = doc.title();
-        }
+                    String title = doc.title();
 
-        String imageUrl = null;
-        Elements metaOgImage = doc.select("meta[property=og:image]");
-        if (metaOgImage!=null) {
-            imageUrl = metaOgImage.attr("content");
-        }
+                    String imageUrl = null;
+                    Elements metaOgImage = doc.select("meta[property=og:image]");
+                    if (metaOgImage!=null) {
+                        imageUrl = metaOgImage.attr("content");
+                    }
 
-        Bitmap image = null;
-        if (imageUrl!=null) {
-            try {
-                URL url = new URL(imageUrl);
-                image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                image = Graphics.resize(image, 200, 200);
-            } catch(IOException e) {
-                System.out.println(e);
+                    Bitmap image = null;
+                    if (imageUrl != null) {
+                        try {
+                            URL url = new URL(imageUrl);
+                            image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                            image = Graphics.resize(image, 200, 200);
+                        } catch(IOException e) {
+                            System.out.println(e);
+                        }
+
+                    }
+
+                    String website = "";
+                    website = urlStr.replace("https://", "");
+                    website = website.replace("http://", "");
+                    website = website.replace("www.", "");
+                    try {
+                        website = website.substring(0, website.indexOf('/'));
+                    } catch (Exception e) {}
+
+                    webpageInfo = new WebpageInfo(title, urlStr, website, "", image);
+
+                }
+                catch (Exception e) {
+
+                }
+
             }
+        });
 
-        }
-
-        String website = "";
-        website = urlStr.replace("https://", "");
-        website = website.replace("http://", "");
-        website = website.replace("www.", "");
+        thread.start();
         try {
-            website = website.substring(0, website.indexOf('/'));
-        } catch (Exception e) {}
-
-        WebpageInfo webpageInfo = new WebpageInfo(title, urlStr, website, "", image);
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         return webpageInfo;
     }
