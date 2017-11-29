@@ -51,7 +51,7 @@ public class WebSearch {
                     }
                     searchTokens += "recipe";
 
-                            doc = Jsoup.connect("https://www.google.com/search?q=" + searchTokens).get();
+                    doc = Jsoup.connect("https://www.google.com/search?q=" + searchTokens).get();
                     Elements links = doc.select("div[class=g]");
                     results = new LinkedList<>();
                     WebpageInfo webpageInfo = null;
@@ -115,8 +115,7 @@ public class WebSearch {
             public void run() {
                 try {
                     Connection con = Jsoup.connect(urlStr).referrer("http://www.google.com").
-                            userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) " +
-                                    "Gecko/20070725 Firefox/2.0.0.6");
+                            userAgent("Mozilla");
 
                     Document doc = con.get();
 

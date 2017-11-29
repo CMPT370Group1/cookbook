@@ -295,4 +295,9 @@ public class Application {
         List<WebpageInfo> links = userDao.getLinks(getUser().getUserID());
         return links;
     }
+
+    public static void addLinkToDB(WebpageInfo webpageInfo) {
+        UserDao userDao = new UserDao();
+        userDao.addLink(getUser().getUserID(), webpageInfo);
+    }
 }

@@ -96,7 +96,7 @@ public class RecipeLinksFragment extends ShowWebpagesFragment {
                             WebpageInfo newWebpageInfo = WebSearch.parsePageHeaderInfo(newLink);
                             if (newWebpageInfo != null) {
                                 Application.getUserCollection().addLink(newWebpageInfo);
-                                // TODO: add to db
+                                Application.addLinkToDB(newWebpageInfo);
                                 CustomListViewValuesArr = Application.getUserCollection().getLinks();
                                 if (CustomListViewValuesArr.size() != 0) {
                                     noItemsLayout.setVisibility(View.GONE);

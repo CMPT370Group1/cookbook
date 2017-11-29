@@ -1041,8 +1041,74 @@ public class UserDao {
             e.printStackTrace();
         }
 
-
         return links;
+    }
+
+    /**
+     * Get all links saved in user's collection
+     * @param userID
+     * @return linked list of links
+     */
+    public void addLink(final int userID, final WebpageInfo webpageInfo) {
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    connect();
+                    PreparedStatement stmt = null;
+
+                    try {
+
+                        String title = webpageInfo.getTitle();
+                        String url = webpageInfo.getUrl();
+                        String website = webpageInfo.getWebsiteName();
+                        Bitmap image = webpageInfo.getImage();
+                        byte[] image_icon = null;
+
+                        if (image != null) {
+                            image_icon = DbBitmapUtility.getBytes(image);
+                        }
+
+                        String query;
+                        query = "INSERT INTO links (title, web_add, website, image, user_id) VALUES " +
+                                "(?, ?, ?, ?, ?)";
+                        // insert all recipe info into recipes table
+                        stmt = conn.prepareStatement(query);
+                        stmt.setString(1, title);
+                        stmt.setString(2, url);
+                        stmt.setString(3, website);
+                        stmt.setBytes(4, image_icon);
+                        stmt.setInt(5, userID);
+                        stmt.executeUpdate();
+
+                        stmt.close();
+
+                    } catch (SQLException e) {
+                        System.out.println("SQL ERROR for discover recipes");
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            if (conn != null)
+                                conn.close();
+                        } catch (SQLException e) {}
+                    }
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        //start the thread
+        thread.start();
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
 
