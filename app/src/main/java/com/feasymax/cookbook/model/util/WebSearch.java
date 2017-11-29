@@ -1,11 +1,18 @@
 package com.feasymax.cookbook.model.util;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import com.feasymax.cookbook.model.entity.WebpageInfo;
+import com.feasymax.cookbook.util.Graphics;
+
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.util.LinkedList;
 import java.util.List;
@@ -75,9 +82,7 @@ public class WebSearch {
                             website = website.substring(0, website.indexOf('/'));
                         } catch (Exception e) {}
 
-                        // TODO: also save an image
-
-                        webpageInfo = new WebpageInfo(title,url, website, body);
+                        webpageInfo = new WebpageInfo(title, url, website, body, null);
                         if (!results.contains(webpageInfo)) {
                             results.add(webpageInfo);
                         }
@@ -99,6 +104,52 @@ public class WebSearch {
         }
 
         return results;
+    }
+
+    public static WebpageInfo parsePageHeaderInfo(String urlStr) throws Exception {
+
+        Connection con = Jsoup.connect(urlStr);
+
+        Document doc = con.get();
+
+        String title = null;
+        Elements metaOgTitle = doc.select("meta[property=og:title]");
+        if (metaOgTitle!=null) {
+            title = metaOgTitle.attr("content");
+        }
+        else {
+            title = doc.title();
+        }
+
+        String imageUrl = null;
+        Elements metaOgImage = doc.select("meta[property=og:image]");
+        if (metaOgImage!=null) {
+            imageUrl = metaOgImage.attr("content");
+        }
+
+        Bitmap image = null;
+        if (imageUrl!=null) {
+            try {
+                URL url = new URL(imageUrl);
+                image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                image = Graphics.resize(image, 200, 200);
+            } catch(IOException e) {
+                System.out.println(e);
+            }
+
+        }
+
+        String website = "";
+        website = urlStr.replace("https://", "");
+        website = website.replace("http://", "");
+        website = website.replace("www.", "");
+        try {
+            website = website.substring(0, website.indexOf('/'));
+        } catch (Exception e) {}
+
+        WebpageInfo webpageInfo = new WebpageInfo(title, urlStr, website, "", image);
+
+        return webpageInfo;
     }
 
 }

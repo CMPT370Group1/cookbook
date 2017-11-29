@@ -122,9 +122,9 @@ public class RecipeLinksFragment extends ShowWebpagesFragment {
     public void setListData() {
         //TODO
         WebpageInfo link1 = new WebpageInfo("Bread", "https://www.thespruce.com/super-easy-bread-for-beginners-428108",
-                "thespruce.com", "Description Description Description Description Description Description Description Description");
+                "thespruce.com", "Description Description Description Description Description Description Description Description", null);
         WebpageInfo link2 = new WebpageInfo("Bread2", "http://allrecipes.com/recipes/156/bread/",
-                "allrecipes.com", "Description2 Description2 Description2 Description2 Description2 Description2 Description2");
+                "allrecipes.com", "Description2 Description2 Description2 Description2 Description2 Description2 Description2", null);
         CustomListViewValuesArr = new LinkedList<>();
         CustomListViewValuesArr.add(link1);
         CustomListViewValuesArr.add(link2);

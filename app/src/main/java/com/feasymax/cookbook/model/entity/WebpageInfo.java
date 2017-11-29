@@ -11,12 +11,12 @@ public class WebpageInfo {
     String title, url, websiteName, description;
     Bitmap image;
 
-    public WebpageInfo(String title, String url,String websiteName, String description){
+    public WebpageInfo(String title, String url,String websiteName, String description, Bitmap image){
         this.title = title;
         this.url = url;
         this.websiteName = websiteName;
         this.description = description;
-        this.image = null;
+        this.image = image;
     }
 
     @Override
