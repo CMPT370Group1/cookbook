@@ -15,6 +15,8 @@ import com.feasymax.cookbook.model.Application;
 public class RegisterActivity extends ActivityMenu {
 
     private static final String TAG = "RegisterActivity";
+    private static final String FIELD_MISSING_ERROR = "Username, password or email is missing";
+    private static final String WRONG_CREDENTIALS_ERROR = "This username is already taken";
 
     private TextView regErrorText;
     private Button btnRegister;
@@ -59,14 +61,23 @@ public class RegisterActivity extends ActivityMenu {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view2) {
-                if (!Application.userRegister(rsUserName.getText().toString(),
-                        rsUserPassword.getText().toString(), email.getText().toString(),
-                        firstName.getText().toString(), lastName.getText().toString())) {
+                if (rsUserName.getText().length() == 0 || rsUserPassword.getText().length() == 0 ||
+                        email.getText().length() == 0) {
+                    regErrorText.setText(FIELD_MISSING_ERROR);
                     regErrorText.setVisibility(View.VISIBLE);
-                } else {
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
                 }
+                else {
+                    if (!Application.userRegister(rsUserName.getText().toString(),
+                            rsUserPassword.getText().toString(), email.getText().toString(),
+                            firstName.getText().toString(), lastName.getText().toString())) {
+                        regErrorText.setText(WRONG_CREDENTIALS_ERROR);
+                        regErrorText.setVisibility(View.VISIBLE);
+                    } else {
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                    }
+                }
+
             }
         });
     }

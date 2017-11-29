@@ -297,6 +297,11 @@ public class Application {
     }
 
     public static void addLink(WebpageInfo webpageInfo) {
+        if (getUserCollection().getLinks() != null) {
+            if (getUserCollection().getLinks().contains(webpageInfo)) {
+                return;
+            }
+        }
         UserDao userDao = new UserDao();
         userDao.addLink(getUser().getUserID(), webpageInfo);
         getUserCollection().addLink(webpageInfo);
