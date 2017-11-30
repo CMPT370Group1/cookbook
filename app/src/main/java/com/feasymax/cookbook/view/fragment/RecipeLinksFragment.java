@@ -63,13 +63,13 @@ public class RecipeLinksFragment extends ShowWebpagesFragment {
 
         setHasOptionsMenu(true);
 
+
         btnAddLink = view.findViewById(R.id.buttonAddLink);
         btnAddLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle("Add New Web-link");
-
                 // Set up the input
                 final EditText input = new EditText(getContext());
                 // Specify the type of input expected and hint
@@ -84,14 +84,12 @@ public class RecipeLinksFragment extends ShowWebpagesFragment {
                 input.setLayoutParams(params);
                 container.addView(input);
                 builder.setView(container);
-
                 // Set up the buttons
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         newLink = input.getText().toString();
                         Log.println(Log.INFO, "link", newLink);
-
                         try {
                             WebpageInfo newWebpageInfo = WebSearch.parsePageHeaderInfo(newLink);
                             if (newWebpageInfo != null) {
@@ -118,10 +116,10 @@ public class RecipeLinksFragment extends ShowWebpagesFragment {
                         dialog.cancel();
                     }
                 });
-
                 builder.show();
             }
         });
+
 
         noItemsLayout = view.findViewById(R.id.noItemsLayout);
         CustomListView = this;

@@ -15,9 +15,9 @@
             android:id="@+id/buttonAddLink"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorControlHighlight"
-            android:padding="10dp"
-            android:text="Add new"
+            android:background="?attr/colorButtonNormal"
+            android:paddingRight="@dimen/small_margin"
+            android:text="Add New Link"
             android:textAlignment="textEnd"/>
 
         <RelativeLayout

@@ -1,23 +1,33 @@
 package com.feasymax.cookbook.view.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
+import android.widget.Spinner;
 
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
 import com.feasymax.cookbook.model.entity.Recipe;
+import com.feasymax.cookbook.model.entity.WebpageInfo;
 import com.feasymax.cookbook.model.util.Search;
+import com.feasymax.cookbook.model.util.WebSearch;
+import com.feasymax.cookbook.util.Graphics;
 import com.feasymax.cookbook.view.DiscoverActivity;
 import com.feasymax.cookbook.view.RecipesActivity;
 import com.feasymax.cookbook.view.ViewTransactions;
@@ -37,6 +47,7 @@ public class RecipeSearchFragment extends ShowRecipesFragment {
 
     private SearchView searchView;
     private RelativeLayout noItemsLayout;
+    private Button btnAdvancedSearch;
 
     ListView list;
     RecipeListAdapter adapter;
@@ -97,6 +108,73 @@ public class RecipeSearchFragment extends ShowRecipesFragment {
             }
         });
 
+
+        btnAdvancedSearch = view.findViewById(R.id.buttonAdvancedSearch);
+        btnAdvancedSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("ADVANCED SEARCH");
+
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                View dialogView = inflater.inflate(R.layout.dialog_advanced_search, null);
+                builder.setView(dialogView);
+
+                // Set up the input fields
+                final EditText title = dialogView.findViewById(R.id.title);
+                final Spinner category = dialogView.findViewById(R.id.category);
+                final EditText directions = dialogView.findViewById(R.id.directions);
+                final EditText ingredients = dialogView.findViewById(R.id.ingredients);
+                final EditText tags = dialogView.findViewById(R.id.tags);
+
+                // Set up the buttons
+                builder.setPositiveButton("SEARCH", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String newLink = title.getText().toString();
+                        Log.println(Log.INFO, "link", newLink);
+                        try {
+                            Log.d("title", title.getText().toString());
+                            Log.d("category", String.valueOf(category.getSelectedItemPosition()));
+                            Log.d("directions", directions.getText().toString());
+                            Log.d("ingredients", ingredients.getText().toString());
+                            Log.d("tags", tags.getText().toString());
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.setNeutralButton("Clear", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}
+                });
+
+
+                final AlertDialog dialog = builder.create();
+                dialog.show();
+
+                //Overriding the handler immediately after show is probably a better approach than OnShowListener as described below
+                dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        title.setText("");
+                        category.setSelection(0);
+                        directions.setText("");
+                        ingredients.setText("");
+                        tags.setText("");
+                    }
+                });
+            }
+        });
 
         CustomListView = this;
         list = view.findViewById( R.id.list );
