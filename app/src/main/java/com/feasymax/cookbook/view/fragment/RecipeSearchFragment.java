@@ -139,6 +139,19 @@ public class RecipeSearchFragment extends ShowRecipesFragment {
                             Log.d("directions", directions.getText().toString());
                             Log.d("ingredients", ingredients.getText().toString());
                             Log.d("tags", tags.getText().toString());
+                            int activity = 0;
+                            if (getActivity() instanceof RecipesActivity) {
+                                activity = 0;
+                            }
+                            if (getActivity() instanceof DiscoverActivity) {
+                                activity = 1;
+                            }
+                            else {
+                                Log.println(Log.ERROR, "search", "unexpected activity");
+                            }
+                            Search.getAdvancedSearchResults(title.getText().toString(),
+                                    category.getSelectedItemPosition(), directions.getText().toString(),
+                                    ingredients.getText().toString(), tags.getText().toString(), activity);
                         }
                         catch (Exception e) {
                             e.printStackTrace();

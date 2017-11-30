@@ -945,137 +945,156 @@ public class UserDao {
 
     //ADVANCED SEARCH
 
-//    public List<RecipeListModel> advancedSearchRecipes(final boolean isUserCollection,final int userID,
-//                                                       final List<String> tokens)
-//    {
-//        list=null;
-//
-//        Thread thread = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                //don't need to create a new list at the beginning since we will be
-//                //adding searching for everything then adding up.
-//                RecipeListModel recipeListModel = null;
-//
-//                try {
-//                    connect();
-//                    PreparedStatement stmt = null;
-//                    ResultSet rs = null;
-//
-//                    try {
-//
-//                        list = new LinkedList<>();
-//
-//                       //separate recipe attributes to tokenize lists
-//                        List<String> title=null;
-//                        List<String> ingredients=null;
-//                        List<String> tags=null;
-//                        List<String> directions=null;
-//                        List<String> category=null;
-//                        List<Integer> duration=null;
-//
-//                        byte[] image_icon = null;
-//                        Bitmap image = null;
-//
-//                        String searchQuery = "~* '("+tokens.get(0);
-//
-//                        for (int i = 1; i < tokens.size(); i++)
-//                        {
-//                            searchQuery += "|"+tokens.get(i);
-//                        }
-//                        searchQuery += ")'";
-//
-//                       String query = "SELECT id,title,directions,category_name,ingredients,tags, durtion_min, image_icon FROM recipes r WHERE ";
-//                        if (isUserCollection) {
-//                            query += "r.id IN (SELECT recipe_id FROM user_recipe " +
-//                                    "WHERE user_id = " + userID + ") AND ";
-//                        }
-//
-//                        query +="SELECT title from title ty" +
-//                                "WHERE ty.recipe_id"+searchQuery
-//
-//                                +"SELECT directions from directions dy" +
-//                                "WHERE dy.recipe_id" +searchQuery
-//                                +
-//                                " AND SELECT ingredients from ingredients i" +
-//                                "WHERE i.recipe_id"+searchQuery
-//                                +
-//                                " OR SELECT category_name from category c " +
-//                                "WHERE c.recipe_id"+searchQuery+
-//
-//                                " AND SELECT durtion_min from duration d" +
-//                                "WHERE d.recipe_d"+searchQuery
-//                                +
-//                                " AND SELECT tags FROM tag t " +
-//                                "WHERE t.recipe_id = "+searchQuery;
-//
-//
-////                        query+="r.title " + searchQuery + "r.directions"+searchQuery +" OR r.recipe_description " + searchQuery + "OR r.category_name"+ searchQuery +
-////                                "OR r.ingredients" +searchQuery + "OR r.tags" +searchQuery ;
-//
-//                        Log.println(Log.INFO, "query", query);
-//
-//                        stmt = conn.prepareStatement(query);
-//                        rs = stmt.executeQuery();
-//                        if (!rs.isBeforeFirst()) {
-//                            throw new SQLException("No data found");
-//                        }
-//                        while (rs.next()) {
-//
-//                            id = rs.getInt("id");
-//                            title = rs.getString("title");
-//                            directions=rs.getString("directions");
-//                            duration = rs.getInt("durtion_min");
-//                            ingredients=rs.getString("ingredients");
-//                            category=rs.getString("category_name");
-//                            tags=rs.getString("tags");
-//                            if (rs.getObject("image_icon") != null && !rs.wasNull()) {
-//                                image_icon = rs.getBytes("image_icon");
-//                                image = DbBitmapUtility.getImage(image_icon);
-//                            }
-//
-//                            recipeListModel = new RecipeListModel(id,title,image,duration,ingredients,tags,category);
-//                            Log.println(Log.INFO, "discover Recipes", recipeListModel.toString());
-//                            list.add(recipeListModel);
-//                            image_icon = null;
-//                        }
-//                        stmt.close();
-//
-//                    } catch (SQLException e) {
-//                        System.out.println("SQL ERROR for advanced recipes");
-//                        e.printStackTrace();
-//                    } finally {
-//                        try {
-//                            if (conn != null)
-//                                conn.close();
-//                        } catch (SQLException e) {
-//                        }
-//                    }
-//
-//
-//                }
-//                catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//        });
-//        //start the thread
-//        //dont use sleep thread since it will overlap
-//        thread.start();
-//
-//        try {
-//            thread.join();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//        return list;
-//
-//    }
-//
-//
+    public List<RecipeListModel> advancedSearchRecipes(final boolean isUserCollection,
+                                                       final int userID,
+                                                       final List<String> titles,
+                                                       final List<String> directions,
+                                                       final List<String> ingredients,
+                                                       final List<String> tags,
+                                                       final int category) {
+        list=null;
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //don't need to create a new list at the beginning since we will be
+                //adding searching for everything then adding up.
+                RecipeListModel recipeListModel = null;
+
+                try {
+                    connect();
+                    PreparedStatement stmt = null;
+                    ResultSet rs = null;
+
+                    try {
+                        //global var list
+                        list = new LinkedList<>();
+
+
+                        //declare
+                        String title = null;
+                        int id = 0;
+                        int duration = 0;
+                        byte[] image_icon = null;
+                        Bitmap image = null;
+
+
+                        String query = "SELECT id, title, durtion_min, image_icon FROM recipes r WHERE ";
+
+                        if (isUserCollection) {
+                            query += " r.id IN (SELECT recipe_id FROM user_recipe " +
+                                    "WHERE user_id = " + userID + ") AND";
+                        }
+
+                        if (titles.size() > 0) {
+                            String titleQuery = "~* '("+titles.get(0);
+                            for (int i = 1; i < titles.size(); i++)
+                            {
+                                titleQuery += "|"+titles.get(i);
+                            }
+                            titleQuery += ")'";
+                            query+=" r.title " + titleQuery + " AND";
+                        }
+
+
+                        if (directions.size() > 0) {
+                            String directionsQuery = "~* '("+directions.get(0);
+                            for (int i = 1; i < directions.size(); i++)
+                            {
+                                directionsQuery += "|"+directions.get(i);
+                            }
+                            directionsQuery += ")'";
+                            query+=" r.recipe_description " + directionsQuery + " AND";
+                        }
+
+
+                        if (ingredients.size() > 0) {
+                            String ingredientsQuery = "~* '("+ingredients.get(0);
+                            for (int i = 1; i < ingredients.size(); i++)
+                            {
+                                ingredientsQuery += "|"+ingredients.get(i);
+                            }
+                            ingredientsQuery += ")'";
+                            query+=" r.id IN (SELECT recipe_id FROM ingredients i WHERE i.name " +
+                                    ingredientsQuery + " AND i.recipe_id = r.id) AND";
+                        }
+
+
+                        if (tags.size() > 0) {
+                            String tagsQuery = "~* '("+tags.get(0);
+                            for (int i = 1; i < tags.size(); i++)
+                            {
+                                tagsQuery += "|"+tags.get(i);
+                            }
+                            tagsQuery += ")'";
+                            query+=" r.id IN (SELECT recipe_id FROM tag t WHERE t.tag_name " +
+                                    tagsQuery + " AND t.recipe_id = r.id) AND";
+                        }
+
+
+                        if (category >= 0) {
+                            query+=" r.category_name = '" + String.valueOf(category) + "' AND";
+                        }
+
+
+                        query = query.substring(0, query.lastIndexOf(' '));
+                        Log.println(Log.INFO, "query", query);
+
+
+
+                        stmt = conn.prepareStatement(query);
+                        rs = stmt.executeQuery();
+                        if (!rs.isBeforeFirst()) {
+                            throw new SQLException("No data found");
+                        }
+
+                        while (rs.next()) {
+
+                            id = rs.getInt("id");
+                            title = rs.getString("title");
+                            duration= rs.getInt("durtion_min");
+                            if (rs.getObject("image_icon") != null && !rs.wasNull()) {
+                                image_icon = rs.getBytes("image_icon");
+                                image = DbBitmapUtility.getImage(image_icon);
+                            }
+
+                            recipeListModel = new RecipeListModel(id, title, image, duration);
+                            Log.println(Log.INFO, "discover Recipes", recipeListModel.toString());
+                            list.add(recipeListModel);
+                            image_icon = null;
+                        }
+                        stmt.close();
+
+
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+        //start the thread
+        //dont use sleep thread since it will overlap
+        thread.start();
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+        return list;
+
+    }
+
+
 
     /**
      * Remove duplicate rows in a table with filelds
@@ -1129,6 +1148,8 @@ public class UserDao {
                         String website = null;
                         byte[] image_icon = null;
                         Bitmap image = null;
+
+
 
                         String query = "SELECT title, web_add, website, image FROM links WHERE " +
                                 "user_id = " + userID;
@@ -1254,3 +1275,6 @@ public class UserDao {
 
 
 }
+
+
+
