@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
@@ -126,6 +127,7 @@ public class RecipeSearchFragment extends ShowRecipesFragment {
                 final EditText directions = dialogView.findViewById(R.id.directions);
                 final EditText ingredients = dialogView.findViewById(R.id.ingredients);
                 final EditText tags = dialogView.findViewById(R.id.tags);
+                final CheckBox checkBox = dialogView.findViewById(R.id.checkbox);
 
                 // Set up the buttons
                 builder.setPositiveButton("SEARCH", new DialogInterface.OnClickListener() {
@@ -134,11 +136,11 @@ public class RecipeSearchFragment extends ShowRecipesFragment {
                         String newLink = title.getText().toString();
                         Log.println(Log.INFO, "link", newLink);
                         try {
-                            Log.d("title", title.getText().toString());
-                            Log.d("category", String.valueOf(category.getSelectedItemPosition()));
-                            Log.d("directions", directions.getText().toString());
-                            Log.d("ingredients", ingredients.getText().toString());
-                            Log.d("tags", tags.getText().toString());
+                            String titleString = title.getText().toString();
+                            int categoryInt = category.getSelectedItemPosition() - 1;
+                            String directionsString = directions.getText().toString();
+                            String ingredientsString = ingredients.getText().toString();
+                            String tagsString = tags.getText().toString();
                             int activity = 0;
                             if (getActivity() instanceof RecipesActivity) {
                                 activity = 0;
@@ -149,9 +151,24 @@ public class RecipeSearchFragment extends ShowRecipesFragment {
                             else {
                                 Log.println(Log.ERROR, "search", "unexpected activity");
                             }
-                            Search.getAdvancedSearchResults(title.getText().toString(),
-                                    category.getSelectedItemPosition(), directions.getText().toString(),
-                                    ingredients.getText().toString(), tags.getText().toString(), activity, false);
+                            boolean isIncludingAllAttributes = checkBox.isChecked();
+
+                            CustomListViewValuesArr = Search.getAdvancedSearchResults(titleString,
+                                    categoryInt, directionsString, ingredientsString, tagsString,
+                                    activity, isIncludingAllAttributes);
+                            if (CustomListViewValuesArr.size() != 0) {
+                                noItemsLayout.setVisibility(View.GONE);
+                                list.setVisibility(View.VISIBLE);
+                                setAdapter();
+                                // hide keyboard
+                                InputMethodManager imm = (InputMethodManager)getActivity().
+                                        getSystemService(Context.INPUT_METHOD_SERVICE);
+                                imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
+                            }
+                            else {
+                                noItemsLayout.setVisibility(View.VISIBLE);
+                                list.setVisibility(View.GONE);
+                            }
                         }
                         catch (Exception e) {
                             e.printStackTrace();

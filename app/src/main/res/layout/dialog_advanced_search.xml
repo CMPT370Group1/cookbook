@@ -1,50 +1,117 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/recipe_layout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/small_margin">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/title"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:hint="Title Keyword(s)"/>
+        android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/small_margin"
+        android:layout_marginRight="@dimen/small_margin"
+        android:layout_marginTop="@dimen/tiny_margin"
+        android:background="@android:color/black"/>
 
-    <Spinner
-        android:id="@+id/category"
-        style="@style/Widget.AppCompat.Spinner.DropDown"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/title"
-        android:layout_marginTop="10dp"
-        android:entries="@array/categories"
-        android:padding="5dp"
-        />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/directions"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/category"
-        android:layout_marginTop="10dp"
-        android:hint="Directions Keyword(s)"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/small_margin">
 
-    <EditText
-        android:id="@+id/ingredients"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/directions"
-        android:layout_marginTop="10dp"
-        android:hint="Ingredients Keyword(s)"/>
+            <TextView
+                android:id="@+id/categoryText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/tiny_margin"
+                android:text="Category"
+                android:textSize="18sp"/>
 
-    <EditText
-        android:id="@+id/tags"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/ingredients"
-        android:layout_marginTop="10dp"
-        android:hint="Tags Keyword(s)"/>
+            <Spinner
+                android:id="@+id/category"
+                style="@style/Widget.AppCompat.Spinner.DropDown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/categoryText"
+                android:layout_marginTop="@dimen/tiny_margin"
+                android:entries="@array/search_categories"/>
 
-</RelativeLayout>
+            <TextView
+                android:id="@+id/titleText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/category"
+                android:layout_marginTop="@dimen/tiny_margin"
+                android:text="Title"
+                android:textSize="18sp"/>
+
+            <EditText
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleText"/>
+
+            <TextView
+                android:id="@+id/directionsText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/title"
+                android:layout_marginTop="@dimen/tiny_margin"
+                android:text="Directions"
+                android:textSize="18sp"/>
+
+            <EditText
+                android:id="@+id/directions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/directionsText"/>
+
+            <TextView
+                android:id="@+id/ingredientsText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/directions"
+                android:layout_marginTop="@dimen/tiny_margin"
+                android:text="Ingredients"
+                android:textSize="18sp"/>
+
+            <EditText
+                android:id="@+id/ingredients"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ingredientsText"/>
+
+            <TextView
+                android:id="@+id/tagsText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ingredients"
+                android:layout_marginTop="@dimen/tiny_margin"
+                android:text="Tags"
+                android:textSize="18sp"/>
+
+            <EditText
+                android:id="@+id/tags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tagsText"/>
+
+            <CheckBox
+                android:id="@+id/checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tags"
+                android:layout_marginTop="@dimen/small_margin"
+                android:text="Include all attributes"/>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>
+
+
+

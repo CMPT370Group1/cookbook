@@ -150,83 +150,89 @@ public class RecipeViewFragment extends Fragment {
         }
 
         // Set up the recipe info
-        Log.println(Log.INFO, "In RecipeViewFragment", "Current recipe: " + currentRecipe.toString());
-        if (currentRecipe.getImage() != null) {
-            recipeImage.setImageBitmap(currentRecipe.getImage());
+        if (currentRecipe == null) {
+            enterRecipesFragment();
         }
         else {
-            recipeImage.setImageDrawable(getResources().getDrawable(R.drawable.no_image420, null));
-        }
+            Log.println(Log.INFO, "In RecipeViewFragment", "Current recipe: " + currentRecipe.toString());
+            if (currentRecipe.getImage() != null) {
+                recipeImage.setImageBitmap(currentRecipe.getImage());
+            }
+            else {
+                recipeImage.setImageDrawable(getResources().getDrawable(R.drawable.no_image420, null));
+            }
 
-        recipeTitle.setText(currentRecipe.getTitle());
-        if (!currentRecipe.getDirections().equals("")) {
-            recipeDirections.setText(currentRecipe.getDirections());
-        }
-        else {
-            view.findViewById(R.id.directionsLayout).setVisibility(View.GONE);
-        }
+            recipeTitle.setText(currentRecipe.getTitle());
+            if (!currentRecipe.getDirections().equals("")) {
+                recipeDirections.setText(currentRecipe.getDirections());
+            }
+            else {
+                view.findViewById(R.id.directionsLayout).setVisibility(View.GONE);
+            }
 
-        TagView.Tag[] duration = { new TagView.Tag(displayDuration(currentRecipe.getDuration()),
-                Color.parseColor("#808080")) };
-        recipeDuration.setTags(duration, " ");
+            TagView.Tag[] duration = { new TagView.Tag(displayDuration(currentRecipe.getDuration()),
+                    Color.parseColor("#808080")) };
+            recipeDuration.setTags(duration, " ");
 
 
-        // Fill the table layout recipeIngredients with rows, one for each ingredient
-        if (currentRecipe.getIngredients() != null) {
-            if (currentRecipe.getIngredients().size() != 0) {
-                Log.println(Log.INFO, "In RecipeViewFragment", "Ingredients: " + currentRecipe.getIngredients().toString());
-                ingredientRows = new LinkedList<>();
-                for (Ingredient ingredient : currentRecipe.getIngredients()) {
-                    View tr = inflater.inflate(R.layout.ingredient_view_layout, null, false);
+            // Fill the table layout recipeIngredients with rows, one for each ingredient
+            if (currentRecipe.getIngredients() != null) {
+                if (currentRecipe.getIngredients().size() != 0) {
+                    Log.println(Log.INFO, "In RecipeViewFragment", "Ingredients: " + currentRecipe.getIngredients().toString());
+                    ingredientRows = new LinkedList<>();
+                    for (Ingredient ingredient : currentRecipe.getIngredients()) {
+                        View tr = inflater.inflate(R.layout.ingredient_view_layout, null, false);
 
-                    // Fill the row with ingredient info
-                    EditText quantity = tr.findViewById(R.id.quantity);
-                    quantity.setText(DF.format(ingredient.getQuantity()));
-                    quantity.setInputType(InputType.TYPE_NULL);
+                        // Fill the row with ingredient info
+                        EditText quantity = tr.findViewById(R.id.quantity);
+                        quantity.setText(DF.format(ingredient.getQuantity()));
+                        quantity.setInputType(InputType.TYPE_NULL);
 
-                    Spinner unit = tr.findViewById(R.id.unit);
-                    unit.setEnabled(false);
-                    // correctly display ingredient's units in the dropdown spinner
-                    setIngredientAdapter(ingredient.getUnit(), unit);
+                        Spinner unit = tr.findViewById(R.id.unit);
+                        unit.setEnabled(false);
+                        // correctly display ingredient's units in the dropdown spinner
+                        setIngredientAdapter(ingredient.getUnit(), unit);
 
-                    if (ingredient.getUnit() == 0 || ingredient.getQuantity() == 0.0) {
-                        quantity.setVisibility(View.INVISIBLE);
-                        unit.setVisibility(View.INVISIBLE);
+                        if (ingredient.getUnit() == 0 || ingredient.getQuantity() == 0.0) {
+                            quantity.setVisibility(View.INVISIBLE);
+                            unit.setVisibility(View.INVISIBLE);
+                        }
+
+                        TextView name = tr.findViewById(R.id.name);
+                        name.setText(ingredient.getName());
+
+                        // Add row to TableLayout.
+                        recipeIngredients.addView(tr, new TableLayout.LayoutParams(
+                                TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+                        ingredientRows.add(tr);
                     }
-
-                    TextView name = tr.findViewById(R.id.name);
-                    name.setText(ingredient.getName());
-
-                    // Add row to TableLayout.
-                    recipeIngredients.addView(tr, new TableLayout.LayoutParams(
-                            TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
-                    ingredientRows.add(tr);
+                }
+                // make ingredients section invisible
+                else {
+                    Log.println(Log.INFO, "In RecipeViewFragment", "Ingredients: empty");
+                    view.findViewById(R.id.ingredientsLayout).setVisibility(View.GONE);
                 }
             }
             // make ingredients section invisible
             else {
-                Log.println(Log.INFO, "In RecipeViewFragment", "Ingredients: empty");
+                Log.println(Log.INFO, "In RecipeViewFragment", "Ingredients: null");
                 view.findViewById(R.id.ingredientsLayout).setVisibility(View.GONE);
             }
-        }
-        // make ingredients section invisible
-        else {
-            Log.println(Log.INFO, "In RecipeViewFragment", "Ingredients: null");
-            view.findViewById(R.id.ingredientsLayout).setVisibility(View.GONE);
+
+            // Set up the recipe tags
+            if (currentRecipe.getTags() != null) {
+                Log.println(Log.INFO, "In RecipeViewFragment", "Tags: " + currentRecipe.getTags().toString());
+                LinkedList<TagView.Tag> tags = new LinkedList<>();
+                for (String content : currentRecipe.getTags()) {
+                    tags.add(new TagView.Tag(content, Color.parseColor("#ff4081"))); // color is colorAccent
+                }
+                recipeTags.setTags(tags, " ");
+            }
+            else {
+                Log.println(Log.INFO, "In RecipeViewFragment", "Tags: null");
+            }
         }
 
-        // Set up the recipe tags
-        if (currentRecipe.getTags() != null) {
-            Log.println(Log.INFO, "In RecipeViewFragment", "Tags: " + currentRecipe.getTags().toString());
-            LinkedList<TagView.Tag> tags = new LinkedList<>();
-            for (String content : currentRecipe.getTags()) {
-                tags.add(new TagView.Tag(content, Color.parseColor("#ff4081"))); // color is colorAccent
-            }
-            recipeTags.setTags(tags, " ");
-        }
-        else {
-            Log.println(Log.INFO, "In RecipeViewFragment", "Tags: null");
-        }
 
         return view ;
     }

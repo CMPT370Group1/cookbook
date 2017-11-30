@@ -1035,11 +1035,23 @@ public class UserDao {
                                     tagsQuery + " AND t.recipe_id = r.id)" + logicalSeparator;
                         }
 
+                        query = query.substring(0, query.lastIndexOf(' '));
+
                         if (category >= 0) {
-                            query+=" r.category_name = '" + String.valueOf(category) + "'" + logicalSeparator;
+                            // if at least one of titles, directions, ingredients or tags list is
+                            // not empty
+                            if (!query.substring(query.lastIndexOf(" ")+1).equals("WHERE")) {
+                                query += " AND";
+                            }
+
+                            query+=" r.category_name = '" + String.valueOf(category) + "'";
                         }
 
-                        query = query.substring(0, query.lastIndexOf(' '));
+                        // if all of the attributes are empty, remove "WHERE" from the query
+                        if (query.substring(query.lastIndexOf(" ")+1).equals("WHERE")) {
+                            query = query.substring(0, query.lastIndexOf(' '));
+                        }
+
                         Log.println(Log.INFO, "query", query);
 
                         stmt = conn.prepareStatement(query);
