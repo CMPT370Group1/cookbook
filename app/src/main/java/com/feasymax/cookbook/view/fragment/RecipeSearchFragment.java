@@ -151,7 +151,7 @@ public class RecipeSearchFragment extends ShowRecipesFragment {
                             }
                             Search.getAdvancedSearchResults(title.getText().toString(),
                                     category.getSelectedItemPosition(), directions.getText().toString(),
-                                    ingredients.getText().toString(), tags.getText().toString(), activity);
+                                    ingredients.getText().toString(), tags.getText().toString(), activity, false);
                         }
                         catch (Exception e) {
                             e.printStackTrace();

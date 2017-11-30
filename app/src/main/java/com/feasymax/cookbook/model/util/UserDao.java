@@ -21,8 +21,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
-import java.util.StringTokenizer;
 
 
 public class UserDao {
@@ -951,7 +949,8 @@ public class UserDao {
                                                        final List<String> directions,
                                                        final List<String> ingredients,
                                                        final List<String> tags,
-                                                       final int category) {
+                                                       final int category,
+                                                       final boolean isIncludingAllAttributes) {
         list=null;
 
         Thread thread = new Thread(new Runnable() {
@@ -972,11 +971,19 @@ public class UserDao {
 
 
                         //declare
-                        String title = null;
-                        int id = 0;
-                        int duration = 0;
-                        byte[] image_icon = null;
+                        String title;
+                        int id;
+                        int duration;
+                        byte[] image_icon;
                         Bitmap image = null;
+
+                        String logicalSeparator;
+                        if (isIncludingAllAttributes) {
+                            logicalSeparator = " AND";
+                        }
+                        else {
+                            logicalSeparator = " OR";
+                        }
 
 
                         String query = "SELECT id, title, durtion_min, image_icon FROM recipes r WHERE ";
@@ -993,9 +1000,8 @@ public class UserDao {
                                 titleQuery += "|"+titles.get(i);
                             }
                             titleQuery += ")'";
-                            query+=" r.title " + titleQuery + " AND";
+                            query+=" r.title " + titleQuery + logicalSeparator;
                         }
-
 
                         if (directions.size() > 0) {
                             String directionsQuery = "~* '("+directions.get(0);
@@ -1004,9 +1010,8 @@ public class UserDao {
                                 directionsQuery += "|"+directions.get(i);
                             }
                             directionsQuery += ")'";
-                            query+=" r.recipe_description " + directionsQuery + " AND";
+                            query+=" r.recipe_description " + directionsQuery + logicalSeparator;
                         }
-
 
                         if (ingredients.size() > 0) {
                             String ingredientsQuery = "~* '("+ingredients.get(0);
@@ -1016,9 +1021,8 @@ public class UserDao {
                             }
                             ingredientsQuery += ")'";
                             query+=" r.id IN (SELECT recipe_id FROM ingredients i WHERE i.name " +
-                                    ingredientsQuery + " AND i.recipe_id = r.id) AND";
+                                    ingredientsQuery + " AND i.recipe_id = r.id)" + logicalSeparator;
                         }
-
 
                         if (tags.size() > 0) {
                             String tagsQuery = "~* '("+tags.get(0);
@@ -1028,19 +1032,15 @@ public class UserDao {
                             }
                             tagsQuery += ")'";
                             query+=" r.id IN (SELECT recipe_id FROM tag t WHERE t.tag_name " +
-                                    tagsQuery + " AND t.recipe_id = r.id) AND";
+                                    tagsQuery + " AND t.recipe_id = r.id)" + logicalSeparator;
                         }
-
 
                         if (category >= 0) {
-                            query+=" r.category_name = '" + String.valueOf(category) + "' AND";
+                            query+=" r.category_name = '" + String.valueOf(category) + "'" + logicalSeparator;
                         }
-
 
                         query = query.substring(0, query.lastIndexOf(' '));
                         Log.println(Log.INFO, "query", query);
-
-
 
                         stmt = conn.prepareStatement(query);
                         rs = stmt.executeQuery();
@@ -1061,7 +1061,6 @@ public class UserDao {
                             recipeListModel = new RecipeListModel(id, title, image, duration);
                             Log.println(Log.INFO, "discover Recipes", recipeListModel.toString());
                             list.add(recipeListModel);
-                            image_icon = null;
                         }
                         stmt.close();
 
@@ -1070,8 +1069,6 @@ public class UserDao {
                     catch (Exception e) {
                         e.printStackTrace();
                     }
-
-
                 }
                 catch (Exception e) {
                     e.printStackTrace();
@@ -1079,6 +1076,7 @@ public class UserDao {
 
             }
         });
+
         //start the thread
         //dont use sleep thread since it will overlap
         thread.start();
@@ -1088,7 +1086,6 @@ public class UserDao {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
 
         return list;
 

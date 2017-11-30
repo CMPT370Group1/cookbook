@@ -40,7 +40,7 @@ public class Search {
      //advanced search
 
     public static List<RecipeListModel> getAdvancedSearchResults(String title, int category, String
-            directions, String ingredients, String tags, int activity) {
+            directions, String ingredients, String tags, int activity, boolean isIncludingAllAttributes) {
 
         UserDao userDao = new UserDao();
         List<RecipeListModel> results;
@@ -77,10 +77,10 @@ public class Search {
             int userId = Application.getUser().getUserID();
 
             results = userDao.advancedSearchRecipes(true, userId, titleTokens, directionsTokens,
-                    ingredientsTokens, tagsTokens, category);
+                    ingredientsTokens, tagsTokens, category, isIncludingAllAttributes);
         } else {
             results = userDao.advancedSearchRecipes(false, -1, titleTokens, directionsTokens,
-                    ingredientsTokens, tagsTokens, category);
+                    ingredientsTokens, tagsTokens, category, isIncludingAllAttributes);
         }
 
         return results;
