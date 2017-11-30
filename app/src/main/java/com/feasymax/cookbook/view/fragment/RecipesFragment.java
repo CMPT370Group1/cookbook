@@ -3,6 +3,8 @@ package com.feasymax.cookbook.view.fragment;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -87,6 +89,7 @@ public class RecipesFragment extends ShowRecipesFragment{
                             category = Application.getDiscoverCollection().getCategory();
                             Application.getDiscoverCollection().updateRecipes(category);
                         }
+                        onResume();
                         swipeRefreshLayout.setRefreshing(false);
                     }
                 }
@@ -187,6 +190,7 @@ public class RecipesFragment extends ShowRecipesFragment{
     @Override
     public void onResume() {
         super.onResume();
+
         CustomListViewValuesArr = null;
         setListData();
         if (CustomListViewValuesArr.size() != 0) {
