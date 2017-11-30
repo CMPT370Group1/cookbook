@@ -21,6 +21,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.StringTokenizer;
 
 
 public class UserDao {
@@ -941,8 +943,8 @@ public class UserDao {
 
 
 
-//    //ADVANCED SEARCH
-//
+    //ADVANCED SEARCH
+
 //    public List<RecipeListModel> advancedSearchRecipes(final boolean isUserCollection,final int userID,
 //                                                       final List<String> tokens)
 //    {
@@ -964,20 +966,16 @@ public class UserDao {
 //
 //                        list = new LinkedList<>();
 //
-//                        //list of keywords to be searched in advanced  search apart from image
-//                        int id = -1;
-//                        String title = null;
-//                        String ingredients=null;
-//                        String tags=null;
-//                        String category=null;
-//                        int duration = 0;
+//                       //separate recipe attributes to tokenize lists
+//                        List<String> title=null;
+//                        List<String> ingredients=null;
+//                        List<String> tags=null;
+//                        List<String> directions=null;
+//                        List<String> category=null;
+//                        List<Integer> duration=null;
+//
 //                        byte[] image_icon = null;
 //                        Bitmap image = null;
-//
-//                        //advanced has to search for specific keywords the user puts in
-//
-//
-//
 //
 //                        String searchQuery = "~* '("+tokens.get(0);
 //
@@ -987,20 +985,33 @@ public class UserDao {
 //                        }
 //                        searchQuery += ")'";
 //
-//                        //Query that will search for each and every keyword
-//
-//                        String query = "SELECT id,title,category_name,ingredients,tags, durtion_min, image_icon FROM recipes r WHERE ";
-//
-//
-//
+//                       String query = "SELECT id,title,directions,category_name,ingredients,tags, durtion_min, image_icon FROM recipes r WHERE ";
 //                        if (isUserCollection) {
-//                            query += " r.id IN (SELECT recipe_id FROM user_recipe " +
+//                            query += "r.id IN (SELECT recipe_id FROM user_recipe " +
 //                                    "WHERE user_id = " + userID + ") AND ";
 //                        }
 //
-//                        //searching  through each keyword
-//                        query+="r.title " + searchQuery + " OR r.recipe_description " + searchQuery + "OR r.category_name"+ searchQuery +
-//                                "OR r.ingredients" +searchQuery + "OR r.tags" +searchQuery ;
+//                        query +="SELECT title from title ty" +
+//                                "WHERE ty.recipe_id"+searchQuery
+//
+//                                +"SELECT directions from directions dy" +
+//                                "WHERE dy.recipe_id" +searchQuery
+//                                +
+//                                " AND SELECT ingredients from ingredients i" +
+//                                "WHERE i.recipe_id"+searchQuery
+//                                +
+//                                " OR SELECT category_name from category c " +
+//                                "WHERE c.recipe_id"+searchQuery+
+//
+//                                " AND SELECT durtion_min from duration d" +
+//                                "WHERE d.recipe_d"+searchQuery
+//                                +
+//                                " AND SELECT tags FROM tag t " +
+//                                "WHERE t.recipe_id = "+searchQuery;
+//
+//
+////                        query+="r.title " + searchQuery + "r.directions"+searchQuery +" OR r.recipe_description " + searchQuery + "OR r.category_name"+ searchQuery +
+////                                "OR r.ingredients" +searchQuery + "OR r.tags" +searchQuery ;
 //
 //                        Log.println(Log.INFO, "query", query);
 //
@@ -1013,6 +1024,7 @@ public class UserDao {
 //
 //                            id = rs.getInt("id");
 //                            title = rs.getString("title");
+//                            directions=rs.getString("directions");
 //                            duration = rs.getInt("durtion_min");
 //                            ingredients=rs.getString("ingredients");
 //                            category=rs.getString("category_name");
@@ -1022,7 +1034,7 @@ public class UserDao {
 //                                image = DbBitmapUtility.getImage(image_icon);
 //                            }
 //
-//                            recipeListModel = new RecipeListModel(id,title,image, duration,ingredients,tags,category);
+//                            recipeListModel = new RecipeListModel(id,title,image,duration,ingredients,tags,category);
 //                            Log.println(Log.INFO, "discover Recipes", recipeListModel.toString());
 //                            list.add(recipeListModel);
 //                            image_icon = null;
@@ -1062,6 +1074,7 @@ public class UserDao {
 //        return list;
 //
 //    }
+//
 //
 
     /**
