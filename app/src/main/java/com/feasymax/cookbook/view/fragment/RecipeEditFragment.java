@@ -76,7 +76,7 @@ public class RecipeEditFragment extends RecipeAddFragment {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                enterPrevFragment();
+                enterRecipeViewFragment();
             }
         });
         btnCancel.setVisibility(View.VISIBLE);
