@@ -84,7 +84,7 @@ public class WebSearch {
                             website = website.substring(0, website.indexOf('/'));
                         } catch (Exception e) {}
 
-                        webpageInfo = new WebpageInfo(title, url, website, body, null);
+                        webpageInfo = new WebpageInfo(-1, title, url, website, body, null);
                         if (!results.contains(webpageInfo)) {
                             results.add(webpageInfo);
                         }
@@ -147,7 +147,7 @@ public class WebSearch {
                         website = website.substring(0, website.indexOf('/'));
                     } catch (Exception e) {}
 
-                    webpageInfo = new WebpageInfo(title, urlStr, website, "", image);
+                    webpageInfo = new WebpageInfo(-1, title, urlStr, website, "", image);
 
                 }
                 catch (Exception e) {

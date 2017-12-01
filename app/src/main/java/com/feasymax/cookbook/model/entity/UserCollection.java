@@ -25,6 +25,7 @@ public class UserCollection {
     protected Recipe curRecipe;
     protected int category;
     private List<WebpageInfo> links;
+    private WebpageInfo curLink;
 
     public UserCollection() {
         recipes = new SparseArray<>(NUM_CATEGORIES);
@@ -108,6 +109,14 @@ public class UserCollection {
         return false;
     }
 
+    public WebpageInfo getCurLink() {
+        return curLink;
+    }
+
+    public void setCurLink(WebpageInfo curLink) {
+        this.curLink = curLink;
+    }
+
     public List<WebpageInfo> getLinks() {
         if (this.links == null) {
             this.links = Application.getLinksFromDB();
@@ -124,5 +133,14 @@ public class UserCollection {
             this.links = Application.getLinksFromDB();
         }
         this.links.add(link);
+    }
+
+    public boolean containsLink(String link) {
+        for (WebpageInfo webpageInfo: this.links) {
+            if (webpageInfo.getUrl().equals(link)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

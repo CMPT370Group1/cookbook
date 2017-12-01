@@ -58,11 +58,26 @@ public class WebPageViewFragment extends Fragment {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                enterPrevFragment();
+                if (getActivity() instanceof RecipesActivity) {
+                    enterLinksFragment();
+                }
+                else if (getActivity() instanceof DiscoverActivity) {
+                    enterPrevFragment();
+                }
             }
         });
 
         return view;
+    }
+
+    protected void enterLinksFragment() {
+        RecipeLinksFragment a2Fragment = new RecipeLinksFragment();
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+
+        // Store the Fragment in stack
+        ViewTransactions.getViews().add(FRAGMENT_ID);
+        transaction.addToBackStack(null);
+        transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
 
     /**
@@ -79,19 +94,22 @@ public class WebPageViewFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
-        if (getActivity() instanceof DiscoverActivity) {
-            inflater.inflate(R.menu.menu_webpage, menu);
-        }
-        else {
-            Log.println(Log.ERROR, "MENU","unexpected activity");
-        }
+        inflater.inflate(R.menu.menu_webpage, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
-        if (!Application.isUserSignedIn()) {
+        if (!Application.isUserSignedIn() || Application.getUserCollection().
+                containsLink(Application.getDiscoverCollection().getWebsearchResult())) {
             MenuItem item = menu.findItem(R.id.action_link_add);
+            if (item != null) {
+                item.setEnabled(false);
+            }
+        }
+        if (!Application.isUserSignedIn() || !Application.getUserCollection().
+                containsLink(Application.getDiscoverCollection().getWebsearchResult())) {
+            MenuItem item = menu.findItem(R.id.action_link_delete);
             if (item != null) {
                 item.setEnabled(false);
             }
@@ -111,6 +129,10 @@ public class WebPageViewFragment extends Fragment {
                 if (webpageInfo != null) {
                     Application.addLink(webpageInfo);
                 }
+                return true;
+            case R.id.action_link_delete:
+                Log.println(Log.INFO, "MENU","action_link_delete was clicked");
+                Application.deleteLink(Application.getUserCollection().getCurLink());
                 return true;
             default:
                 break;

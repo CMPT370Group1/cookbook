@@ -6,6 +6,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -68,6 +69,9 @@ public abstract class                                             ActivityMenu e
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_appinfo) {
+            Log.d("Menu", "action_appinfo was pressed");
+            Intent intent = new Intent(getApplicationContext(), IntroActivity.class);
+            startActivity(intent);
             return true;
         }
 

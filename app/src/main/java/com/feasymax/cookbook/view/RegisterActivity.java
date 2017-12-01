@@ -73,8 +73,9 @@ public class RegisterActivity extends ActivityMenu {
                         regErrorText.setText(WRONG_CREDENTIALS_ERROR);
                         regErrorText.setVisibility(View.VISIBLE);
                     } else {
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), IntroActivity.class);
                         startActivity(intent);
+                        finish();
                     }
                 }
 

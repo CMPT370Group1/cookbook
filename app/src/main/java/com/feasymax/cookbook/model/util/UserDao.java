@@ -35,6 +35,7 @@ public class UserDao {
     private static final int ADMIN_ID = 1;
     private volatile int userID = 0;
     private volatile int recipeID = -1;
+    private volatile int linkID = -1;
     private volatile String updateRes = "";
     private String email;
     private List<RecipeListModel> list = null;
@@ -1076,9 +1077,8 @@ public class UserDao {
                         }
                         stmt.close();
 
-
                     }
-                    catch (Exception e) {
+                    catch (SQLException e) {
                         e.printStackTrace();
                     }
                 }
@@ -1100,9 +1100,7 @@ public class UserDao {
         }
 
         return list;
-
     }
-
 
 
     /**
@@ -1126,7 +1124,6 @@ public class UserDao {
             System.out.println("SQL error");
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -1152,15 +1149,14 @@ public class UserDao {
                         links = new LinkedList<>();
                         WebpageInfo webpageInfo = null;
 
+                        int id = -1;
                         String title = null;
                         String url = null;
                         String website = null;
                         byte[] image_icon = null;
                         Bitmap image = null;
 
-
-
-                        String query = "SELECT title, web_add, website, image FROM links WHERE " +
+                        String query = "SELECT id, title, web_add, website, image FROM links WHERE " +
                                 "user_id = " + userID;
                         Log.println(Log.INFO, "query", query);
 
@@ -1170,6 +1166,7 @@ public class UserDao {
                             throw new SQLException("No data found");
                         }
                         while (rs.next()) {
+                            id = rs.getInt("id");
                             title = rs.getString("title");
                             url = rs.getString("web_add");
                             website = rs.getString("website");
@@ -1178,10 +1175,9 @@ public class UserDao {
                                 image = DbBitmapUtility.getImage(image_icon);
                             }
 
-                            webpageInfo = new WebpageInfo(title,url,website,"", image);
-                            Log.println(Log.INFO, "discover Recipes", webpageInfo.toString());
+                            webpageInfo = new WebpageInfo(id, title,url,website, "", image);
+                            Log.println(Log.INFO, "getLinks", webpageInfo.toString());
                             links.add(webpageInfo);
-                            image_icon = null;
                         }
                         stmt.close();
 
@@ -1218,7 +1214,7 @@ public class UserDao {
      * @param userID
      * @return linked list of links
      */
-    public void addLink(final int userID, final WebpageInfo webpageInfo) {
+    public int addLink(final int userID, final WebpageInfo webpageInfo) {
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -1227,6 +1223,7 @@ public class UserDao {
                 try {
                     connect();
                     PreparedStatement stmt = null;
+                    ResultSet rs = null;
 
                     try {
 
@@ -1242,7 +1239,7 @@ public class UserDao {
 
                         String query;
                         query = "INSERT INTO links (title, web_add, website, image, user_id) VALUES " +
-                                "(?, ?, ?, ?, ?)";
+                                "(?, ?, ?, ?, ?)  RETURNING id";
                         // insert all recipe info into recipes table
                         stmt = conn.prepareStatement(query);
                         stmt.setString(1, title);
@@ -1250,7 +1247,11 @@ public class UserDao {
                         stmt.setString(3, website);
                         stmt.setBytes(4, image_icon);
                         stmt.setInt(5, userID);
-                        stmt.executeUpdate();
+
+                        rs = stmt.executeQuery();
+                        if (rs.next()) {
+                            linkID = rs.getInt("id");
+                        }
 
                         stmt.close();
 
@@ -1279,6 +1280,62 @@ public class UserDao {
             e.printStackTrace();
         }
 
+        return this.linkID;
+    }
+
+    /**
+     * Get all links saved in user's collection
+     * @param linkID
+     * @return linked list of links
+     */
+    public void deleteLink(final int linkID) {
+
+        links = null;
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    connect();
+                    PreparedStatement stmt = null;
+                    ResultSet rs = null;
+
+                    try {
+
+                        String query = "DELETE FROM links WHERE id = " + linkID;
+                        Log.println(Log.INFO, "query", query);
+
+                        stmt = conn.prepareStatement(query);
+                        if (stmt.executeUpdate() <= 0) {
+                            throw new SQLException("No link deleted");
+                        }
+                        stmt.close();
+
+                    } catch (SQLException e) {
+                        System.out.println("SQL ERROR for discover recipes");
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            if (conn != null)
+                                conn.close();
+                        } catch (SQLException e) {}
+                    }
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        //start the thread
+        thread.start();
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 

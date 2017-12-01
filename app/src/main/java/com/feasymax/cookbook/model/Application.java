@@ -293,6 +293,7 @@ public class Application {
     public static List<WebpageInfo> getLinksFromDB() {
         UserDao userDao = new UserDao();
         List<WebpageInfo> links = userDao.getLinks(getUser().getUserID());
+        Log.d("getLinksFromDB", links.toString());
         return links;
     }
 
@@ -303,7 +304,18 @@ public class Application {
             }
         }
         UserDao userDao = new UserDao();
-        userDao.addLink(getUser().getUserID(), webpageInfo);
+        int id = userDao.addLink(getUser().getUserID(), webpageInfo);
+        webpageInfo.setId(id);
         getUserCollection().addLink(webpageInfo);
+        Log.d("addLink", webpageInfo.toString());
+        Log.d("addLink: links", getUserCollection().getLinks().toString());
+    }
+
+    public static void deleteLink(WebpageInfo webpageInfo) {
+        Log.d("deleteLink", webpageInfo.toString());
+        UserDao userDao = new UserDao();
+        userDao.deleteLink(webpageInfo.getId());
+        getUserCollection().getLinks().remove(webpageInfo);
+        Log.d("deleteLink: links", getUserCollection().getLinks().toString());
     }
 }

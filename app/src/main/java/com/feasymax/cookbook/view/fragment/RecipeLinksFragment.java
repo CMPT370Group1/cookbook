@@ -144,6 +144,7 @@ public class RecipeLinksFragment extends ShowWebpagesFragment {
     public void onItemClick(int mPosition)
     {
         WebpageInfo tempValues = CustomListViewValuesArr.get(mPosition);
+        Application.getUserCollection().setCurLink(tempValues);
         Application.getDiscoverCollection().setWebsearchResult(tempValues.getUrl());
         enterWebpageViewFragment();
     }
@@ -184,6 +185,7 @@ public class RecipeLinksFragment extends ShowWebpagesFragment {
     @Override
     public void onResume() {
         super.onResume();
+
         CustomListViewValuesArr = null;
         setListData();
         if (CustomListViewValuesArr.size() != 0) {

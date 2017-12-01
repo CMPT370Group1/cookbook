@@ -11,6 +11,7 @@
     <string name="action_recipe_delete">Delete Recipe</string>
     <string name="action_recipe_add">Save Recipe</string>
     <string name="action_link_add">Save Link</string>
+    <string name="action_link_delete">Delete Link</string>
 
     <string-array name="search_categories">
         <item>Any</item>

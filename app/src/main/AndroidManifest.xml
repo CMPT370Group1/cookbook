@@ -32,6 +32,8 @@
         <activity android:name="com.feasymax.cookbook.view.RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar" android:screenOrientation="portrait">
         </activity>
+        <activity android:name="com.feasymax.cookbook.view.IntroActivity"
+                  android:theme="@style/AppTheme.NoActionBar" android:screenOrientation="portrait"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
