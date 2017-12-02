@@ -1,5 +1,7 @@
 package com.feasymax.cookbook.view.fragment;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
@@ -108,6 +111,15 @@ public class DiscoverWebsearchFragment extends ShowWebpagesFragment {
         WebpageInfo tempValues = CustomListViewValuesArr.get(mPosition);
         Application.getDiscoverCollection().setWebsearchResult(tempValues.getUrl());
         enterWebpageViewFragment();
+    }
+
+    public void onItemLongClick(int mPosition)
+    {
+        WebpageInfo tempValues = CustomListViewValuesArr.get(mPosition);
+        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("web-page", tempValues.getUrl());
+        clipboard.setPrimaryClip(clip);
+        Toast.makeText(getContext(), "The url was copied to clipboard", Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -124,6 +124,12 @@ public class UserCollection {
         return links;
     }
 
+    public List<WebpageInfo> updateLinks() {
+        this.links = null;
+        this.links = Application.getLinksFromDB();
+        return links;
+    }
+
     public void setLinks(List<WebpageInfo> links) {
         this.links = links;
     }

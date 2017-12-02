@@ -79,7 +79,6 @@ public class RecipesFragment extends ShowRecipesFragment{
 
                         // This method performs the actual data-refresh operation.
                         // The method calls setRefreshing(false) when it's finished.
-                        //myUpdateOperation();
                         int category;
                         if (getActivity() instanceof RecipesActivity) {
                             category = Application.getUserCollection().getCategory();

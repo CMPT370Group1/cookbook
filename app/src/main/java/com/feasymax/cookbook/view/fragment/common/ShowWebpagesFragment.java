@@ -12,6 +12,8 @@ public abstract class ShowWebpagesFragment extends Fragment {
         enterWebpageViewFragment();
     }
 
+    public abstract void onItemLongClick(int mPosition);
+
     public abstract void setListData();
 
     protected abstract void enterWebpageViewFragment();

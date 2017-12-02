@@ -1,10 +1,14 @@
 package com.feasymax.cookbook.view.fragment;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.util.Log;
@@ -20,12 +24,15 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
+import android.widget.Toast;
 
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
 import com.feasymax.cookbook.model.entity.WebpageInfo;
 import com.feasymax.cookbook.model.util.WebSearch;
 import com.feasymax.cookbook.util.Graphics;
+import com.feasymax.cookbook.view.DiscoverActivity;
+import com.feasymax.cookbook.view.RecipesActivity;
 import com.feasymax.cookbook.view.ViewTransactions;
 import com.feasymax.cookbook.view.fragment.common.ShowWebpagesFragment;
 import com.feasymax.cookbook.view.list.LinksListAdapter;
@@ -43,6 +50,7 @@ public class RecipeLinksFragment extends ShowWebpagesFragment {
 
     private Button btnAddLink;
     private RelativeLayout noItemsLayout;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     ListView list;
     LinksListAdapter adapter;
@@ -62,7 +70,6 @@ public class RecipeLinksFragment extends ShowWebpagesFragment {
         View view = inflater.inflate(R.layout.fragment_res_links, container, false);
 
         setHasOptionsMenu(true);
-
 
         btnAddLink = view.findViewById(R.id.buttonAddLink);
         btnAddLink.setOnClickListener(new View.OnClickListener() {
@@ -120,6 +127,24 @@ public class RecipeLinksFragment extends ShowWebpagesFragment {
             }
         });
 
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        Log.d("Swipe refresh", "onRefresh called from SwipeRefreshLayout");
+
+                        // This method performs the actual data-refresh operation.
+                        // The method calls setRefreshing(false) when it's finished.
+                        if (getActivity() instanceof RecipesActivity) {
+                            Application.getUserCollection().updateLinks();
+                        }
+                        onResume();
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                }
+        );
+
 
         noItemsLayout = view.findViewById(R.id.noItemsLayout);
         CustomListView = this;
@@ -147,6 +172,15 @@ public class RecipeLinksFragment extends ShowWebpagesFragment {
         Application.getUserCollection().setCurLink(tempValues);
         Application.getDiscoverCollection().setWebsearchResult(tempValues.getUrl());
         enterWebpageViewFragment();
+    }
+
+    public void onItemLongClick(int mPosition)
+    {
+        WebpageInfo tempValues = CustomListViewValuesArr.get(mPosition);
+        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("web-page", tempValues.getUrl());
+        clipboard.setPrimaryClip(clip);
+        Toast.makeText(getContext(), "The url was copied to clipboard", Toast.LENGTH_SHORT).show();
     }
 
 
