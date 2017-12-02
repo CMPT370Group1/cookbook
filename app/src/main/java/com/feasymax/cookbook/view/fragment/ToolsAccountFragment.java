@@ -77,7 +77,7 @@ public class ToolsAccountFragment extends Fragment {
             btnSignOut.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Application.userSignOut();
+                    Application.userSignOut(getContext());
 
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     startActivity(intent);
@@ -151,7 +151,7 @@ public class ToolsAccountFragment extends Fragment {
                 @Override
                 public void onClick(View view3) {
                     if (!Application.userSignIn(rsUserName.getText().toString(),
-                            rsUserPassword.getText().toString())) {
+                            rsUserPassword.getText().toString(), getContext())) {
                         signInErrorText.setVisibility(View.VISIBLE);
                     } else {
                         Intent intent = new Intent(getActivity(), MainActivity.class);

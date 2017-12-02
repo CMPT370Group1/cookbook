@@ -69,7 +69,8 @@ public class RegisterActivity extends ActivityMenu {
                 else {
                     if (!Application.userRegister(rsUserName.getText().toString(),
                             rsUserPassword.getText().toString(), email.getText().toString(),
-                            firstName.getText().toString(), lastName.getText().toString())) {
+                            firstName.getText().toString(), lastName.getText().toString(),
+                            getApplicationContext())) {
                         regErrorText.setText(WRONG_CREDENTIALS_ERROR);
                         regErrorText.setVisibility(View.VISIBLE);
                     } else {

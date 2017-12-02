@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.util.Log;
 import com.feasymax.cookbook.model.entity.Ingredient;
 import com.feasymax.cookbook.model.entity.Recipe;
+import com.feasymax.cookbook.model.entity.UserAccount;
 import com.feasymax.cookbook.model.entity.WebpageInfo;
 import com.feasymax.cookbook.util.DbBitmapUtility;
 import com.feasymax.cookbook.util.Graphics;
@@ -64,12 +65,12 @@ public class UserDao {
     }
 
     /**
-     * Get user's id
+     * Sign in user
      * @param user
      * @param password
      * @return
      */
-    public int getUserID(final String user, final String password) {
+    public int signInUser(final UserAccount user, final String password) {
         userID = 0;
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -79,12 +80,15 @@ public class UserDao {
                     Statement stmt = null;
                     ResultSet rs = null;
                     try {
-                        String query = "SELECT * FROM users u WHERE u.username = '"
-                                + user + "' and u.passwords = " + "'" + password + "'";
+                        String query = "SELECT id, email_add FROM users u WHERE u.username = '" +
+                                user.getUsername() + "' AND passwords = '" + password + "'";
                         stmt = conn.createStatement();
                         rs = stmt.executeQuery(query);
+                        // if the username is not already taken
                         if (rs.next()) {
                             userID = rs.getInt("id");
+                            user.setUserID(userID);
+                            user.setEmail(rs.getString("email_add"));
                         }
                     } catch(SQLException e) {
                         System.out.println("SQL error");
@@ -274,7 +278,7 @@ public class UserDao {
      * @param userID
      * @return
      */
-    public String getEmail(final int userID) {
+    public void getUserInfo(final UserAccount user) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -283,11 +287,13 @@ public class UserDao {
                     Statement stmt = null;
                     ResultSet rs = null;
                     try {
-                        String query = "SELECT * FROM users u WHERE u.id = " + userID;
+                        String query = "SELECT username, email_add FROM users u WHERE u.id = " +
+                                user.getUserID();
                         stmt = conn.createStatement();
                         rs = stmt.executeQuery(query);
                         if (rs.next()) {
-                            email = rs.getString("email_add");
+                            user.setUsername(rs.getString("username"));
+                            user.setEmail(rs.getString("email_add"));
                         }
                     } catch(SQLException e) {
                         System.out.println("SQL error");
@@ -297,9 +303,7 @@ public class UserDao {
                             if (conn != null)
                                 conn.close();
                         }
-                        catch(SQLException e) {
-
-                        }
+                        catch(SQLException e) {}
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -313,7 +317,6 @@ public class UserDao {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return email;
     }
 
 

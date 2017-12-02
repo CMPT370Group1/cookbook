@@ -50,7 +50,7 @@ public class AccountSignRegisterFragment extends Fragment {
             @Override
             public void onClick(View view2) {
                 if (!Application.userSignIn(rsUserName.getText().toString(),
-                        rsUserPassword.getText().toString())) {
+                        rsUserPassword.getText().toString(), getContext())) {
                     signInErrorText.setVisibility(View.VISIBLE);
                 } else {
                     Intent intent = new Intent(getActivity(), MainActivity.class);

@@ -3,6 +3,7 @@ package com.feasymax.cookbook.view;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,10 +24,20 @@ public class MainActivity extends ActivityMenu {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initializeActivity();
         if (Application.getDiscoverCollection() == null) {
             Application.setDiscoverCollection(new DiscoverCollection());
         }
+        Log.d("isUserSignedIn", Application.isUserSignedIn() + "");
+        if (!Application.isUserSignedIn()) {
+            int userID = Application.readUser(this);
+            Log.d("readUser", userID + "");
+            if (userID != -1) {
+                Application.userSignIn(userID);
+            }
+        }
+
+        initializeActivity();
+
     }
 
     @Override

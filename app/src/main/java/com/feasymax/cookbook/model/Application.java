@@ -1,5 +1,6 @@
 package com.feasymax.cookbook.model;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 
@@ -10,8 +11,12 @@ import com.feasymax.cookbook.model.entity.UserCollection;
 import com.feasymax.cookbook.model.entity.WebpageInfo;
 import com.feasymax.cookbook.model.util.UserDao;
 import com.feasymax.cookbook.util.Graphics;
+import com.feasymax.cookbook.view.MainActivity;
 import com.feasymax.cookbook.view.list.RecipeListModel;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.List;
 
 /**
@@ -49,19 +54,27 @@ public class Application {
      * @param password the password of the existing user
      * @return true on success, false on failure to sign in
      */
-    public static boolean userSignIn(String username, String password){
+    public static boolean userSignIn(String username, String password, Context context){
         // verify that a user with username and password exists
         // get the userID and recipes from database
         UserDao userDao = new UserDao();
-        int userID = userDao.getUserID(username, password);
-        String email = userDao.getEmail(userID);
+        user = new UserAccount(username);
+        int userID = userDao.signInUser(user, password);
         if (userID != 0) {
-            user = new UserAccount(userID, username, email);
             userCollection = new UserCollection();
+            saveUser(context);
             return true;
         } else {
             return false;
         }
+    }
+
+    public static boolean userSignIn(int userID){
+        UserDao userDao = new UserDao();
+        user = new UserAccount(userID, "", "");
+        userDao.getUserInfo(user);
+        userCollection = new UserCollection();
+        return true;
     }
 
     /**
@@ -74,12 +87,13 @@ public class Application {
      * @return true on success, false on failure to register
      */
     public static boolean userRegister(String username, String password, String email,
-                                       String firstName, String lastName){
+                                       String firstName, String lastName, Context context){
         UserDao userDao = new UserDao();
         int userID = userDao.regUser(username, password, email, firstName, lastName);
         if (userID != 0) {
             user = new UserAccount(userID, username, email);
             userCollection = new UserCollection();
+            saveUser(context);
             return true;
         } else {
             return false;
@@ -89,9 +103,72 @@ public class Application {
     /**
      * When the user signs out, set the user object to null
      */
-    public static void userSignOut(){
+    public static void userSignOut(Context context){
         user = null;
         userCollection = null;
+        removeUser(context);
+    }
+
+    public static void removeUser(Context context) {
+        FileOutputStream outputStream;
+        try {
+            outputStream = context.openFileOutput("user.txt", Context.MODE_PRIVATE);
+            outputStream.write("".getBytes());
+            outputStream.close();
+        }
+        catch (Exception e) {
+            File file = new File(context.getFilesDir(), "user.txt");
+            try {
+                outputStream = context.openFileOutput("user.txt", Context.MODE_PRIVATE);
+                outputStream.write("".getBytes());
+                outputStream.close();
+            }
+            catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+    }
+
+    public static void saveUser(Context context) {
+        FileOutputStream outputStream;
+        try {
+            outputStream = context.openFileOutput("user.txt", Context.MODE_PRIVATE);
+            outputStream.write(Integer.toString(getUser().getUserID()).getBytes());
+            outputStream.close();
+        }
+        catch (Exception e) {
+            File file = new File(context.getFilesDir(), "user.txt");
+            try {
+                outputStream = context.openFileOutput("user.txt", Context.MODE_PRIVATE);
+                outputStream.write(Integer.toString(getUser().getUserID()).getBytes());
+                outputStream.close();
+            }
+            catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+    }
+
+    public static int readUser(Context context) {
+        File file = new File(context.getFilesDir(), "user.txt");
+        FileInputStream inputStream;
+        byte[] bytes = new byte[(int)file.length()];
+        int userID = -1;
+
+        if (file.exists()) {
+            try {
+                inputStream = new FileInputStream(file);
+                inputStream.read(bytes);
+                inputStream.close();
+                String contents = new String(bytes);
+                userID = Integer.parseInt(contents);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return userID;
     }
 
     /**

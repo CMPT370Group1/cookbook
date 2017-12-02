@@ -26,6 +26,12 @@ public class UserAccount {
      */
     private String email;
 
+    public UserAccount(String username) {
+        this.userID = -1;
+        this.username = username;
+        this.email = "";
+    }
+
     public UserAccount(int userID, String username, String email) {
         this.userID = userID;
         this.username = username;
