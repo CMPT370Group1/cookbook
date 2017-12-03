@@ -3,7 +3,6 @@ package com.feasymax.cookbook.view.fragment;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.InputType;
@@ -21,7 +20,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.feasymax.cookbook.R;
@@ -30,7 +28,6 @@ import com.feasymax.cookbook.model.entity.Ingredient;
 import com.feasymax.cookbook.model.entity.Recipe;
 import com.feasymax.cookbook.view.DiscoverActivity;
 import com.feasymax.cookbook.view.RecipesActivity;
-import com.feasymax.cookbook.view.ViewTransactions;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -140,10 +137,10 @@ public class RecipeViewFragment extends Fragment {
 
         // Get the correct recipe to display depending on which activity is active
         if (this.getActivity() instanceof RecipesActivity) {
-            currentRecipe = Application.getUserCurrentRecipe();
+            currentRecipe = Application.getUserCollection().getCurRecipe();
         }
         else if (this.getActivity() instanceof DiscoverActivity) {
-            currentRecipe = Application.getDiscoverCurrentRecipe();
+            currentRecipe = Application.getDiscoverCollection().getCurRecipe();
         }
         else {
             Log.println(Log.ERROR, "onItemClick", "Unexpected activity");
@@ -272,11 +269,17 @@ public class RecipeViewFragment extends Fragment {
      * Go back to all recipes in a category
      */
     protected void enterRecipesFragment() {
+        if (getActivity() instanceof RecipesActivity) {
+            Application.getUserCollection().setCurRecipe(null);
+        }
+        else {
+            Application.getDiscoverCollection().setCurRecipe(null);
+        }
+
         RecipesFragment a2Fragment = new RecipesFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
         // Store the Fragment in stack
-        ViewTransactions.getViews().add(FRAGMENT_ID);
         transaction.addToBackStack(null);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
@@ -289,7 +292,6 @@ public class RecipeViewFragment extends Fragment {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
         // Store the Fragment in stack
-        ViewTransactions.getViews().add(FRAGMENT_ID);
         transaction.addToBackStack(null);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
@@ -298,9 +300,15 @@ public class RecipeViewFragment extends Fragment {
      * Go back to all recipes in a category
      */
     protected void enterPrevFragment() {
+        if (getActivity() instanceof RecipesActivity) {
+            Application.getUserCollection().setCurRecipe(null);
+        }
+        else {
+            Application.getDiscoverCollection().setCurRecipe(null);
+        }
+
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         // Store the Fragment in stack
-        ViewTransactions.getViews().add(FRAGMENT_ID);
         transaction.addToBackStack(null);
         transaction.detach(this).commit();
     }
@@ -378,13 +386,12 @@ public class RecipeViewFragment extends Fragment {
     protected void editRecipe() {
         if (getActivity() instanceof RecipesActivity) {
             enterRecipeEditFragment();
-            //Application.editRecipe(Application.getDiscoverCurrentRecipe());
         }
     }
 
     protected void deleteRecipe() {
         if (getActivity() instanceof RecipesActivity) {
-            Application.deleteRecipe(Application.getUserCurrentRecipe());
+            Application.deleteRecipe(Application.getUserCollection().getCurRecipe());
             enterRecipesFragment();
         }
     }
@@ -392,7 +399,8 @@ public class RecipeViewFragment extends Fragment {
     protected void addRecipe() {
         if (getActivity() instanceof DiscoverActivity) {
             if (Application.isUserSignedIn()) {
-                Application.addNewRecipe(true, Application.getDiscoverCurrentRecipe(), false, null, -1);
+                Application.addNewRecipe(true, Application.getDiscoverCollection().getCurRecipe(),
+                        false, null, -1);
             } else {
                 Log.println(Log.INFO, "addRecipe","user is not signed in");
             }

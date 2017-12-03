@@ -7,11 +7,19 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import com.feasymax.cookbook.R;
+import com.feasymax.cookbook.view.fragment.IntroFragment1;
+import com.feasymax.cookbook.view.fragment.IntroFragment2;
+import com.feasymax.cookbook.view.fragment.IntroFragment3;
+import com.feasymax.cookbook.view.fragment.IntroFragment4;
+import com.feasymax.cookbook.view.fragment.IntroFragment5;
+import com.feasymax.cookbook.view.fragment.IntroFragment6;
+import com.feasymax.cookbook.view.fragment.IntroFragment7;
 import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 
 /**
  * Created by Olya on 2017-12-01.
+ * Intro tutorial activity
  */
 
 public class IntroActivity extends AppIntro {
@@ -22,25 +30,16 @@ public class IntroActivity extends AppIntro {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Instead of fragments, you can also use our default slide
-        // Just set a title, description, background and image. AppIntro will do the rest.
-        addSlide(AppIntroFragment.newInstance("Welcome to CookBook", "Sign in or register to start " +
-                "your collection of recipes", R.drawable.intro1, getResources().getColor(R.color.colorBackgroundGrey)));
-        addSlide(AppIntroFragment.newInstance("Your collection", "You can add new recipes, view, " +
-                "modify or delete existing recipes, and also save links to your favourite web-sites!",
-                R.drawable.intro2, getResources().getColor(R.color.colorBackgroundGrey)));
-        addSlide(AppIntroFragment.newInstance("Discover collection", "Save recipes from web or other " +
-                        "users' collections",
-                R.drawable.intro3, getResources().getColor(R.color.colorBackgroundGrey)));
-        addSlide(AppIntroFragment.newInstance("Useful tools", "Use unit converters to make cooking easier!",
-                R.drawable.intro4, getResources().getColor(R.color.colorBackgroundGrey)));
+        // Add all slides to the tutorial
+        addSlide(new IntroFragment1());
+        addSlide(new IntroFragment2());
+        addSlide(new IntroFragment3());
+        addSlide(new IntroFragment4());
+        addSlide(new IntroFragment5());
+        addSlide(new IntroFragment6());
+        addSlide(new IntroFragment7());
 
-        // OPTIONAL METHODS
-        // Override bar/separator color.
-        //setBarColor(Color.parseColor("#3F51B5"));
-        //setSeparatorColor(Color.parseColor("#2196F3"));
-
-        // Hide Skip/Done button.
+        // Show both Skip and Done buttons
         showSkipButton(true);
         setProgressButtonEnabled(true);
     }
@@ -48,7 +47,7 @@ public class IntroActivity extends AppIntro {
     @Override
     public void onSkipPressed(Fragment currentFragment) {
         super.onSkipPressed(currentFragment);
-        // Do something when users tap on Skip button.
+        // Go to main activity when users tap on Skip button.
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
         finish();
@@ -57,7 +56,7 @@ public class IntroActivity extends AppIntro {
     @Override
     public void onDonePressed(Fragment currentFragment) {
         super.onDonePressed(currentFragment);
-        // Do something when users tap on Done button.
+        // Go to main activity when users tap on Done button.
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
         finish();
@@ -66,8 +65,5 @@ public class IntroActivity extends AppIntro {
     @Override
     public void onSlideChanged(@Nullable Fragment oldFragment, @Nullable Fragment newFragment) {
         super.onSlideChanged(oldFragment, newFragment);
-        // Do something when the slide changes.
     }
-
-
 }

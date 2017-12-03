@@ -20,18 +20,29 @@ import java.util.List;
 
 /**
  * Created by Olya on 2017-10-12.
+ * Utility class for web-search and parsing web-page info.
  */
 
 public class WebSearch {
 
+    /**
+     * Web-search result pages
+     */
     private static List<WebpageInfo> results;
+    /**
+     * Web-page to parse info to
+     */
     private static WebpageInfo webpageInfo;
 
+    /**
+     * Private empty constructor
+     */
     private WebSearch() {}
 
     /**
-     * Send a query to google and get the first page of results
-     * @param input
+     * Send a query to google and get the first page of results, getting title, website name and
+     * description for each
+     * @param input search query
      * @return a list of WebpageInfo
      */
     public static List<WebpageInfo> getWebSearch(final String input) {
@@ -45,17 +56,20 @@ public class WebSearch {
                 try {
                     org.jsoup.nodes.Document doc;
 
+                    // tokenize the string to separate words by '+' to conform to web-query format
                     String searchTokens = "";
                     for (String retval : input.split(" ")) {
                         searchTokens += retval + "+";
                     }
                     searchTokens += "recipe";
 
+                    // obtain html of the result page
                     doc = Jsoup.connect("https://www.google.com/search?q=" + searchTokens).get();
                     Elements links = doc.select("div[class=g]");
                     results = new LinkedList<>();
                     WebpageInfo webpageInfo = null;
 
+                    // parse each result info and add it to the list of results
                     for (Element link : links) {
 
                         Elements titles = link.select("h3[class=r]");
@@ -108,6 +122,11 @@ public class WebSearch {
         return results;
     }
 
+    /**
+     * Parse a web-page info from its URL, getting title, website name, description and image
+     * @param urlStr
+     * @return
+     */
     public static WebpageInfo parsePageHeaderInfo(final String urlStr) {
 
         Thread thread = new Thread(new Runnable() {

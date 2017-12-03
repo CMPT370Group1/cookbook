@@ -24,44 +24,22 @@ import java.util.List;
 
 /**
  * Created by Olya on 2017-10-08.
+ * Abstruct class for activities with both navigation menu and tabs
  */
 
-public abstract class ActivityMenuTabs extends AppCompatActivity {
+public abstract class ActivityMenuTabs extends ActivityMenu {
 
     protected TabLayout mTabLayout;
     public static ViewPager mViewPager;
-
-    protected DrawerLayout mDrawer;
-    protected Toolbar mToolbar;
-
-    protected Button btnRecipes;
-    protected Button btnDiscover;
-    protected Button btnTools;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
-    public void initializeDrawer() {
-        /*
-
-         */
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-
-        /*
-
-         */
-        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        setButtons();
-    }
-
+    /**
+     * Initialize tab layout
+     */
     public void initializeTabs() {
         mTabLayout = (TabLayout) findViewById(R.id.stl_tabs);
         mTabLayout.setupWithViewPager(mViewPager);
@@ -89,15 +67,11 @@ public abstract class ActivityMenuTabs extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Set navigation menu buttons
+     */
     public void setButtons() {
-        btnRecipes = (Button) findViewById(R.id.button1);
-        btnDiscover = (Button) findViewById(R.id.button2);
-        btnTools = (Button) findViewById(R.id.button3);
-
-        if (!Application.isUserSignedIn()) {
-            btnRecipes.setEnabled(false);
-            btnRecipes.setBackground(getDrawable(R.drawable.button_recipes_inactive));
-        }
+        super.setButtons();
 
         btnRecipes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,40 +99,13 @@ public abstract class ActivityMenuTabs extends AppCompatActivity {
         });
     }
 
-    private boolean onBackPressed(FragmentManager fm) {
-        if (fm != null) {
-            Log.println(Log.INFO, "fm fragments", fm.getFragments().toString());
-            if (fm.getBackStackEntryCount() > 0) {
-                fm.popBackStack();
-                return true;
-            }
-
-            List<Fragment> fragList = fm.getFragments();
-            if (fragList != null && fragList.size() > 0) {
-                for (Fragment frag : fragList) {
-                    if (frag == null) {
-                        continue;
-                    }
-                    if (frag.isVisible()) {
-                        if (onBackPressed(frag.getChildFragmentManager())) {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
+    /**
+     * Finish activity on back button press
+     */
     @Override
     public void onBackPressed() {
-        Log.println(Log.INFO, "onBackPressed", "activity");
-        Log.println(Log.INFO, "fragments", ViewTransactions.getViews().toString());
-        FragmentManager fm = getSupportFragmentManager();
-        if (onBackPressed(fm)) {
-            return;
-        }
         super.onBackPressed();
+        finish();
     }
 
 }

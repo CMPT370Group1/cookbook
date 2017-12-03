@@ -43,9 +43,10 @@ public class ToolsAccountFragment extends Fragment {
     TextView oldPassErrorText;
     TextView userTakenErrorText;
 
-    public ToolsAccountFragment() {
-        // Required empty public constructor
-    }
+    /**
+     * Required empty public constructor
+     */
+    public ToolsAccountFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,8 +89,6 @@ public class ToolsAccountFragment extends Fragment {
             btnEditAccount.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-                    // TODO
 
                     // change layout depending if the user is viewing or modifying the account info
                     // user is modifying

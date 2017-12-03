@@ -31,37 +31,32 @@ import com.feasymax.cookbook.model.Application;
 import com.feasymax.cookbook.model.entity.WebpageInfo;
 import com.feasymax.cookbook.model.util.WebSearch;
 import com.feasymax.cookbook.util.Graphics;
-import com.feasymax.cookbook.view.DiscoverActivity;
 import com.feasymax.cookbook.view.RecipesActivity;
-import com.feasymax.cookbook.view.ViewTransactions;
 import com.feasymax.cookbook.view.fragment.common.ShowWebpagesFragment;
 import com.feasymax.cookbook.view.list.LinksListAdapter;
 
-import java.util.LinkedList;
-import java.util.List;
-
 /**
  * Created by Olya on 2017-09-21.
+ * Fragment to display saved links in the user's collection
  */
 
 public class RecipeLinksFragment extends ShowWebpagesFragment {
 
     public static final String FRAGMENT_ID = "RecipeLinksFragment";
 
+    /**
+     * Layout elements
+     */
     private Button btnAddLink;
-    private RelativeLayout noItemsLayout;
     private SwipeRefreshLayout swipeRefreshLayout;
-
-    ListView list;
-    LinksListAdapter adapter;
-    public RecipeLinksFragment CustomListView = null;
-    public List<WebpageInfo> CustomListViewValuesArr;
+    protected LinksListAdapter adapter;
 
     private String newLink = "";
 
-    public RecipeLinksFragment() {
-        // Required empty public constructor
-    }
+    /**
+     * Required empty public constructor
+     */
+    public RecipeLinksFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,10 +66,12 @@ public class RecipeLinksFragment extends ShowWebpagesFragment {
 
         setHasOptionsMenu(true);
 
+        // Set up button to add new link to user's collection
         btnAddLink = view.findViewById(R.id.buttonAddLink);
         btnAddLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // The dialog to input the link's URL
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle("Add New Web-link");
                 // Set up the input
@@ -91,7 +88,7 @@ public class RecipeLinksFragment extends ShowWebpagesFragment {
                 input.setLayoutParams(params);
                 container.addView(input);
                 builder.setView(container);
-                // Set up the buttons
+                // Set up the buttons for the dialog
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -100,13 +97,20 @@ public class RecipeLinksFragment extends ShowWebpagesFragment {
                         try {
                             WebpageInfo newWebpageInfo = WebSearch.parsePageHeaderInfo(newLink);
                             if (newWebpageInfo != null) {
-                                Application.addLink(newWebpageInfo);
-                                CustomListViewValuesArr = Application.getUserCollection().getLinks();
-                                if (CustomListViewValuesArr.size() != 0) {
-                                    noItemsLayout.setVisibility(View.GONE);
-                                    list.setVisibility(View.VISIBLE);
-                                    setAdapter();
+                                if (Application.addLink(newWebpageInfo)) {
+                                    CustomListViewValuesArr = Application.getUserCollection().getLinks();
+                                    if (CustomListViewValuesArr.size() != 0) {
+                                        noItemsLayout.setVisibility(View.GONE);
+                                        list.setVisibility(View.VISIBLE);
+                                        setAdapter();
+                                    }
                                 }
+                                else {
+                                    Toast.makeText(getContext(), "The link has already been " +
+                                            "added before", Toast.LENGTH_SHORT).show();
+                                }
+
+
                             }
                             else {
                                 throw new Exception("Wrong link format");
@@ -127,6 +131,7 @@ public class RecipeLinksFragment extends ShowWebpagesFragment {
             }
         });
 
+        // Set up the refresh layout to obtain the list of links from the database on refresh
         swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
@@ -134,18 +139,18 @@ public class RecipeLinksFragment extends ShowWebpagesFragment {
                     public void onRefresh() {
                         Log.d("Swipe refresh", "onRefresh called from SwipeRefreshLayout");
 
-                        // This method performs the actual data-refresh operation.
-                        // The method calls setRefreshing(false) when it's finished.
+                        // Perform the actual data-refresh operation
                         if (getActivity() instanceof RecipesActivity) {
                             Application.getUserCollection().updateLinks();
                         }
+                        // Update the listview
                         onResume();
                         swipeRefreshLayout.setRefreshing(false);
                     }
                 }
         );
 
-
+        // set up the listview
         noItemsLayout = view.findViewById(R.id.noItemsLayout);
         CustomListView = this;
         list = view.findViewById( R.id.list );
@@ -153,46 +158,35 @@ public class RecipeLinksFragment extends ShowWebpagesFragment {
         return view;
     }
 
+    /**
+     * Get the list of links
+     */
     @Override
     public void setListData() {
         CustomListViewValuesArr = Application.getUserCollection().getLinks();
     }
 
+    /**
+     * Set adapter for the listview to display web-pages
+     */
     public void setAdapter() {
         // Create Custom Adapter
         Resources res = getResources();
         adapter = null;
-        adapter = new LinksListAdapter( this, CustomListViewValuesArr, res );
-        list.setAdapter( adapter );
+        adapter = new LinksListAdapter(this, CustomListViewValuesArr, res);
+        list.setAdapter(adapter);
     }
 
+    /**
+     * Open clicked web-page in webview
+     * @param mPosition
+     */
     public void onItemClick(int mPosition)
     {
         WebpageInfo tempValues = CustomListViewValuesArr.get(mPosition);
         Application.getUserCollection().setCurLink(tempValues);
         Application.getDiscoverCollection().setWebsearchResult(tempValues.getUrl());
         enterWebpageViewFragment();
-    }
-
-    public void onItemLongClick(int mPosition)
-    {
-        WebpageInfo tempValues = CustomListViewValuesArr.get(mPosition);
-        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText("web-page", tempValues.getUrl());
-        clipboard.setPrimaryClip(clip);
-        Toast.makeText(getContext(), "The url was copied to clipboard", Toast.LENGTH_SHORT).show();
-    }
-
-
-    @Override
-    protected void enterWebpageViewFragment() {
-        WebPageViewFragment a2Fragment = new WebPageViewFragment();
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-
-        // Store the Fragment in stack
-        ViewTransactions.getViews().add(FRAGMENT_ID);
-        transaction.addToBackStack(null);
-        transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
 
     @Override

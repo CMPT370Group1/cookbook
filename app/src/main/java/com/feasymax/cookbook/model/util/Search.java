@@ -2,26 +2,35 @@ package com.feasymax.cookbook.model.util;
 
 /**
  * Created by Olya on 2017-10-12.
+ * Utility class for searching a collection of recipes by keywords in title and directions
+ * (basic search) or specifying each attribute individually (advanced search)
  */
-import android.util.Log;
 
 import com.feasymax.cookbook.model.Application;
-import com.feasymax.cookbook.view.list.RecipeListModel;
+import com.feasymax.cookbook.model.entity.RecipeShortInfo;
 
 import java.util.LinkedList;
 import java.util.List;
 
 
-//search collection by many attributes such as
-
 public class Search {
 
-     private Search() {}
+    /**
+     * Private empty constructor
+     */
+    private Search() {}
 
-     public static List<RecipeListModel> getSearchResults(String input, int activity) {
+    /**
+     * Get search results for basic search from the database
+     * @param input
+     * @param activity
+     * @return
+     */
+    public static List<RecipeShortInfo> getSearchResults(String input, int activity) {
          UserDao userDao = new UserDao();
-         List<RecipeListModel> results;
+         List<RecipeShortInfo> results;
 
+        // Tokenize keywords
          List<String> searchTokens = new LinkedList<>();
          for (String retval : input.split(" ")) {
              searchTokens.add(retval);
@@ -29,24 +38,33 @@ public class Search {
 
          if (activity == 0) {
              int userId = Application.getUser().getUserID();
-
              results = userDao.searchRecipes(true, userId, searchTokens);
          } else {
              results = userDao.searchRecipes(false, -1, searchTokens);
          }
 
          return results;
-     }
-     //advanced search
+    }
 
-    public static List<RecipeListModel> getAdvancedSearchResults(String title, int category, String
+    /**
+     * Get search results for advanced search from the database
+     * @param title
+     * @param category
+     * @param directions
+     * @param ingredients
+     * @param tags
+     * @param activity
+     * @param isIncludingAllAttributes flag indicating if the result recipes should contain all
+     *                                 specified attributes
+     * @return
+     */
+    public static List<RecipeShortInfo> getAdvancedSearchResults(String title, int category, String
             directions, String ingredients, String tags, int activity, boolean isIncludingAllAttributes) {
 
         UserDao userDao = new UserDao();
-        List<RecipeListModel> results;
+        List<RecipeShortInfo> results;
 
-
-        //splitting title string and putting it in titleTokens
+        // Tokenize keywords string for each attribute
         List<String> titleTokens = new LinkedList<>();
         if (!title.trim().equals("")) {
             for (String retval : title.split(" ")) {
@@ -72,10 +90,8 @@ public class Search {
             }
         }
 
-
         if (activity == 0) {
             int userId = Application.getUser().getUserID();
-
             results = userDao.advancedSearchRecipes(true, userId, titleTokens, directionsTokens,
                     ingredientsTokens, tagsTokens, category, isIncludingAllAttributes);
         } else {
@@ -86,9 +102,3 @@ public class Search {
         return results;
     }
 }
-
-
-//List<String> searchTokens = new LinkedList<>();
-//        for (String retval : input.split(" ")) {
-//            searchTokens.add(retval);
-//        }

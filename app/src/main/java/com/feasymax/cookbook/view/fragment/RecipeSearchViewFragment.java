@@ -20,17 +20,6 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.feasymax.cookbook.R;
-import com.feasymax.cookbook.model.Application;
-import com.feasymax.cookbook.model.entity.Ingredient;
-import com.feasymax.cookbook.model.entity.Recipe;
-import com.feasymax.cookbook.view.DiscoverActivity;
-import com.feasymax.cookbook.view.RecipesActivity;
-import com.feasymax.cookbook.view.ViewTransactions;
-
-import java.text.DecimalFormat;
-import java.util.LinkedList;
-
-import pl.charmas.android.tagview.TagView;
 
 /**
  * Created by Olya on 2017-09-21.

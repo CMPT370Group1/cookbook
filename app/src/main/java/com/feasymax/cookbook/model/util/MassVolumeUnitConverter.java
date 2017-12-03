@@ -12,11 +12,14 @@ import java.util.List;
 
 /**
  * Created by Olya on 2017-10-12.
+ * Advanced unit converter from mass to volume and vice versa
  */
 
 public class MassVolumeUnitConverter {
 
-    //For representing stored substance conversions factors to the view screen
+    /**
+     * For representing stored substance conversions factors to the view screen
+     */
     public static List<ConversionFactor> makeListFromFile(String filename, Context context){
         String toParse = "";
         try{
@@ -42,7 +45,10 @@ public class MassVolumeUnitConverter {
         String[] splitString = s.split(":");
         return new ConversionFactor(splitString[0],Double.parseDouble(splitString[1]));
     }
-    //the actual conversion tool
+
+    /**
+     * The actual conversion tool
+     */
     public static double MassToVolume(double quanA, int unitA, int unitB, double substance, String unitAType){
         if(unitAType.equals("Mass")) {
             double massToGrams = UnitConverters.MassToMass(quanA, unitA, 1);

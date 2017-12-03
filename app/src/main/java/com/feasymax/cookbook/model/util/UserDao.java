@@ -2,7 +2,7 @@ package com.feasymax.cookbook.model.util;
 
 /**
  * Created by kristine042 on 2017-10-09.
- * The class manages database access and all functionality related to it.
+ * Utility class to manage database access and all functionality related to it.
  */
 
 import android.graphics.Bitmap;
@@ -13,7 +13,7 @@ import com.feasymax.cookbook.model.entity.UserAccount;
 import com.feasymax.cookbook.model.entity.WebpageInfo;
 import com.feasymax.cookbook.util.DbBitmapUtility;
 import com.feasymax.cookbook.util.Graphics;
-import com.feasymax.cookbook.view.list.RecipeListModel;
+import com.feasymax.cookbook.model.entity.RecipeShortInfo;
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -39,7 +39,7 @@ public class UserDao {
     private volatile int linkID = -1;
     private volatile String updateRes = "";
     private String email;
-    private List<RecipeListModel> list = null;
+    private List<RecipeShortInfo> list = null;
     private List<WebpageInfo> links = null;
 
     /**
@@ -126,7 +126,7 @@ public class UserDao {
      * @param lastName
      * @return
      */
-    public int regUser(final String user, final String password, final String email, final String firstName, final String lastName) {
+    public int registerUser(final String user, final String password, final String email, final String firstName, final String lastName) {
         userID = 0;
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -191,8 +191,8 @@ public class UserDao {
      * @param newPassword
      * @return
      */
-    public String update(final int userID, final String user, final String userEmail,
-                         final String oldPassword, final String newPassword) {
+    public String updateUserAccount(final int userID, final String user, final String userEmail,
+                                    final String oldPassword, final String newPassword) {
         updateRes = "";
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -274,8 +274,8 @@ public class UserDao {
     }
 
     /**
-     * Get user's email address
-     * @param userID
+     * Get username and email address from user id
+     * @param user
      * @return
      */
     public void getUserInfo(final UserAccount user) {
@@ -327,7 +327,7 @@ public class UserDao {
      * @param category
      * @return result code
      */
-    public List<RecipeListModel> updateRecipeCollection(final boolean isUserCollection, final int userID, final int category) {
+    public List<RecipeShortInfo> updateRecipeCollection(final boolean isUserCollection, final int userID, final int category) {
         list = null;
 
         Thread thread = new Thread(new Runnable() {
@@ -348,7 +348,7 @@ public class UserDao {
                         byte[] image_icon = null;
                         Bitmap image = null;
 
-                        RecipeListModel recipeListModel = null;
+                        RecipeShortInfo recipeShortInfo = null;
                         list = new LinkedList<>();
 
                         // insert all recipe info into recipes table
@@ -373,9 +373,9 @@ public class UserDao {
                                 image = DbBitmapUtility.getImage(image_icon);
                             }
 
-                            recipeListModel = new RecipeListModel(id, title, image, duration);
-                            Log.println(Log.INFO, "updateRecipeCollection", recipeListModel.toString());
-                            list.add(recipeListModel);
+                            recipeShortInfo = new RecipeShortInfo(id, title, image, duration);
+                            Log.println(Log.INFO, "updateRecipeCollection", recipeShortInfo.toString());
+                            list.add(recipeShortInfo);
 
                             image_icon = null;
                         }
@@ -417,7 +417,7 @@ public class UserDao {
      * @param recipe incomplete recipe to be filled
      * @return result code
      */
-    public int updateRecipe(final Recipe recipe, final int userID) {
+    public int getFullRecipe(final Recipe recipe, final int userID) {
         recipeID = recipe.getId();
 
         Thread thread = new Thread(new Runnable() {
@@ -453,7 +453,7 @@ public class UserDao {
 
                             recipe.setDirections(directions);
                             recipe.setImage(image);
-                            Log.println(Log.INFO, "updateRecipe", recipe.toString());
+                            Log.println(Log.INFO, "getFullRecipe", recipe.toString());
                         }
 
                         // get ingredients
@@ -473,7 +473,7 @@ public class UserDao {
                                 unit = Integer.valueOf(rs.getString("unit"));
 
                                 ingredients.add(new Ingredient(name, quantity, unit));
-                                Log.println(Log.INFO, "updateRecipe", ingredients.toString());
+                                Log.println(Log.INFO, "getFullRecipe", ingredients.toString());
                             }
                         }
                         recipe.setIngredients(ingredients);
@@ -491,7 +491,7 @@ public class UserDao {
                                 tag_name = rs.getString("tag_name");
 
                                 tags.add(tag_name);
-                                Log.println(Log.INFO, "updateRecipe", tags.toString());
+                                Log.println(Log.INFO, "getFullRecipe", tags.toString());
                             }
                         }
                         recipe.setTags(tags);
@@ -541,7 +541,7 @@ public class UserDao {
             e.printStackTrace();
         }
 
-        Log.println(Log.INFO, "updateRecipe", recipe.toString());
+        Log.println(Log.INFO, "getFullRecipe", recipe.toString());
         return 0;
     }
 
@@ -553,7 +553,7 @@ public class UserDao {
      * @param recipeID
      * @return result code
      */
-    public List<RecipeListModel> deleteRecipe(final int userID, final int recipeID) {
+    public List<RecipeShortInfo> deleteRecipe(final int userID, final int recipeID) {
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -838,13 +838,13 @@ public class UserDao {
     }
 
     /**
-     * Searching recipes by list of keywords
+     * Searching recipes' titles and directions by list of keywords
      * @param isUserCollection is it user or discover collection
      * @param userID
      * @param tokens list of keywords
      * @return
      */
-    public List<RecipeListModel> searchRecipes(final boolean isUserCollection, final int userID,
+    public List<RecipeShortInfo> searchRecipes(final boolean isUserCollection, final int userID,
                                                final List<String> tokens) {
         list = null;
 
@@ -853,7 +853,7 @@ public class UserDao {
             public void run() {
                 //don't need to create a new list at the beginning since we will be
                 //adding searching for everything then adding up.
-                RecipeListModel recipeListModel = null;
+                RecipeShortInfo recipeShortInfo = null;
 
                 try {
                     connect();
@@ -905,9 +905,9 @@ public class UserDao {
                                 image = DbBitmapUtility.getImage(image_icon);
                             }
 
-                            recipeListModel = new RecipeListModel(id, title, image, duration);
-                            Log.println(Log.INFO, "discover Recipes", recipeListModel.toString());
-                            list.add(recipeListModel);
+                            recipeShortInfo = new RecipeShortInfo(id, title, image, duration);
+                            Log.println(Log.INFO, "discover Recipes", recipeShortInfo.toString());
+                            list.add(recipeShortInfo);
                             image_icon = null;
                         }
                         stmt.close();
@@ -927,8 +927,8 @@ public class UserDao {
                 }
             }
         });
+
         //start the thread
-        //dont use sleep thread since it will overlap
         thread.start();
 
         try {
@@ -942,12 +942,19 @@ public class UserDao {
 
     }
 
-
-
-
-    //ADVANCED SEARCH
-
-    public List<RecipeListModel> advancedSearchRecipes(final boolean isUserCollection,
+    /**
+     * Search recipe collection by all recipe attributes
+     * @param isUserCollection
+     * @param userID
+     * @param titles
+     * @param directions
+     * @param ingredients
+     * @param tags
+     * @param category
+     * @param isIncludingAllAttributes
+     * @return
+     */
+    public List<RecipeShortInfo> advancedSearchRecipes(final boolean isUserCollection,
                                                        final int userID,
                                                        final List<String> titles,
                                                        final List<String> directions,
@@ -955,14 +962,14 @@ public class UserDao {
                                                        final List<String> tags,
                                                        final int category,
                                                        final boolean isIncludingAllAttributes) {
-        list=null;
+        list = null;
 
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 //don't need to create a new list at the beginning since we will be
                 //adding searching for everything then adding up.
-                RecipeListModel recipeListModel = null;
+                RecipeShortInfo recipeShortInfo = null;
 
                 try {
                     connect();
@@ -1074,9 +1081,9 @@ public class UserDao {
                                 image = DbBitmapUtility.getImage(image_icon);
                             }
 
-                            recipeListModel = new RecipeListModel(id, title, image, duration);
-                            Log.println(Log.INFO, "discover Recipes", recipeListModel.toString());
-                            list.add(recipeListModel);
+                            recipeShortInfo = new RecipeShortInfo(id, title, image, duration);
+                            Log.println(Log.INFO, "discover Recipes", recipeShortInfo.toString());
+                            list.add(recipeShortInfo);
                         }
                         stmt.close();
 
@@ -1093,7 +1100,6 @@ public class UserDao {
         });
 
         //start the thread
-        //dont use sleep thread since it will overlap
         thread.start();
 
         try {
@@ -1213,9 +1219,10 @@ public class UserDao {
     }
 
     /**
-     * Get all links saved in user's collection
+     * Add a link to user's collection
      * @param userID
-     * @return linked list of links
+     * @param webpageInfo
+     * @return
      */
     public int addLink(final int userID, final WebpageInfo webpageInfo) {
 
@@ -1287,9 +1294,8 @@ public class UserDao {
     }
 
     /**
-     * Get all links saved in user's collection
+     * Delete specified link from user's collection
      * @param linkID
-     * @return linked list of links
      */
     public void deleteLink(final int linkID) {
 

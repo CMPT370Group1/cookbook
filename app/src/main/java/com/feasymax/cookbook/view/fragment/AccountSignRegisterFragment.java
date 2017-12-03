@@ -30,9 +30,11 @@ public class AccountSignRegisterFragment extends Fragment {
     private Button btnRegister;
     private TextView signInErrorText;
 
-    public AccountSignRegisterFragment() {
-        // Required empty public constructor
-    }
+    /**
+     * Required empty public constructor
+     */
+    public AccountSignRegisterFragment() {}
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

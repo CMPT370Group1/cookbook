@@ -32,9 +32,11 @@ public class ToolsMassFragment extends Fragment {
 
     final DecimalFormat DF = new DecimalFormat("#.############");
 
-    public ToolsMassFragment() {
-        // Required empty public constructor
-    }
+    /**
+     * Required empty public constructor
+     */
+    public ToolsMassFragment() {}
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

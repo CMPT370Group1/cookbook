@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
@@ -20,7 +21,6 @@ import com.feasymax.cookbook.model.entity.WebpageInfo;
 import com.feasymax.cookbook.model.util.WebSearch;
 import com.feasymax.cookbook.view.DiscoverActivity;
 import com.feasymax.cookbook.view.RecipesActivity;
-import com.feasymax.cookbook.view.ViewTransactions;
 
 /**
  * Created by Olya on 2017-10-12.
@@ -33,9 +33,10 @@ public class WebPageViewFragment extends Fragment {
     private WebView webView;
     private Button btnBack;
 
-    public WebPageViewFragment() {
-        // Required empty public constructor
-    }
+    /**
+     * Required empty public constructor
+     */
+    public WebPageViewFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,7 +76,6 @@ public class WebPageViewFragment extends Fragment {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
         // Store the Fragment in stack
-        ViewTransactions.getViews().add(FRAGMENT_ID);
         transaction.addToBackStack(null);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
@@ -86,7 +86,6 @@ public class WebPageViewFragment extends Fragment {
     protected void enterPrevFragment() {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         // Store the Fragment in stack
-        ViewTransactions.getViews().add(FRAGMENT_ID);
         transaction.addToBackStack(null);
         transaction.detach(this).commit();
     }
@@ -100,8 +99,8 @@ public class WebPageViewFragment extends Fragment {
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
-        if (!Application.isUserSignedIn() || Application.getUserCollection().
-                containsLink(Application.getDiscoverCollection().getWebsearchResult())) {
+        if (!Application.isUserSignedIn() || (Application.isUserSignedIn() && Application.getUserCollection().
+                containsLink(Application.getDiscoverCollection().getWebsearchResult()))) {
             MenuItem item = menu.findItem(R.id.action_link_add);
             if (item != null) {
                 item.setEnabled(false);
@@ -127,7 +126,11 @@ public class WebPageViewFragment extends Fragment {
                 WebpageInfo webpageInfo = WebSearch.parsePageHeaderInfo(Application.
                         getDiscoverCollection().getWebsearchResult());
                 if (webpageInfo != null) {
-                    Application.addLink(webpageInfo);
+                    if (!Application.addLink(webpageInfo)) {
+                        Toast.makeText(getContext(), "The link has already been " +
+                                "added before", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
                 }
                 return true;
             case R.id.action_link_delete:

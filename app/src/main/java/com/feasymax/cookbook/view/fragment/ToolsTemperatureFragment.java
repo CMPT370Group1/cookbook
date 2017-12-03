@@ -32,9 +32,11 @@ public class ToolsTemperatureFragment extends Fragment {
 
     final DecimalFormat DF = new DecimalFormat("#.############");
 
-    public ToolsTemperatureFragment() {
-        // Required empty public constructor
-    }
+    /**
+     * Required empty public constructor
+     */
+    public ToolsTemperatureFragment() {}
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

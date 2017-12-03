@@ -1,10 +1,7 @@
 package com.feasymax.cookbook.view.fragment;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -14,7 +11,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -24,10 +20,9 @@ import com.feasymax.cookbook.model.Application;
 import com.feasymax.cookbook.model.entity.Recipe;
 import com.feasymax.cookbook.view.DiscoverActivity;
 import com.feasymax.cookbook.view.RecipesActivity;
-import com.feasymax.cookbook.view.ViewTransactions;
 import com.feasymax.cookbook.view.fragment.common.ShowRecipesFragment;
 import com.feasymax.cookbook.view.list.RecipeListAdapter;
-import com.feasymax.cookbook.view.list.RecipeListModel;
+import com.feasymax.cookbook.model.entity.RecipeShortInfo;
 
 import java.util.List;
 
@@ -46,11 +41,12 @@ public class RecipesFragment extends ShowRecipesFragment{
     ListView list;
     RecipeListAdapter adapter;
     public RecipesFragment CustomListView = null;
-    public List<RecipeListModel> CustomListViewValuesArr;
+    public List<RecipeShortInfo> CustomListViewValuesArr;
 
-    public RecipesFragment() {
-        // Required empty public constructor
-    }
+    /**
+     * Required empty public constructor
+     */
+    public RecipesFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -128,15 +124,15 @@ public class RecipesFragment extends ShowRecipesFragment{
     @Override
     public void onItemClick(int mPosition)
     {
-        RecipeListModel tempValues = CustomListViewValuesArr.get(mPosition);
+        RecipeShortInfo tempValues = CustomListViewValuesArr.get(mPosition);
         Recipe recipe = Application.getRecipeFromShortInfo(tempValues);
         if (this.getActivity() instanceof RecipesActivity) {
             recipe.setCategory(Application.getUserCollection().getCategory());
-            Application.setUserCurrentRecipe(recipe);
+            Application.getUserCollection().setCurRecipe(recipe);
         }
         else if (this.getActivity() instanceof DiscoverActivity) {
             recipe.setCategory(Application.getDiscoverCollection().getCategory());
-            Application.setDiscoverCurrentRecipe(recipe);
+            Application.getDiscoverCollection().setCurRecipe(recipe);
         }
         else {
             Log.println(Log.ERROR, "onItemClick", "Unexpected activity");
@@ -150,7 +146,6 @@ public class RecipesFragment extends ShowRecipesFragment{
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
         // Store the Fragment in stack
-        ViewTransactions.getViews().add(FRAGMENT_ID);
         transaction.addToBackStack(null);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
@@ -160,7 +155,6 @@ public class RecipesFragment extends ShowRecipesFragment{
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
         // Store the Fragment in stack
-        ViewTransactions.getViews().add(FRAGMENT_ID);
         transaction.addToBackStack(null);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }

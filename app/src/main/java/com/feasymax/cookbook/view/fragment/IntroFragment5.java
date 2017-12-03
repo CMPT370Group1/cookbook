@@ -13,14 +13,14 @@ import com.feasymax.cookbook.R;
  * Created by Olya on 2017-12-02.
  */
 
-public class IntroFragment1 extends Fragment{
+public class IntroFragment5 extends Fragment{
 
-    public IntroFragment1() {}
+    public IntroFragment5() {}
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.intro_1, container, false);
+        final View view = inflater.inflate(R.layout.intro_5, container, false);
         return view;
     }
 }

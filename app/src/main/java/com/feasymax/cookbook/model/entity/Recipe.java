@@ -6,12 +6,15 @@ import java.util.List;
 
 /**
  * Created by Olya on 2017-10-08.
+ * Full recipe information.
  */
 
 public class Recipe {
 
+    /**
+     * Recipe id in the database
+     */
     private int id;
-
     /**
      * The recipe's title
      */
@@ -65,6 +68,12 @@ public class Recipe {
         this.isOwner = isOwner;
     }
 
+    /**
+     * Public constructor that initializes attributes obtained from short recipe info
+     * @param id
+     * @param title
+     * @param duration
+     */
     public Recipe(int id, String title, int duration) {
         this.id = id;
         this.title = title;
@@ -91,10 +100,18 @@ public class Recipe {
         this.isOwner = false;
     }
 
+    /**
+     * Get id
+     * @return
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Set id
+     * @param id
+     */
     public void setId(int id) {
         this.id = id;
     }
@@ -219,10 +236,18 @@ public class Recipe {
         this.image = image;
     }
 
+    /**
+     * Is the user owner of the recipe
+     * @return
+     */
     public boolean isOwner() {
         return isOwner;
     }
 
+    /**
+     * Set the flag indicating if the user owner of the recipe
+     * @param owner
+     */
     public void setOwner(boolean owner) {
         isOwner = owner;
     }

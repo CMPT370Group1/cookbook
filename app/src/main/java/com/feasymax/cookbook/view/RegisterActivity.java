@@ -12,6 +12,11 @@ import android.widget.TextView;
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
 
+/**
+ * Created by Kristine
+ * Activity used for registration
+ */
+
 public class RegisterActivity extends ActivityMenu {
 
     private static final String TAG = "RegisterActivity";
@@ -57,7 +62,7 @@ public class RegisterActivity extends ActivityMenu {
     public void setButtons() {
         super.setButtons();
 
-        // register
+        // register the user
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view2) {

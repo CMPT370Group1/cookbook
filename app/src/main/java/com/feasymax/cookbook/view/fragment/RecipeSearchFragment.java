@@ -4,10 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
-import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +14,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
@@ -25,16 +22,12 @@ import android.widget.Spinner;
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
 import com.feasymax.cookbook.model.entity.Recipe;
-import com.feasymax.cookbook.model.entity.WebpageInfo;
 import com.feasymax.cookbook.model.util.Search;
-import com.feasymax.cookbook.model.util.WebSearch;
-import com.feasymax.cookbook.util.Graphics;
 import com.feasymax.cookbook.view.DiscoverActivity;
 import com.feasymax.cookbook.view.RecipesActivity;
-import com.feasymax.cookbook.view.ViewTransactions;
 import com.feasymax.cookbook.view.fragment.common.ShowRecipesFragment;
 import com.feasymax.cookbook.view.list.RecipeListAdapter;
-import com.feasymax.cookbook.view.list.RecipeListModel;
+import com.feasymax.cookbook.model.entity.RecipeShortInfo;
 
 import java.util.List;
 
@@ -53,11 +46,12 @@ public class RecipeSearchFragment extends ShowRecipesFragment {
     ListView list;
     RecipeListAdapter adapter;
     public RecipeSearchFragment CustomListView = null;
-    public List<RecipeListModel> CustomListViewValuesArr;
+    public List<RecipeShortInfo> CustomListViewValuesArr;
 
-    public RecipeSearchFragment() {
-        // Required empty public constructor
-    }
+    /**
+     * Required empty public constructor
+     */
+    public RecipeSearchFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,6 +63,7 @@ public class RecipeSearchFragment extends ShowRecipesFragment {
 
         noItemsLayout = view.findViewById(R.id.noItemsLayout);
 
+        // set up search view
         searchView = view.findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -84,6 +79,7 @@ public class RecipeSearchFragment extends ShowRecipesFragment {
                     Log.println(Log.ERROR, "search", "unexpected activity");
                 }
 
+                // get search results from keywords
                 CustomListViewValuesArr = Search.getSearchResults(s, activity);
                 if (CustomListViewValuesArr.size() != 0) {
                     noItemsLayout.setVisibility(View.GONE);
@@ -110,6 +106,7 @@ public class RecipeSearchFragment extends ShowRecipesFragment {
         });
 
 
+        // set up dialog for advanced search
         btnAdvancedSearch = view.findViewById(R.id.buttonAdvancedSearch);
         btnAdvancedSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,6 +130,8 @@ public class RecipeSearchFragment extends ShowRecipesFragment {
                 builder.setPositiveButton("SEARCH", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        searchView.setQuery("", false);
+
                         String newLink = title.getText().toString();
                         Log.println(Log.INFO, "link", newLink);
                         try {
@@ -190,7 +189,6 @@ public class RecipeSearchFragment extends ShowRecipesFragment {
                 final AlertDialog dialog = builder.create();
                 dialog.show();
 
-                //Overriding the handler immediately after show is probably a better approach than OnShowListener as described below
                 dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener()
                 {
                     @Override
@@ -227,15 +225,15 @@ public class RecipeSearchFragment extends ShowRecipesFragment {
 
     public void onItemClick(int mPosition)
     {
-        RecipeListModel tempValues = CustomListViewValuesArr.get(mPosition);
+        RecipeShortInfo tempValues = CustomListViewValuesArr.get(mPosition);
         Recipe recipe = Application.getRecipeFromShortInfo(tempValues);
         if (this.getActivity() instanceof RecipesActivity) {
             recipe.setCategory(Application.getUserCollection().getCategory());
-            Application.setUserCurrentRecipe(recipe);
+            Application.getUserCollection().setCurRecipe(recipe);
         }
         else if (this.getActivity() instanceof DiscoverActivity) {
             recipe.setCategory(Application.getDiscoverCollection().getCategory());
-            Application.setDiscoverCurrentRecipe(recipe);
+            Application.getDiscoverCollection().setCurRecipe(recipe);
         }
         else {
             Log.println(Log.ERROR, "onItemClick", "Unexpected activity");
@@ -249,7 +247,6 @@ public class RecipeSearchFragment extends ShowRecipesFragment {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
         // Store the Fragment in stack
-        ViewTransactions.getViews().add(FRAGMENT_ID);
         transaction.addToBackStack(null);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }

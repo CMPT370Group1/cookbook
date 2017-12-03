@@ -46,6 +46,7 @@ public class ToolsMassVolumeFragment extends Fragment {
     public ToolsMassVolumeFragment() {
         list.add("Add New");
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

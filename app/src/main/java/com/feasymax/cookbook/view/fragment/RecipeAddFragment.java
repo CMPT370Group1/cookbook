@@ -32,7 +32,6 @@ import com.feasymax.cookbook.model.entity.Ingredient;
 import com.feasymax.cookbook.model.entity.Recipe;
 import com.feasymax.cookbook.util.Graphics;
 import com.feasymax.cookbook.view.RecipesActivity;
-import com.feasymax.cookbook.view.ViewTransactions;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -406,7 +405,7 @@ public class RecipeAddFragment extends Fragment {
             }
 
             if (Application.addNewRecipe(isNewRecipe, recipe, isOwner, recipeIconBitmap, category) != -1) {
-                Log.println(Log.INFO, "addRecipe", Application.getUserCurrentRecipe().toString());
+                Log.println(Log.INFO, "addRecipe", Application.getUserCollection().getCurRecipe().toString());
                 Log.println(Log.INFO, "addRecipe", Application.getUserCollection().
                         getCategoryRecipes(recipe.getCategory()).toString());
 
@@ -468,7 +467,6 @@ public class RecipeAddFragment extends Fragment {
      * Go to fragment that displays recipe
      */
     protected void enterRecipeViewFragment() {
-        ViewTransactions.getViews().add(FRAGMENT_ID);
         ((RecipesActivity)getActivity()).navigateFragment(0, FRAGMENT_ID);
     }
 }

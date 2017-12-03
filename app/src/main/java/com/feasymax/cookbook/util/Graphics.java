@@ -18,6 +18,13 @@ import java.io.FileNotFoundException;
 
 public class Graphics {
 
+    /**
+     * Resize a bitmap image
+     * @param image
+     * @param maxWidth
+     * @param maxHeight
+     * @return
+     */
     public static Bitmap resize(Bitmap image, int maxWidth, int maxHeight) {
         if (maxHeight > 0 && maxWidth > 0) {
             float ratioImg = (float) image.getWidth() / (float) image.getHeight();
@@ -116,6 +123,12 @@ public class Graphics {
                 activity.getContentResolver().openInputStream(selectedImage), null, options);
     }
 
+    /**
+     * Convert dp to pixels
+     * @param res
+     * @param dp
+     * @return
+     */
     public static int dpToPx(Resources res, int dp) {
         DisplayMetrics displayMetrics = res.getDisplayMetrics();
         return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));

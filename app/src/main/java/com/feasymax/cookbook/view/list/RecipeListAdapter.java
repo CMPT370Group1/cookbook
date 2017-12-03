@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.feasymax.cookbook.R;
+import com.feasymax.cookbook.model.entity.RecipeShortInfo;
 import com.feasymax.cookbook.util.Graphics;
 import com.feasymax.cookbook.view.fragment.common.ShowRecipesFragment;
 
@@ -18,31 +19,38 @@ import java.util.List;
 
 /**
  * Created by Olya on 2017-11-06.
+ * Adapter for list of recipes
  */
 
 public class RecipeListAdapter extends BaseAdapter implements View.OnClickListener {
-    /*********** Declare Used Variables *********/
+    /**
+     * Declare Used Variables
+     */
     private ShowRecipesFragment fragment;
     private List data;
     private static LayoutInflater inflater = null;
     public Resources res;
-    RecipeListModel tempValues = null;
+    RecipeShortInfo tempValues = null;
     int i = 0;
 
-    /*************  CustomAdapter Constructor *****************/
+    /**
+     *  RecipeListAdapter Constructor
+     */
     public RecipeListAdapter(ShowRecipesFragment a, List d, Resources resLocal) {
 
-        /********** Take passed values **********/
+        // Take passed values
         fragment = a;
         data = d;
         res = resLocal;
 
-        /***********  Layout inflater to call external xml layout () ***********/
+        // Layout inflater to call external xml layout
         inflater = ( LayoutInflater ) fragment.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
     }
 
-    /******** What is the size of Passed list Size ************/
+    /**
+     * Get the size of passed list
+     */
     public int getCount() {
 
         if (data == null)
@@ -60,7 +68,9 @@ public class RecipeListAdapter extends BaseAdapter implements View.OnClickListen
         return position;
     }
 
-    /********* Create a holder Class to contain inflated xml file elements *********/
+    /**
+     * Create a holder Class to contain inflated xml file elements
+     */
     public static class ViewHolder{
 
         public TextView recipeTitle;
@@ -69,7 +79,9 @@ public class RecipeListAdapter extends BaseAdapter implements View.OnClickListen
 
     }
 
-    /****** Depends upon data size called for each row , Create each ListView row *****/
+    /**
+     * Depends upon data size called for each row , Create each ListView row
+     */
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View vi = convertView;
@@ -77,35 +89,33 @@ public class RecipeListAdapter extends BaseAdapter implements View.OnClickListen
 
         if(convertView == null){
 
-            /****** Inflate tabitem_recipe_recipe.xml file for each row ( Defined below ) *******/
+            // Inflate tabitem_recipe.xml file for each row
             vi = inflater.inflate(R.layout.tabitem_recipe, null);
 
-            /****** View Holder Object to contain tabitem_recipe.xmlipe.xml file elements ******/
-
+            // View Holder Object to contain tabitem_recipe.xml file elements
             holder = new ViewHolder();
             holder.recipeTitle = (TextView) vi.findViewById(R.id.recipeTitle);
             holder.recipeDuration =(TextView)vi.findViewById(R.id.recipeCaption);
             holder.recipeImage =(ImageView)vi.findViewById(R.id.recipeImage);
 
-            /************  Set holder with LayoutInflater ************/
+            // Set holder with LayoutInflater
             vi.setTag( holder );
         }
         else
             holder = (ViewHolder) vi.getTag();
 
+        // No data to display
         if(getCount() == 0)
         {
             holder.recipeTitle.setText("No Data");
-
         }
         else
         {
-            /***** Get each Model object from list ********/
+            // Get each Model object from list
             tempValues = null;
-            tempValues = ( RecipeListModel ) data.get( position );
+            tempValues = (RecipeShortInfo) data.get( position );
 
-            /************  Set Model values in Holder elements ***********/
-
+            // Set Model values in Holder elements
             holder.recipeTitle.setText( tempValues.getRecipeTitle() );
             holder.recipeDuration.setText( displayDuration(tempValues.getRecipeDuration()) );
             if (tempValues.getRecipeImage() != null) {
@@ -116,8 +126,7 @@ public class RecipeListAdapter extends BaseAdapter implements View.OnClickListen
             }
 
 
-            /******** Set Item Click Listener for LayoutInflater for each row *******/
-
+            // Set Item Click Listener for LayoutInflater for each row
             vi.setOnClickListener(new OnItemClickListener( position ));
         }
 
@@ -129,7 +138,9 @@ public class RecipeListAdapter extends BaseAdapter implements View.OnClickListen
         Log.v("CustomAdapter", "=====Row button clicked=====");
     }
 
-    /********* Called when Item click in ListView ************/
+    /**
+     * Called when Item clicked in ListView
+     */
     private class OnItemClickListener  implements View.OnClickListener{
         private int mPosition;
 
@@ -147,6 +158,11 @@ public class RecipeListAdapter extends BaseAdapter implements View.OnClickListen
         }
     }
 
+    /**
+     * Display duration in hours and minutes
+     * @param duration
+     * @return
+     */
     private String displayDuration(int duration) {
         if (duration == 0) {
             return "Duration: unspecified";

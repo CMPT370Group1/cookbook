@@ -10,8 +10,6 @@ import android.widget.Button;
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
 import com.feasymax.cookbook.model.entity.Ingredient;
-import com.feasymax.cookbook.model.entity.Recipe;
-import com.feasymax.cookbook.view.ViewTransactions;
 
 /**
  * Created by Olya on 21/09/2017.
@@ -31,7 +29,6 @@ public class RecipeEditFragment extends RecipeAddFragment {
      */
     public RecipeEditFragment() {}
 
-    // TODO: add the button to cancel
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -40,7 +37,7 @@ public class RecipeEditFragment extends RecipeAddFragment {
 
         btnCancel = view.findViewById(R.id.buttonCancel);
 
-        editedRecipe = Application.getUserCurrentRecipe();
+        editedRecipe = Application.getUserCollection().getCurRecipe();
         prevCategory = editedRecipe.getCategory();
 
         recipeTitle.setText(editedRecipe.getTitle());
@@ -49,7 +46,6 @@ public class RecipeEditFragment extends RecipeAddFragment {
         recipeDurationHour.setText(String.valueOf(editedRecipe.getDuration() / 60));
         recipeDurationMin.setText(String.valueOf(editedRecipe.getDuration() % 60));
 
-        //
         recipeImageBitmap = editedRecipe.getImage();
         recipeImage.setImageBitmap(recipeImageBitmap);
 
@@ -63,7 +59,6 @@ public class RecipeEditFragment extends RecipeAddFragment {
                 addNewTag(tag);
             }
         }
-
 
         btnAddRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +86,6 @@ public class RecipeEditFragment extends RecipeAddFragment {
     protected void enterPrevFragment() {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         // Store the Fragment in stack
-        ViewTransactions.getViews().add(FRAGMENT_ID);
         transaction.addToBackStack(null);
         transaction.detach(this).commit();
     }

@@ -22,6 +22,7 @@ import pl.charmas.android.tagview.TagView;
 
 /**
  * Created by Olya on 2017-11-06.
+ * Adapter for list of web-pages used in RecipeLinksFragment
  */
 
 public class LinksListAdapter extends BaseAdapter implements View.OnClickListener {
@@ -36,7 +37,7 @@ public class LinksListAdapter extends BaseAdapter implements View.OnClickListene
     int i = 0;
 
     /**
-     *  CustomAdapter Constructor
+     *  LinksListAdapter Constructor
      */
     public LinksListAdapter(ShowWebpagesFragment a, List d, Resources resLocal) {
 
@@ -50,9 +51,10 @@ public class LinksListAdapter extends BaseAdapter implements View.OnClickListene
 
     }
 
-    // What is the size of Passed list Size
+    /**
+     * Get the size of passed list
+     */
     public int getCount() {
-
         if (data == null)
             return 0;
         if(data.size()<=0)
@@ -79,7 +81,9 @@ public class LinksListAdapter extends BaseAdapter implements View.OnClickListene
 
     }
 
-    // Depends upon data size called for each row , Create each ListView row
+    /**
+     * Depends upon data size called for each row , Create each ListView row
+     */
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View vi = convertView;
@@ -87,11 +91,10 @@ public class LinksListAdapter extends BaseAdapter implements View.OnClickListene
 
         if(convertView == null){
 
-            // Inflate tabitem_recipe_recipe.xml file for each row ( Defined below )
+            // Inflate tabitem_links.xml file for each row
             vi = inflater.inflate(R.layout.tabitem_links, null);
 
-            // View Holder Object to contain tabitem_recipe.xmlipe.xml file elements
-
+            // View Holder Object to contain tabitem_links.xml file elements
             holder = new ViewHolder();
             holder.webpageTitle = vi.findViewById(R.id.webpageTitle);
             holder.webpageWebsite = vi.findViewById(R.id.webpageWebsite);
@@ -103,28 +106,28 @@ public class LinksListAdapter extends BaseAdapter implements View.OnClickListene
         else
             holder = (ViewHolder) vi.getTag();
 
+        // No data to display
         if(getCount() == 0)
         {
             holder.webpageTitle.setText("No Data");
-
         }
         else
         {
             // Get each Model object from list
             tempValues = null;
-            tempValues = ( WebpageInfo ) data.get( position );
+            tempValues = (WebpageInfo) data.get( position );
 
             // Set Model values in Holder elements
-
-            holder.webpageTitle.setText( tempValues.getTitle() );
+            holder.webpageTitle.setText(tempValues.getTitle());
             TagView.Tag[] website = { new TagView.Tag(tempValues.getWebsiteName(),
-                    Color.parseColor("#ff4081")) };
+                    res.getColor(R.color.colorAccent)) };
             holder.webpageWebsite.setTags(website, " ");
             if (tempValues.getImage() != null) {
                 holder.webpageImage.setImageBitmap(tempValues.getImage());
             }
             else {
-                holder.webpageImage.setImageBitmap(Graphics.decodeSampledBitmapFromResource(res, R.drawable.no_image420, 200, 200));
+                holder.webpageImage.setImageBitmap(Graphics.decodeSampledBitmapFromResource(res,
+                        R.drawable.no_image420, 200, 200));
             }
 
             // Set Item Click Listeners for LayoutInflater for each row
@@ -140,7 +143,7 @@ public class LinksListAdapter extends BaseAdapter implements View.OnClickListene
     }
 
     /**
-     * Called when Item click in ListView
+     * Called when Item clicked in ListView
      */
     private class OnItemClickListener implements View.OnClickListener{
         private int mPosition;
@@ -150,13 +153,13 @@ public class LinksListAdapter extends BaseAdapter implements View.OnClickListene
         }
 
         @Override
-        public void onClick(View arg0) {
+        public void onClick(View view) {
             fragment.onItemClick(mPosition);
         }
     }
 
     /**
-     * Called when Item long click in ListView
+     * Called when Item long clicked in ListView
      */
     private class OnItemLongClickListener implements View.OnLongClickListener{
         private int mPosition;
@@ -166,8 +169,7 @@ public class LinksListAdapter extends BaseAdapter implements View.OnClickListene
         }
 
         @Override
-        public boolean onLongClick(View arg0) {
-            Log.d("OnItemLongClickListener", "log clicked: " + mPosition);
+        public boolean onLongClick(View view) {
             fragment.onItemLongClick(mPosition);
             return true;
         }

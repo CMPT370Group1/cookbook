@@ -20,8 +20,12 @@ public class DiscoverActivity extends ActivityMenuTabs {
         initializeActivity();
     }
 
+    /**
+     * Initialize activity components
+     */
     public void initializeActivity() {
         initializeDrawer();
+        setButtons();
 
         mViewPager = (ViewPager) findViewById(R.id.vp_tabs);
         mViewPager.setAdapter(new DiscoverAdapter(getSupportFragmentManager(), this));
@@ -29,24 +33,9 @@ public class DiscoverActivity extends ActivityMenuTabs {
         initializeTabs();
     }
 
-    public void initializeDrawer() {
-        super.initializeDrawer();
-    }
-
-    public void initializeTabs() {
-        super.initializeTabs();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-
+    /**
+     * Set navigation menu buttons
+     */
     public void setButtons() {
         super.setButtons();
         btnDiscover.setOnClickListener(new View.OnClickListener() {

@@ -1,28 +1,51 @@
-package com.feasymax.cookbook.view.list;
+package com.feasymax.cookbook.model.entity;
 
 import android.graphics.Bitmap;
 
 /**
  * Created by Olya on 2017-11-06.
+ * Short recipe information.
  */
 
-public class RecipeListModel {
+public class RecipeShortInfo {
 
+    /**
+     * Recipe id in the database
+     */
     private int RecipeId;
+    /**
+     * The recipe's title
+     */
     private String RecipeTitle = "";
+    /**
+     * The recipe's image
+     */
     private Bitmap RecipeImage = null;
+    /**
+     * The recipe's duration in minutes
+     */
     private int RecipeDuration = 0;
 
-    public RecipeListModel() {}
+    /**
+     * Public empty constructor
+     */
+    public RecipeShortInfo() {}
 
-    public RecipeListModel(int id, String title, Bitmap image, int duration) {
+    /**
+     * Public constructor with all attributes
+     * @param id
+     * @param title
+     * @param image
+     * @param duration
+     */
+    public RecipeShortInfo(int id, String title, Bitmap image, int duration) {
         RecipeId = id;
         RecipeTitle = title;
         RecipeImage = image;
         RecipeDuration = duration;
     }
 
-    /*********** Set Methods ******************/
+    // Set Methods
 
     public void setRecipeId(int recipeId) {
         this.RecipeId = recipeId;
@@ -43,7 +66,7 @@ public class RecipeListModel {
         this.RecipeDuration = duration;
     }
 
-    /*********** Get Methods ****************/
+    // Get Methods
 
     public int getRecipeId() {
         return RecipeId;

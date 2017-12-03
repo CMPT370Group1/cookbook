@@ -1,37 +1,20 @@
 package com.feasymax.cookbook.view.fragment;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
-import com.feasymax.cookbook.model.entity.Recipe;
 import com.feasymax.cookbook.model.util.WebSearch;
-import com.feasymax.cookbook.view.DiscoverActivity;
-import com.feasymax.cookbook.view.RecipesActivity;
 import com.feasymax.cookbook.model.entity.WebpageInfo;
-import com.feasymax.cookbook.view.ViewTransactions;
 import com.feasymax.cookbook.view.fragment.common.ShowWebpagesFragment;
-import com.feasymax.cookbook.view.list.LinksListAdapter;
-import com.feasymax.cookbook.view.list.RecipeListAdapter;
-import com.feasymax.cookbook.view.list.RecipeListModel;
 import com.feasymax.cookbook.view.list.WebsearchListAdapter;
-
-import java.util.List;
 
 /**
  * Created by Olya on 2017-09-21.
@@ -43,16 +26,13 @@ public class DiscoverWebsearchFragment extends ShowWebpagesFragment {
     public static final String FRAGMENT_ID = "DiscoverWebsearchFragment";
 
     private android.widget.SearchView searchView;
-    private RelativeLayout noItemsLayout;
-
-    ListView list;
     WebsearchListAdapter adapter;
-    public DiscoverWebsearchFragment CustomListView = null;
-    public List<WebpageInfo> CustomListViewValuesArr;
 
-    public DiscoverWebsearchFragment() {
-        // Required empty public constructor
-    }
+    /**
+     * Required empty public constructor
+     */
+    public DiscoverWebsearchFragment() {}
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -63,13 +43,16 @@ public class DiscoverWebsearchFragment extends ShowWebpagesFragment {
 
         noItemsLayout = view.findViewById(R.id.noItemsLayout);
 
+        // set up search view
         searchView = view.findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 Log.println(Log.INFO, "websearch", s);
+                // obtain the list of web-pages from the search query
                 CustomListViewValuesArr = WebSearch.getWebSearch(s);
                 if (CustomListViewValuesArr.size() != 0) {
+                    // show the search results
                     noItemsLayout.setVisibility(View.GONE);
                     list.setVisibility(View.VISIBLE);
                     setAdapter();
@@ -78,7 +61,6 @@ public class DiscoverWebsearchFragment extends ShowWebpagesFragment {
                             getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
                 }
-
                 return true;
             }
 
@@ -88,6 +70,7 @@ public class DiscoverWebsearchFragment extends ShowWebpagesFragment {
             }
         });
 
+        // set up the listview
         CustomListView = this;
         list = view.findViewById( R.id.list );
         setAdapter();
@@ -95,41 +78,31 @@ public class DiscoverWebsearchFragment extends ShowWebpagesFragment {
         return view;
     }
 
+    /**
+     * Nothing to do since we get the list of web-pages from search query
+     */
     @Override
     public void setListData() {}
 
+    /**
+     * Set adapter for the listview to display web-pages
+     */
     public void setAdapter() {
         // Create Custom Adapter
         Resources res = getResources();
         adapter = null;
-        adapter = new WebsearchListAdapter( this, CustomListViewValuesArr, res );
-        list.setAdapter( adapter );
+        adapter = new WebsearchListAdapter(this, CustomListViewValuesArr, res);
+        list.setAdapter(adapter);
     }
 
+    /**
+     * Open clicked web-page in webview
+     * @param mPosition
+     */
     public void onItemClick(int mPosition)
     {
         WebpageInfo tempValues = CustomListViewValuesArr.get(mPosition);
         Application.getDiscoverCollection().setWebsearchResult(tempValues.getUrl());
         enterWebpageViewFragment();
-    }
-
-    public void onItemLongClick(int mPosition)
-    {
-        WebpageInfo tempValues = CustomListViewValuesArr.get(mPosition);
-        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText("web-page", tempValues.getUrl());
-        clipboard.setPrimaryClip(clip);
-        Toast.makeText(getContext(), "The url was copied to clipboard", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected void enterWebpageViewFragment() {
-        WebPageViewFragment a2Fragment = new WebPageViewFragment();
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-
-        // Store the Fragment in stack
-        ViewTransactions.getViews().add(FRAGMENT_ID);
-        transaction.addToBackStack(null);
-        transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
 }

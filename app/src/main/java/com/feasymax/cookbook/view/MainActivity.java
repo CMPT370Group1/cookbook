@@ -27,10 +27,11 @@ public class MainActivity extends ActivityMenu {
         if (Application.getDiscoverCollection() == null) {
             Application.setDiscoverCollection(new DiscoverCollection());
         }
+
         Log.d("isUserSignedIn", Application.isUserSignedIn() + "");
         if (!Application.isUserSignedIn()) {
-            int userID = Application.readUser(this);
-            Log.d("readUser", userID + "");
+            int userID = Application.readSession(this);
+            Log.d("readSession", userID + "");
             if (userID != -1) {
                 Application.userSignIn(userID);
             }

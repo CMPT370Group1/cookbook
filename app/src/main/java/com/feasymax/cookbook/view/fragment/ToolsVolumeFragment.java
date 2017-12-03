@@ -32,9 +32,10 @@ public class ToolsVolumeFragment extends Fragment {
 
     final DecimalFormat DF = new DecimalFormat("#.############");
 
-    public ToolsVolumeFragment() {
-        // Required empty public constructor
-    }
+    /**
+     * Required empty public constructor
+     */
+    public ToolsVolumeFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

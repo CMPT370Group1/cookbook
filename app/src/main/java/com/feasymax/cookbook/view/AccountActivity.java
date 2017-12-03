@@ -6,6 +6,10 @@ import android.view.MenuItem;
 
 import com.feasymax.cookbook.R;
 
+/**
+ * Created by Kristine
+ * Activity used for log in
+ */
 public class AccountActivity extends ActivityMenu {
 
     private static final String TAG = "AccountActivity";
