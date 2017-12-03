@@ -15,24 +15,28 @@
             android:id="@+id/buttonAllCategories"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/colorAccent2"
             android:drawablePadding="10dp"
             android:drawableStart="@drawable/ic_arrow_back"
+            android:drawableTint="@android:color/white"
             android:padding="10dp"
             android:text="All Categories"
-            android:textAlignment="textStart"
-            android:textColor="?android:attr/textColorSecondaryNoDisable"/>
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"/>
 
         <RelativeLayout
             android:id="@+id/noItemsLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:text="No items to display"/>
+
         </RelativeLayout>
 
         <android.support.v4.widget.SwipeRefreshLayout

@@ -325,8 +325,9 @@ public class Application {
         if (isNewRecipe) {
             recipe.setId(id);
         }
-        // set the current recipe to display it
+        // set the current recipe and category to display it
         getUserCollection().setCurRecipe(recipe);
+        getUserCollection().setCategory(recipe.getCategory());
 
         // get the short info to add to the list of recipes in both collections
         RecipeShortInfo recipeModel = new RecipeShortInfo();

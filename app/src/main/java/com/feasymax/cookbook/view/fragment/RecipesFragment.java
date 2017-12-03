@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
@@ -65,6 +66,15 @@ public class RecipesFragment extends ShowRecipesFragment{
                 enterAllCategoriesFragment();
             }
         });
+        if (getActivity() instanceof RecipesActivity) {
+            btnAllCategories.setText(getResources().getStringArray(R.array.categories)[Application.
+                    getUserCollection().getCategory()]);
+        }
+        else if (getActivity() instanceof DiscoverActivity){
+            btnAllCategories.setText(getResources().getStringArray(R.array.categories)[Application.
+                    getDiscoverCollection().getCategory()]);
+        }
+
 
         swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setOnRefreshListener(

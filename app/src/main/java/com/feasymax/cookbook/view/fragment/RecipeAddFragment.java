@@ -345,7 +345,6 @@ public class RecipeAddFragment extends Fragment {
      * @param isNewRecipe is it a new user recipe or saved from Discover collection
      * @param recipeId
      */
-    // TODO: check that it reads all tags and ingredients
     protected void addRecipe(boolean isNewRecipe, int recipeId, int category) {
         if (recipeTitle.getText().length() != 0) {
             Recipe recipe = new Recipe();
