@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -104,5 +105,11 @@ public class DiscoverWebsearchFragment extends ShowWebpagesFragment {
         WebpageInfo tempValues = CustomListViewValuesArr.get(mPosition);
         Application.getDiscoverCollection().setWebsearchResult(tempValues.getUrl());
         enterWebpageViewFragment();
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.clear();
+        super.onPrepareOptionsMenu(menu);
     }
 }

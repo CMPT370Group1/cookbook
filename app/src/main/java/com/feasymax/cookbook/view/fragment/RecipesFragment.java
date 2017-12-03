@@ -168,7 +168,7 @@ public class RecipesFragment extends ShowRecipesFragment{
         transaction.addToBackStack(null);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
-
+/*
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
@@ -189,7 +189,7 @@ public class RecipesFragment extends ShowRecipesFragment{
 
         return false;
     }
-
+*/
     @Override
     public void onResume() {
         super.onResume();

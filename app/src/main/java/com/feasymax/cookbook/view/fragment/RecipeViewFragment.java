@@ -6,9 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -76,8 +74,6 @@ public class RecipeViewFragment extends Fragment {
     protected TagView recipeTags;
 
     protected List<View> ingredientRows;
-    private double prevQuantity;
-    private double newQuantity;
 
     /**
      * Current recipe displayed in the fragment (scaled)
@@ -88,8 +84,7 @@ public class RecipeViewFragment extends Fragment {
     /**
      * Required empty public constructor
      */
-    public RecipeViewFragment() {
-    }
+    public RecipeViewFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -353,6 +348,13 @@ public class RecipeViewFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.clear();
+        MenuInflater inflater = getActivity().getMenuInflater();
         if (getActivity() instanceof RecipesActivity) {
             inflater.inflate(R.menu.menu_recipe_view_rec, menu);
         } else if (getActivity() instanceof DiscoverActivity) {
@@ -360,11 +362,6 @@ public class RecipeViewFragment extends Fragment {
         } else {
             Log.println(Log.ERROR, "MENU", "unexpected activity");
         }
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
         if (getActivity() instanceof DiscoverActivity && !Application.isUserSignedIn()) {
             MenuItem item = menu.findItem(R.id.action_recipe_add);
             if (item != null) {

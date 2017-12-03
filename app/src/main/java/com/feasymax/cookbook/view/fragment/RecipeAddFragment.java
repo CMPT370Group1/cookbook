@@ -442,24 +442,9 @@ public class RecipeAddFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onPrepareOptionsMenu(Menu menu) {
         menu.clear();
-        inflater.inflate(R.menu.menu_fragment, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_info:
-                Log.println(Log.INFO, "MENU","action_info has clicked");
-                return true;
-            default:
-                Log.println(Log.INFO, "MENU","error");
-                break;
-        }
-
-        return false;
+        super.onPrepareOptionsMenu(menu);
     }
 
     /**

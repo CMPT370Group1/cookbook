@@ -95,7 +95,7 @@ public class CategoriesFragment extends Fragment{
         transaction.addToBackStack(null);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
-
+/*
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
@@ -116,4 +116,5 @@ public class CategoriesFragment extends Fragment{
 
         return false;
     }
+    */
 }
