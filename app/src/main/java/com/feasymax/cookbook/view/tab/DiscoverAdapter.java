@@ -20,6 +20,8 @@ public class DiscoverAdapter extends FragmentStatePagerAdapter {
      * List of tabs
      */
     private String[] titles ={"RECIPES","SEARCH", "WEB SEARCH"};
+    private Fragment[] fragments = {new CategoriesFragment(),new RecipeSearchFragment(),
+            new DiscoverWebsearchFragment()};
 
     public DiscoverAdapter(FragmentManager fm, Context c){
         super(fm);
@@ -32,16 +34,7 @@ public class DiscoverAdapter extends FragmentStatePagerAdapter {
      */
     @Override
     public Fragment getItem(int position) {
-        Fragment frag = null;
-
-        if(position == 0) {
-            frag = new CategoriesFragment();
-        } else if(position == 1) {
-            frag = new RecipeSearchFragment();
-        } else if(position == 2) {
-            frag = new DiscoverWebsearchFragment();
-        }
-
+        Fragment frag = fragments[position];
         return frag;
     }
 

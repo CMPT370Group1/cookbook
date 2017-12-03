@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.feasymax.cookbook.view.fragment.RecipeAddFragment;
 import com.feasymax.cookbook.view.fragment.RecipeLinksFragment;
@@ -21,7 +23,9 @@ public class RecipeAdapter extends FragmentStatePagerAdapter {
     /**
      * List of tabs
      */
-    private String[] titles ={"ALL","ADD","SEARCH","LINKS"};
+    private String[] titles = {"ALL","ADD","SEARCH","LINKS"};
+    private Fragment[] fragments = {new CategoriesFragment(),new RecipeAddFragment(),
+            new RecipeSearchFragment(), new RecipeLinksFragment()};
 
     public RecipeAdapter(FragmentManager fm, Context c){
         super(fm);
@@ -34,18 +38,7 @@ public class RecipeAdapter extends FragmentStatePagerAdapter {
      */
     @Override
     public Fragment getItem(int position) {
-        Fragment frag = null;
-
-        if(position == 0){
-            frag = new CategoriesFragment();
-        }else if(position == 1){
-            frag = new RecipeAddFragment();
-        }else if(position == 2){
-            frag = new RecipeSearchFragment();
-        }else if(position == 3){
-            frag = new RecipeLinksFragment();
-        }
-
+        Fragment frag = fragments[position];
         return frag;
     }
 

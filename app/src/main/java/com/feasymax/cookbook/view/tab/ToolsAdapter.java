@@ -23,6 +23,8 @@ public class ToolsAdapter extends FragmentStatePagerAdapter {
      * List of tabs
      */
     private String[] titles ={"ACCOUNT","MASS", "VOLUME", "TEMPERATURE", "MASS-VOLUME"};
+    private Fragment[] fragments = {new ToolsAccountFragment(),new ToolsMassFragment(),
+            new ToolsVolumeFragment(), new ToolsTemperatureFragment(), new ToolsMassVolumeFragment()};
 
     public ToolsAdapter(FragmentManager fm, Context c){
         super(fm);
@@ -35,20 +37,7 @@ public class ToolsAdapter extends FragmentStatePagerAdapter {
      */
     @Override
     public Fragment getItem(int position) {
-        Fragment frag = null;
-
-        if(position == 0){
-            frag = new ToolsAccountFragment();
-        }else if(position == 1){
-            frag = new ToolsMassFragment();
-        }else if(position == 2){
-            frag = new ToolsVolumeFragment();
-        }else if(position == 3){
-            frag = new ToolsTemperatureFragment();
-        }else if(position == 4){
-            frag = new ToolsMassVolumeFragment();
-        }
-
+        Fragment frag = fragments[position];
         return frag;
     }
 
