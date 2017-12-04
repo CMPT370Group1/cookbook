@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Debug;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,10 +46,11 @@ public class ToolsMassVolumeFragment extends Fragment {
 
     final DecimalFormat DF = new DecimalFormat("#.############");
 
-    private List<String> list = new ArrayList<>();
+    private List<ConversionFactor> list = new ArrayList<>();
+    private List<String> names = new ArrayList<>();
 
     public ToolsMassVolumeFragment() {
-        list.add("Add New");
+        list.add(new ConversionFactor("Add New", 1));
     }
 
     @Override
@@ -64,13 +67,22 @@ public class ToolsMassVolumeFragment extends Fragment {
         massVolumeIngredient = view.findViewById(R.id.massVolumeIngredient);
         massVolumeNewIngredient = view.findViewById(R.id.massVolumeNewIngredient);
         btnMassVolumeAdd = view.findViewById(R.id.buttonAddConversion);
+        setupConversion(massVolumeNum1,massVolumeNum2,true);
+        setupConversion(massVolumeNum2Editable,massVolumeNum1,false);
+        List<ConversionFactor> cfs;
         try {
-            List<ConversionFactor> cfs = MassVolumeUnitConverter.makeListFromFile(view.getContext());
-        }catch(IOException e){
-            Log.println(Log.ERROR,"getConversionFactors", "ERROR: unable to get conversionFactors from file"+ e.toString());
+            cfs = MassVolumeUnitConverter.makeListFromFile(view.getContext());
+        } catch (IOException e) {
+            Log.println(Log.ERROR, "getConversionFactors", "ERROR: unable to get conversionFactors from file" + e.toString());
+            return null;
+        }
+
+        for (int i = 0; i < cfs.size(); i++) {
+            list.add(cfs.get(i));
+            names.add(cfs.get(i).name);
         }
         ArrayAdapter<String> adp1 = new ArrayAdapter<String>(view.getContext(),
-                android.R.layout.simple_list_item_1, list);
+                android.R.layout.simple_list_item_1, names);
         adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         massVolumeIngredient.setAdapter(adp1);
 
@@ -87,19 +99,19 @@ public class ToolsMassVolumeFragment extends Fragment {
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     // add the new ingredient to the list
                     // use massVolumeNum2Editable instead of massVolumeNum2
-                    list.add(massVolumeNewIngredient.getText().toString());
 
-                    double massConverted = UnitConverters.MassToMass(UnitConverters.ParseFraction(massVolumeNum1.getText().toString()),massVolumeUnit1.getSelectedItemPosition(),1);
-                    double volumeConverted = UnitConverters.VolumeToVolume(UnitConverters.ParseFraction(massVolumeNum2.getText().toString()),massVolumeUnit2.getSelectedItemPosition(),5);
+
+                    double massConverted = UnitConverters.MassToMass(UnitConverters.ParseFraction(massVolumeNum1.getText().toString()), massVolumeUnit1.getSelectedItemPosition(), 1);
+                    double volumeConverted = UnitConverters.VolumeToVolume(UnitConverters.ParseFraction(massVolumeNum2.getText().toString()), massVolumeUnit2.getSelectedItemPosition(), 5);
                     try {
                         MassVolumeUnitConverter.AddConversionFactor(massVolumeNewIngredient.toString(), massConverted / volumeConverted, view.getContext());
-                    } catch(IOException e){
-                        Log.println(Log.ERROR, "addConversionFactor", "ERROR: failed to add new conversionFactor "+ e.toString());
+                    } catch (IOException e) {
+                        Log.println(Log.ERROR, "addConversionFactor", "ERROR: failed to add new conversionFactor " + e.toString());
                     }
                     // convert
                     //check whether unitA is a mass or a volume
-                    double result = MassVolumeUnitConverter.MassToVolume(UnitConverters.ParseFraction(massVolumeNum1.getText().toString()),massVolumeUnit1.getSelectedItemPosition(),massVolumeUnit2.getSelectedItemPosition(),0,"Mass");
-
+                    double result = MassVolumeUnitConverter.MassToVolume(UnitConverters.ParseFraction(massVolumeNum1.getText().toString()), massVolumeUnit1.getSelectedItemPosition(), massVolumeUnit2.getSelectedItemPosition(), 0, "Mass");
+                    list.add(new ConversionFactor(massVolumeNewIngredient.getText().toString(), result));
                     // set selection on the new ingredient
                     massVolumeIngredient.setSelection(list.size() - 1);
                     massVolumeNum1.setText("0");
@@ -113,36 +125,76 @@ public class ToolsMassVolumeFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 // user adds new ingredient
-                if (massVolumeIngredient.getItemAtPosition(i).equals("Add New")) {
-                    massVolumeNum2.setVisibility(View.INVISIBLE);
-                    massVolumeNum2Editable.setVisibility(View.VISIBLE);
-                    massVolumeNum1.setText("0");
-                    massVolumeNum2Editable.setText("0");
-                    massVolumeNewIngredient.setEnabled(true);
-                    btnMassVolumeAdd.setEnabled(true);
-                }
-                // user views existing ingredient
-                else {
-                    // TODO: make another layout with buttons Modify and Delete instead the one with
-                    // massVolumeNewIngredient and btnMassVolumeAdd and make that layout visible
-                    // in the first if, make the other layout visible instead
-                    massVolumeNum2.setVisibility(View.VISIBLE);
-                    massVolumeNum2Editable.setVisibility(View.INVISIBLE);
-                    massVolumeNewIngredient.setText("");
-                    massVolumeNewIngredient.setEnabled(false);
-                    btnMassVolumeAdd.setEnabled(false);
-                }
+                massVolumeNum2.setVisibility(View.INVISIBLE);
+                massVolumeNum2Editable.setVisibility(View.VISIBLE);
+                massVolumeNum1.setText("0");
+                massVolumeNum2Editable.setText("0");
+                massVolumeNewIngredient.setEnabled(true);
+                btnMassVolumeAdd.setEnabled(true);
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {}
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
         });
-
-        return view ;
+        return view;
     }
 
+    private void setupConversion(final EditText self, final EditText other, final boolean massFirst) {
+        TextWatcher convertListener = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if ((editable.toString() != "0") && (editable.length() != 0)) {
+                    ConvertNumber(self.getText().toString(), other, massFirst);
+                }
+            }
+        };
+
+        AdapterView.OnItemSelectedListener unitListener = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                ConvertNumber(self.getText().toString(), other, massFirst);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                adapterView.setSelection(1);
+            }
+        };
+        self.addTextChangedListener(convertListener);
+        massVolumeUnit1.setOnItemSelectedListener(unitListener);
+        massVolumeUnit2.setOnItemSelectedListener(unitListener);
+    }
+
+    private void ConvertNumber(String inputNumber, EditText other, boolean massFirst) {
+        double num1 = UnitConverters.ParseFraction(inputNumber);
+        int unit1, unit2;
+        String unitType;
+        if (massFirst) {
+            unit1 = massVolumeUnit1.getSelectedItemPosition();
+            unit2 = massVolumeUnit2.getSelectedItemPosition();
+            unitType = "Mass";
+        } else {
+            unit1 = massVolumeUnit2.getSelectedItemPosition();
+            unit2 = massVolumeUnit1.getSelectedItemPosition();
+            unitType = "Volume";
+        }
+        Log.println(Log.INFO, "ConvertNumber", num1 + " " + unit1 + " " + unit2);
+        double factor = list.get(names.indexOf(massVolumeIngredient.getSelectedItem())).factor;
+        other.setText(DF.format(MassVolumeUnitConverter.MassToVolume(num1, unit1, unit2, factor, unitType)));
+    }
+
+
     private boolean isNewConversionEntered() {
-        Log.println(Log.INFO,"isNewConversionEntered", massVolumeNewIngredient.getText().toString()
+        Log.println(Log.INFO, "isNewConversionEntered", massVolumeNewIngredient.getText().toString()
                 + ", " + massVolumeNum1.getText().toString() + ", " + massVolumeNum2Editable.getText().toString());
         return ((massVolumeNewIngredient.getText().toString().trim().length() != 0) &&
                 (!massVolumeNum1.getText().toString().equals("0")) &&
