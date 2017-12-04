@@ -32,7 +32,6 @@ import com.feasymax.cookbook.model.entity.Ingredient;
 import com.feasymax.cookbook.model.entity.Recipe;
 import com.feasymax.cookbook.util.Graphics;
 import com.feasymax.cookbook.view.RecipesActivity;
-import com.feasymax.cookbook.view.ViewTransactions;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -346,7 +345,6 @@ public class RecipeAddFragment extends Fragment {
      * @param isNewRecipe is it a new user recipe or saved from Discover collection
      * @param recipeId
      */
-    // TODO: check that it reads all tags and ingredients
     protected void addRecipe(boolean isNewRecipe, int recipeId, int category) {
         if (recipeTitle.getText().length() != 0) {
             Recipe recipe = new Recipe();
@@ -406,7 +404,7 @@ public class RecipeAddFragment extends Fragment {
             }
 
             if (Application.addNewRecipe(isNewRecipe, recipe, isOwner, recipeIconBitmap, category) != -1) {
-                Log.println(Log.INFO, "addRecipe", Application.getUserCurrentRecipe().toString());
+                Log.println(Log.INFO, "addRecipe", Application.getUserCollection().getCurRecipe().toString());
                 Log.println(Log.INFO, "addRecipe", Application.getUserCollection().
                         getCategoryRecipes(recipe.getCategory()).toString());
 
@@ -444,31 +442,15 @@ public class RecipeAddFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onPrepareOptionsMenu(Menu menu) {
         menu.clear();
-        inflater.inflate(R.menu.menu_fragment, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_info:
-                Log.println(Log.INFO, "MENU","action_info has clicked");
-                return true;
-            default:
-                Log.println(Log.INFO, "MENU","error");
-                break;
-        }
-
-        return false;
+        super.onPrepareOptionsMenu(menu);
     }
 
     /**
      * Go to fragment that displays recipe
      */
     protected void enterRecipeViewFragment() {
-        ViewTransactions.getViews().add(FRAGMENT_ID);
         ((RecipesActivity)getActivity()).navigateFragment(0, FRAGMENT_ID);
     }
 }

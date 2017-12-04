@@ -21,8 +21,12 @@ public class ToolsActivity extends ActivityMenuTabs {
         initializeActivity();
     }
 
+    /**
+     * Initialize activity components
+     */
     public void initializeActivity() {
         initializeDrawer();
+        setButtons();
 
         mViewPager = (ViewPager) findViewById(R.id.vp_tabs);
         mViewPager.setAdapter(new ToolsAdapter(getSupportFragmentManager(), this));
@@ -30,26 +34,18 @@ public class ToolsActivity extends ActivityMenuTabs {
         initializeTabs();
     }
 
-    public void initializeDrawer() {
-        super.initializeDrawer();
-    }
-
+    /**
+     * Initialize tab layout
+     */
     public void initializeTabs() {
         super.initializeTabs();
         mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         mTabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-
+    /**
+     * Set navigation menu buttons
+     */
     public void setButtons() {
         super.setButtons();
         btnTools.setOnClickListener(new View.OnClickListener() {

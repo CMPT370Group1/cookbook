@@ -1,19 +1,24 @@
 package com.feasymax.cookbook.view.fragment;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
 import com.feasymax.cookbook.view.MainActivity;
 import com.feasymax.cookbook.view.RegisterActivity;
+
+import java.sql.SQLException;
 
 /**
  * Created by Olya on 2017-09-21.
@@ -30,7 +35,7 @@ public class ToolsAccountFragment extends Fragment {
     EditText rsUserPassword;
     Button btnSignIn;
     Button btnRegister;
-    TextView signInErrorText;
+    TextView tvSigninError;
 
     // variables for account view/edit fragment
     Button btnEditAccount;
@@ -42,10 +47,12 @@ public class ToolsAccountFragment extends Fragment {
     EditText newPassword;
     TextView oldPassErrorText;
     TextView userTakenErrorText;
+    ProgressBar progressBar;
 
-    public ToolsAccountFragment() {
-        // Required empty public constructor
-    }
+    /**
+     * Required empty public constructor
+     */
+    public ToolsAccountFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -77,7 +84,7 @@ public class ToolsAccountFragment extends Fragment {
             btnSignOut.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Application.userSignOut();
+                    Application.userSignOut(getContext());
 
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     startActivity(intent);
@@ -88,8 +95,6 @@ public class ToolsAccountFragment extends Fragment {
             btnEditAccount.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-                    // TODO
 
                     // change layout depending if the user is viewing or modifying the account info
                     // user is modifying
@@ -144,18 +149,26 @@ public class ToolsAccountFragment extends Fragment {
             btnRegister = (Button) view.findViewById(R.id.buttonRegister);
             rsUserName = (EditText) view.findViewById(R.id.userName);
             rsUserPassword = (EditText) view.findViewById(R.id.userPassword);
-            signInErrorText = view.findViewById(R.id.signInErrorText);
+            tvSigninError = (EditText) view.findViewById(R.id.tv_signin_error);
+            progressBar = (ProgressBar) view.findViewById(R.id.pb_signin);
 
             // sign in
             btnSignIn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view3) {
-                    if (!Application.userSignIn(rsUserName.getText().toString(),
-                            rsUserPassword.getText().toString())) {
-                        signInErrorText.setVisibility(View.VISIBLE);
-                    } else {
-                        Intent intent = new Intent(getActivity(), MainActivity.class);
-                        startActivity(intent);
+                    String userName = rsUserName.getText().toString();
+                    String password = rsUserPassword.getText().toString();
+                    boolean missingFields = false;
+                    if (TextUtils.isEmpty(userName)) {
+                        missingFields = true;
+                        rsUserName.setError(getString(R.string.username_required));
+                    }
+                    if (TextUtils.isEmpty(password)) {
+                        missingFields = true;
+                        rsUserPassword.setError(getString(R.string.password_required));
+                    }
+                    if (!missingFields) {
+                        new ToolsAccountFragment.SiginTask().execute(userName, password);
                     }
                 }
             });
@@ -172,5 +185,51 @@ public class ToolsAccountFragment extends Fragment {
 
 
         return view ;
+    }
+
+    // AsyncTask for background process of Login
+    private class SiginTask extends AsyncTask<String, Void, String> {
+        static final String SIGNIN_SUCCESS = "Signin_successfull";
+        static final String SIGNIN_INCORRECT = "Signin_incorrect";
+        static final String SIGNIN_NETWORK_ERROR = "Signin_network_error";
+        @Override
+        protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
+            btnSignIn.setVisibility(View.GONE);
+            tvSigninError.setVisibility(View.GONE);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String userName = params[0];
+            String password = params[1];
+            try {
+                if (Application.userSignIn(userName, password, getContext())) {
+                    return SIGNIN_SUCCESS;
+                }
+                return SIGNIN_INCORRECT;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return SIGNIN_NETWORK_ERROR;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            progressBar.setVisibility(View.GONE);
+            btnSignIn.setVisibility(View.VISIBLE);
+            if (result.equals(SIGNIN_SUCCESS)) {
+                // Start main activity
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
+            } else if (result.equals(SIGNIN_INCORRECT)) {
+                // Show error text with error message
+                tvSigninError.setText(getString(R.string.invalid_credentials));
+                tvSigninError.setVisibility(View.VISIBLE);
+            } else {
+                tvSigninError.setText(getString(R.string.network_error));
+                tvSigninError.setVisibility(View.VISIBLE);
+            }
+        }
     }
 }

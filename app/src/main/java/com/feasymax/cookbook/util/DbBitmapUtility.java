@@ -12,14 +12,22 @@ import java.io.ByteArrayOutputStream;
 
 public class DbBitmapUtility {
 
-    // convert from bitmap to byte array
+    /**
+     * Convert from bitmap to byte array
+     * @param bitmap
+     * @return
+     */
     public static byte[] getBytes(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
         return stream.toByteArray();
     }
 
-    // convert from byte array to bitmap
+    /**
+     * Convert from byte array to bitmap
+     * @param image
+     * @return
+     */
     public static Bitmap getImage(byte[] image) {
         return BitmapFactory.decodeByteArray(image, 0, image.length);
     }

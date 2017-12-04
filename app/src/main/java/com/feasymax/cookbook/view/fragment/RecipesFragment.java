@@ -1,9 +1,9 @@
 package com.feasymax.cookbook.view.fragment;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,20 +11,19 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
 import com.feasymax.cookbook.model.entity.Recipe;
 import com.feasymax.cookbook.view.DiscoverActivity;
 import com.feasymax.cookbook.view.RecipesActivity;
-import com.feasymax.cookbook.view.ViewTransactions;
 import com.feasymax.cookbook.view.fragment.common.ShowRecipesFragment;
 import com.feasymax.cookbook.view.list.RecipeListAdapter;
-import com.feasymax.cookbook.view.list.RecipeListModel;
+import com.feasymax.cookbook.model.entity.RecipeShortInfo;
 
 import java.util.List;
 
@@ -38,15 +37,17 @@ public class RecipesFragment extends ShowRecipesFragment{
 
     private Button btnAllCategories;
     private RelativeLayout noItemsLayout;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     ListView list;
     RecipeListAdapter adapter;
     public RecipesFragment CustomListView = null;
-    public List<RecipeListModel> CustomListViewValuesArr;
+    public List<RecipeShortInfo> CustomListViewValuesArr;
 
-    public RecipesFragment() {
-        // Required empty public constructor
-    }
+    /**
+     * Required empty public constructor
+     */
+    public RecipesFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,13 +59,46 @@ public class RecipesFragment extends ShowRecipesFragment{
 
         noItemsLayout = view.findViewById(R.id.noItemsLayout);
 
-        btnAllCategories = (Button) view.findViewById(R.id.buttonAllCategories);
+        btnAllCategories = view.findViewById(R.id.buttonAllCategories);
         btnAllCategories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 enterAllCategoriesFragment();
             }
         });
+        if (getActivity() instanceof RecipesActivity) {
+            btnAllCategories.setText(getResources().getStringArray(R.array.categories)[Application.
+                    getUserCollection().getCategory()]);
+        }
+        else if (getActivity() instanceof DiscoverActivity){
+            btnAllCategories.setText(getResources().getStringArray(R.array.categories)[Application.
+                    getDiscoverCollection().getCategory()]);
+        }
+
+
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        Log.d("Swipe refresh", "onRefresh called from SwipeRefreshLayout");
+
+                        // This method performs the actual data-refresh operation.
+                        // The method calls setRefreshing(false) when it's finished.
+                        int category;
+                        if (getActivity() instanceof RecipesActivity) {
+                            category = Application.getUserCollection().getCategory();
+                            Application.getUserCollection().updateRecipes(category);
+                        }
+                        else if (getActivity() instanceof DiscoverActivity) {
+                            category = Application.getDiscoverCollection().getCategory();
+                            Application.getDiscoverCollection().updateRecipes(category);
+                        }
+                        onResume();
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                }
+        );
 
         list = view.findViewById( R.id.list );
         CustomListView = this;
@@ -100,15 +134,15 @@ public class RecipesFragment extends ShowRecipesFragment{
     @Override
     public void onItemClick(int mPosition)
     {
-        RecipeListModel tempValues = CustomListViewValuesArr.get(mPosition);
+        RecipeShortInfo tempValues = CustomListViewValuesArr.get(mPosition);
         Recipe recipe = Application.getRecipeFromShortInfo(tempValues);
         if (this.getActivity() instanceof RecipesActivity) {
             recipe.setCategory(Application.getUserCollection().getCategory());
-            Application.setUserCurrentRecipe(recipe);
+            Application.getUserCollection().setCurRecipe(recipe);
         }
         else if (this.getActivity() instanceof DiscoverActivity) {
             recipe.setCategory(Application.getDiscoverCollection().getCategory());
-            Application.setDiscoverCurrentRecipe(recipe);
+            Application.getDiscoverCollection().setCurRecipe(recipe);
         }
         else {
             Log.println(Log.ERROR, "onItemClick", "Unexpected activity");
@@ -122,7 +156,6 @@ public class RecipesFragment extends ShowRecipesFragment{
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
         // Store the Fragment in stack
-        ViewTransactions.getViews().add(FRAGMENT_ID);
         transaction.addToBackStack(null);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
@@ -132,11 +165,10 @@ public class RecipesFragment extends ShowRecipesFragment{
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
         // Store the Fragment in stack
-        ViewTransactions.getViews().add(FRAGMENT_ID);
         transaction.addToBackStack(null);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
-
+/*
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
@@ -157,10 +189,11 @@ public class RecipesFragment extends ShowRecipesFragment{
 
         return false;
     }
-
+*/
     @Override
     public void onResume() {
         super.onResume();
+
         CustomListViewValuesArr = null;
         setListData();
         if (CustomListViewValuesArr.size() != 0) {

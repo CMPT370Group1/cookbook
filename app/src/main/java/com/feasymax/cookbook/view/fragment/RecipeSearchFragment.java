@@ -1,18 +1,24 @@
 package com.feasymax.cookbook.view.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
+import android.widget.Spinner;
 
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
@@ -20,10 +26,9 @@ import com.feasymax.cookbook.model.entity.Recipe;
 import com.feasymax.cookbook.model.util.Search;
 import com.feasymax.cookbook.view.DiscoverActivity;
 import com.feasymax.cookbook.view.RecipesActivity;
-import com.feasymax.cookbook.view.ViewTransactions;
 import com.feasymax.cookbook.view.fragment.common.ShowRecipesFragment;
 import com.feasymax.cookbook.view.list.RecipeListAdapter;
-import com.feasymax.cookbook.view.list.RecipeListModel;
+import com.feasymax.cookbook.model.entity.RecipeShortInfo;
 
 import java.util.List;
 
@@ -37,15 +42,17 @@ public class RecipeSearchFragment extends ShowRecipesFragment {
 
     private SearchView searchView;
     private RelativeLayout noItemsLayout;
+    private Button btnAdvancedSearch;
 
     ListView list;
     RecipeListAdapter adapter;
     public RecipeSearchFragment CustomListView = null;
-    public List<RecipeListModel> CustomListViewValuesArr;
+    public List<RecipeShortInfo> CustomListViewValuesArr;
 
-    public RecipeSearchFragment() {
-        // Required empty public constructor
-    }
+    /**
+     * Required empty public constructor
+     */
+    public RecipeSearchFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,6 +64,7 @@ public class RecipeSearchFragment extends ShowRecipesFragment {
 
         noItemsLayout = view.findViewById(R.id.noItemsLayout);
 
+        // set up search view
         searchView = view.findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -72,6 +80,7 @@ public class RecipeSearchFragment extends ShowRecipesFragment {
                     Log.println(Log.ERROR, "search", "unexpected activity");
                 }
 
+                // get search results from keywords
                 CustomListViewValuesArr = Search.getSearchResults(s, activity);
                 if (CustomListViewValuesArr.size() != 0) {
                     noItemsLayout.setVisibility(View.GONE);
@@ -98,6 +107,104 @@ public class RecipeSearchFragment extends ShowRecipesFragment {
         });
 
 
+        // set up dialog for advanced search
+        btnAdvancedSearch = view.findViewById(R.id.buttonAdvancedSearch);
+        btnAdvancedSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("ADVANCED SEARCH");
+
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                View dialogView = inflater.inflate(R.layout.dialog_advanced_search, null);
+                builder.setView(dialogView);
+
+                // Set up the input fields
+                final EditText title = dialogView.findViewById(R.id.title);
+                final Spinner category = dialogView.findViewById(R.id.category);
+                final EditText directions = dialogView.findViewById(R.id.directions);
+                final EditText ingredients = dialogView.findViewById(R.id.ingredients);
+                final EditText tags = dialogView.findViewById(R.id.tags);
+                final CheckBox checkBox = dialogView.findViewById(R.id.checkbox);
+
+                // Set up the buttons
+                builder.setPositiveButton("SEARCH", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        searchView.setQuery("", false);
+
+                        String newLink = title.getText().toString();
+                        Log.println(Log.INFO, "link", newLink);
+                        try {
+                            String titleString = title.getText().toString();
+                            int categoryInt = category.getSelectedItemPosition() - 1;
+                            String directionsString = directions.getText().toString();
+                            String ingredientsString = ingredients.getText().toString();
+                            String tagsString = tags.getText().toString();
+                            int activity = 0;
+                            if (getActivity() instanceof RecipesActivity) {
+                                activity = 0;
+                            }
+                            if (getActivity() instanceof DiscoverActivity) {
+                                activity = 1;
+                            }
+                            else {
+                                Log.println(Log.ERROR, "search", "unexpected activity");
+                            }
+                            boolean isIncludingAllAttributes = checkBox.isChecked();
+
+                            CustomListViewValuesArr = Search.getAdvancedSearchResults(titleString,
+                                    categoryInt, directionsString, ingredientsString, tagsString,
+                                    activity, isIncludingAllAttributes);
+                            if (CustomListViewValuesArr.size() != 0) {
+                                noItemsLayout.setVisibility(View.GONE);
+                                list.setVisibility(View.VISIBLE);
+                                setAdapter();
+                                // hide keyboard
+                                InputMethodManager imm = (InputMethodManager)getActivity().
+                                        getSystemService(Context.INPUT_METHOD_SERVICE);
+                                imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
+                            }
+                            else {
+                                noItemsLayout.setVisibility(View.VISIBLE);
+                                list.setVisibility(View.GONE);
+                            }
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.setNeutralButton("Clear", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}
+                });
+
+
+                final AlertDialog dialog = builder.create();
+                dialog.show();
+
+                dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        title.setText("");
+                        category.setSelection(0);
+                        directions.setText("");
+                        ingredients.setText("");
+                        tags.setText("");
+                    }
+                });
+            }
+        });
+
         CustomListView = this;
         list = view.findViewById( R.id.list );
         setAdapter();
@@ -119,15 +226,15 @@ public class RecipeSearchFragment extends ShowRecipesFragment {
 
     public void onItemClick(int mPosition)
     {
-        RecipeListModel tempValues = CustomListViewValuesArr.get(mPosition);
+        RecipeShortInfo tempValues = CustomListViewValuesArr.get(mPosition);
         Recipe recipe = Application.getRecipeFromShortInfo(tempValues);
         if (this.getActivity() instanceof RecipesActivity) {
             recipe.setCategory(Application.getUserCollection().getCategory());
-            Application.setUserCurrentRecipe(recipe);
+            Application.getUserCollection().setCurRecipe(recipe);
         }
         else if (this.getActivity() instanceof DiscoverActivity) {
             recipe.setCategory(Application.getDiscoverCollection().getCategory());
-            Application.setDiscoverCurrentRecipe(recipe);
+            Application.getDiscoverCollection().setCurRecipe(recipe);
         }
         else {
             Log.println(Log.ERROR, "onItemClick", "Unexpected activity");
@@ -141,8 +248,13 @@ public class RecipeSearchFragment extends ShowRecipesFragment {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
         // Store the Fragment in stack
-        ViewTransactions.getViews().add(FRAGMENT_ID);
         transaction.addToBackStack(null);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.clear();
+        super.onPrepareOptionsMenu(menu);
     }
 }

@@ -2,6 +2,7 @@ package com.feasymax.cookbook.model.entity;
 
 /**
  * Created by Olya on 2017-10-08.
+ * Ingredient for a recipe.
  */
 
 public class Ingredient {

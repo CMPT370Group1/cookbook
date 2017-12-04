@@ -2,16 +2,18 @@ package com.feasymax.cookbook.model.util;
 
 /**
  * Created by kristine042 on 2017-10-09.
- * The class manages database access and all functionality related to it.
+ * Utility class to manage database access and all functionality related to it.
  */
 
 import android.graphics.Bitmap;
 import android.util.Log;
 import com.feasymax.cookbook.model.entity.Ingredient;
 import com.feasymax.cookbook.model.entity.Recipe;
+import com.feasymax.cookbook.model.entity.UserAccount;
+import com.feasymax.cookbook.model.entity.WebpageInfo;
 import com.feasymax.cookbook.util.DbBitmapUtility;
 import com.feasymax.cookbook.util.Graphics;
-import com.feasymax.cookbook.view.list.RecipeListModel;
+import com.feasymax.cookbook.model.entity.RecipeShortInfo;
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -34,78 +36,52 @@ public class UserDao {
     private static final int ADMIN_ID = 1;
     private volatile int userID = 0;
     private volatile int recipeID = -1;
+    private volatile int linkID = -1;
     private volatile String updateRes = "";
     private String email;
-    private List<RecipeListModel> list = null;
+    private List<RecipeShortInfo> list = null;
+    private List<WebpageInfo> links = null;
 
     /**
      * Get a connection to database
      * @return Connection object
      */
-    private void connect() {
+    private void connect() throws SQLException{
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
             System.out.println("No Postgre driver.");
             e.printStackTrace();
         }
-        try  {
-
-            conn = DriverManager.getConnection("jdbc:" + DBMS + "://" + SERVER_NAME
-                    + ":" + PORT_NUMBER + "/" + DB_NAME, USERNAME, PASSWORD);
-
-        } catch (SQLException ex) {
-            throw new RuntimeException("Error connecting to the database", ex);
-
-        }
+        conn = DriverManager.getConnection("jdbc:" + DBMS + "://" + SERVER_NAME
+                + ":" + PORT_NUMBER + "/" + DB_NAME, USERNAME, PASSWORD);
     }
 
     /**
-     * Get user's id
+     * Sign in user
      * @param user
      * @param password
      * @return
      */
-    public int getUserID(final String user, final String password) {
+    public int signInUser(final UserAccount user, final String password) throws SQLException{
         userID = 0;
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try  {
-                    connect();
-                    Statement stmt = null;
-                    ResultSet rs = null;
-                    try {
-                        String query = "SELECT * FROM users u WHERE u.username = '"
-                                + user + "' and u.passwords = " + "'" + password + "'";
-                        stmt = conn.createStatement();
-                        rs = stmt.executeQuery(query);
-                        if (rs.next()) {
-                            userID = rs.getInt("id");
-                        }
-                    } catch(SQLException e) {
-                        System.out.println("SQL error");
-                        e.printStackTrace();
-                    } finally {
-                        try {
-                            if (conn != null)
-                                conn.close();
-                        }
-                        catch(SQLException e) {
-
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        thread.start();
+        connect();
+        Statement stmt = null;
+        ResultSet rs = null;
         try {
-            Thread.sleep(1800);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            String query = "SELECT id, email_add FROM users u WHERE u.username = '" +
+                    user.getUsername() + "' AND passwords = '" + password + "'";
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(query);
+            // if the username is not already taken
+            if (rs.next()) {
+                userID = rs.getInt("id");
+                user.setUserID(userID);
+                user.setEmail(rs.getString("email_add"));
+            }
+        } finally {
+            if (conn != null)
+                conn.close();
         }
         return userID;
     }
@@ -119,58 +95,34 @@ public class UserDao {
      * @param lastName
      * @return
      */
-    public int regUser(final String user, final String password, final String email, final String firstName, final String lastName) {
+    public int registerUser(final String user, final String password, final String email, final String firstName, final String lastName) throws SQLException {
         userID = 0;
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try  {
-                    connect();
-                    Statement stmt = null;
-                    ResultSet rs = null;
-                    try {
-                        String query = "SELECT * FROM users u WHERE u.username = '"
-                                + user + "'";
-                        stmt = conn.createStatement();
-                        rs = stmt.executeQuery(query);
-                        // if the username is not already taken
-                        if (!rs.next()) {
-                            
-                            rs = stmt.executeQuery("SELECT MAX(id) AS id FROM users");
-                            int autoID = 1;
-                            if (rs.next()) {
-                                autoID = rs.getInt("id") + 1;
-                            }
-                            query = "INSERT INTO users (id, username, passwords, email_add, first_name, last_name) VALUES ("
-                                    + autoID + ", '" + user + "', '" + password + "', '"
-                                    + email + "', '" + firstName + "', '" + lastName + "')";
-                            stmt = conn.createStatement();
-                            stmt.execute(query);
-                            userID = autoID;
-                        }
-                    } catch(SQLException e) {
-                        System.out.println("SQL error");
-                        e.printStackTrace();
-                    } finally {
-                        try {
-                            if (conn != null)
-                                conn.close();
-                        }
-                        catch(SQLException e) {
-
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        thread.start();
+        connect();
+        Statement stmt = null;
+        ResultSet rs = null;
         try {
-            Thread.sleep(1800);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            String query = "SELECT * FROM users u WHERE u.username = '"
+                    + user + "'";
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(query);
+            // if the username is not already taken
+            if (!rs.next()) {
+
+                rs = stmt.executeQuery("SELECT MAX(id) AS id FROM users");
+                int autoID = 1;
+                if (rs.next()) {
+                    autoID = rs.getInt("id") + 1;
+                }
+                query = "INSERT INTO users (id, username, passwords, email_add, first_name, last_name) VALUES ("
+                        + autoID + ", '" + user + "', '" + password + "', '"
+                        + email + "', '" + firstName + "', '" + lastName + "')";
+                stmt = conn.createStatement();
+                stmt.execute(query);
+                userID = autoID;
+            }
+        } finally {
+            if (conn != null)
+                conn.close();
         }
         return userID;
     }
@@ -184,8 +136,8 @@ public class UserDao {
      * @param newPassword
      * @return
      */
-    public String update(final int userID, final String user, final String userEmail,
-                         final String oldPassword, final String newPassword) {
+    public String updateUserAccount(final int userID, final String user, final String userEmail,
+                                    final String oldPassword, final String newPassword) {
         updateRes = "";
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -267,11 +219,11 @@ public class UserDao {
     }
 
     /**
-     * Get user's email address
-     * @param userID
+     * Get username and email address from user id
+     * @param user
      * @return
      */
-    public String getEmail(final int userID) {
+    public void getUserInfo(final UserAccount user) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -280,11 +232,13 @@ public class UserDao {
                     Statement stmt = null;
                     ResultSet rs = null;
                     try {
-                        String query = "SELECT * FROM users u WHERE u.id = " + userID;
+                        String query = "SELECT username, email_add FROM users u WHERE u.id = " +
+                                user.getUserID();
                         stmt = conn.createStatement();
                         rs = stmt.executeQuery(query);
                         if (rs.next()) {
-                            email = rs.getString("email_add");
+                            user.setUsername(rs.getString("username"));
+                            user.setEmail(rs.getString("email_add"));
                         }
                     } catch(SQLException e) {
                         System.out.println("SQL error");
@@ -294,9 +248,7 @@ public class UserDao {
                             if (conn != null)
                                 conn.close();
                         }
-                        catch(SQLException e) {
-
-                        }
+                        catch(SQLException e) {}
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -310,7 +262,6 @@ public class UserDao {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return email;
     }
 
 
@@ -321,7 +272,7 @@ public class UserDao {
      * @param category
      * @return result code
      */
-    public List<RecipeListModel> updateRecipeCollection(final boolean isUserCollection, final int userID, final int category) {
+    public List<RecipeShortInfo> updateRecipeCollection(final boolean isUserCollection, final int userID, final int category) {
         list = null;
 
         Thread thread = new Thread(new Runnable() {
@@ -342,7 +293,7 @@ public class UserDao {
                         byte[] image_icon = null;
                         Bitmap image = null;
 
-                        RecipeListModel recipeListModel = null;
+                        RecipeShortInfo recipeShortInfo = null;
                         list = new LinkedList<>();
 
                         // insert all recipe info into recipes table
@@ -367,9 +318,9 @@ public class UserDao {
                                 image = DbBitmapUtility.getImage(image_icon);
                             }
 
-                            recipeListModel = new RecipeListModel(id, title, image, duration);
-                            Log.println(Log.INFO, "updateRecipeCollection", recipeListModel.toString());
-                            list.add(recipeListModel);
+                            recipeShortInfo = new RecipeShortInfo(id, title, image, duration);
+                            Log.println(Log.INFO, "updateRecipeCollection", recipeShortInfo.toString());
+                            list.add(recipeShortInfo);
 
                             image_icon = null;
                         }
@@ -411,7 +362,7 @@ public class UserDao {
      * @param recipe incomplete recipe to be filled
      * @return result code
      */
-    public int updateRecipe(final Recipe recipe, final int userID) {
+    public int getFullRecipe(final Recipe recipe, final int userID) {
         recipeID = recipe.getId();
 
         Thread thread = new Thread(new Runnable() {
@@ -447,7 +398,7 @@ public class UserDao {
 
                             recipe.setDirections(directions);
                             recipe.setImage(image);
-                            Log.println(Log.INFO, "updateRecipe", recipe.toString());
+                            Log.println(Log.INFO, "getFullRecipe", recipe.toString());
                         }
 
                         // get ingredients
@@ -467,7 +418,7 @@ public class UserDao {
                                 unit = Integer.valueOf(rs.getString("unit"));
 
                                 ingredients.add(new Ingredient(name, quantity, unit));
-                                Log.println(Log.INFO, "updateRecipe", ingredients.toString());
+                                Log.println(Log.INFO, "getFullRecipe", ingredients.toString());
                             }
                         }
                         recipe.setIngredients(ingredients);
@@ -485,7 +436,7 @@ public class UserDao {
                                 tag_name = rs.getString("tag_name");
 
                                 tags.add(tag_name);
-                                Log.println(Log.INFO, "updateRecipe", tags.toString());
+                                Log.println(Log.INFO, "getFullRecipe", tags.toString());
                             }
                         }
                         recipe.setTags(tags);
@@ -535,7 +486,7 @@ public class UserDao {
             e.printStackTrace();
         }
 
-        Log.println(Log.INFO, "updateRecipe", recipe.toString());
+        Log.println(Log.INFO, "getFullRecipe", recipe.toString());
         return 0;
     }
 
@@ -547,7 +498,7 @@ public class UserDao {
      * @param recipeID
      * @return result code
      */
-    public List<RecipeListModel> deleteRecipe(final int userID, final int recipeID) {
+    public List<RecipeShortInfo> deleteRecipe(final int userID, final int recipeID) {
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -761,7 +712,7 @@ public class UserDao {
 
                                 // insert a tag
                                 query = "INSERT INTO tag (tag_name, recipe_id) " +
-                                            "VALUES (?, ?)";
+                                        "VALUES (?, ?)";
                                 stmt = conn.prepareStatement(query);
                                 stmt.setString(1, tag);
                                 stmt.setInt(2, recipeID);
@@ -832,13 +783,13 @@ public class UserDao {
     }
 
     /**
-     * Searching recipes by list of keywords
+     * Searching recipes' titles and directions by list of keywords
      * @param isUserCollection is it user or discover collection
      * @param userID
      * @param tokens list of keywords
      * @return
      */
-    public List<RecipeListModel> searchRecipes(final boolean isUserCollection, final int userID,
+    public List<RecipeShortInfo> searchRecipes(final boolean isUserCollection, final int userID,
                                                final List<String> tokens) {
         list = null;
 
@@ -847,7 +798,7 @@ public class UserDao {
             public void run() {
                 //don't need to create a new list at the beginning since we will be
                 //adding searching for everything then adding up.
-                RecipeListModel recipeListModel = null;
+                RecipeShortInfo recipeShortInfo = null;
 
                 try {
                     connect();
@@ -899,9 +850,9 @@ public class UserDao {
                                 image = DbBitmapUtility.getImage(image_icon);
                             }
 
-                            recipeListModel = new RecipeListModel(id, title, image, duration);
-                            Log.println(Log.INFO, "discover Recipes", recipeListModel.toString());
-                            list.add(recipeListModel);
+                            recipeShortInfo = new RecipeShortInfo(id, title, image, duration);
+                            Log.println(Log.INFO, "discover Recipes", recipeShortInfo.toString());
+                            list.add(recipeShortInfo);
                             image_icon = null;
                         }
                         stmt.close();
@@ -913,20 +864,16 @@ public class UserDao {
                         try {
                             if (conn != null)
                                 conn.close();
-                        } catch (SQLException e) {
-                        }
+                        } catch (SQLException e) {}
                     }
-
-
                 }
                 catch (Exception e) {
                     e.printStackTrace();
                 }
-
             }
         });
+
         //start the thread
-        //dont use sleep thread since it will overlap
         thread.start();
 
         try {
@@ -939,6 +886,176 @@ public class UserDao {
         return list;
 
     }
+
+    /**
+     * Search recipe collection by all recipe attributes
+     * @param isUserCollection
+     * @param userID
+     * @param titles
+     * @param directions
+     * @param ingredients
+     * @param tags
+     * @param category
+     * @param isIncludingAllAttributes
+     * @return
+     */
+    public List<RecipeShortInfo> advancedSearchRecipes(final boolean isUserCollection,
+                                                       final int userID,
+                                                       final List<String> titles,
+                                                       final List<String> directions,
+                                                       final List<String> ingredients,
+                                                       final List<String> tags,
+                                                       final int category,
+                                                       final boolean isIncludingAllAttributes) {
+        list = null;
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //don't need to create a new list at the beginning since we will be
+                //adding searching for everything then adding up.
+                RecipeShortInfo recipeShortInfo = null;
+
+                try {
+                    connect();
+                    PreparedStatement stmt = null;
+                    ResultSet rs = null;
+
+                    try {
+                        //global var list
+                        list = new LinkedList<>();
+
+
+                        //declare
+                        String title;
+                        int id;
+                        int duration;
+                        byte[] image_icon;
+                        Bitmap image = null;
+
+                        String logicalSeparator;
+                        if (isIncludingAllAttributes) {
+                            logicalSeparator = " AND";
+                        }
+                        else {
+                            logicalSeparator = " OR";
+                        }
+
+
+                        String query = "SELECT id, title, durtion_min, image_icon FROM recipes r WHERE ";
+
+                        if (isUserCollection) {
+                            query += " r.id IN (SELECT recipe_id FROM user_recipe " +
+                                    "WHERE user_id = " + userID + ") AND";
+                        }
+
+                        if (titles.size() > 0) {
+                            String titleQuery = "~* '("+titles.get(0);
+                            for (int i = 1; i < titles.size(); i++)
+                            {
+                                titleQuery += "|"+titles.get(i);
+                            }
+                            titleQuery += ")'";
+                            query+=" r.title " + titleQuery + logicalSeparator;
+                        }
+
+                        if (directions.size() > 0) {
+                            String directionsQuery = "~* '("+directions.get(0);
+                            for (int i = 1; i < directions.size(); i++)
+                            {
+                                directionsQuery += "|"+directions.get(i);
+                            }
+                            directionsQuery += ")'";
+                            query+=" r.recipe_description " + directionsQuery + logicalSeparator;
+                        }
+
+                        if (ingredients.size() > 0) {
+                            String ingredientsQuery = "~* '("+ingredients.get(0);
+                            for (int i = 1; i < ingredients.size(); i++)
+                            {
+                                ingredientsQuery += "|"+ingredients.get(i);
+                            }
+                            ingredientsQuery += ")'";
+                            query+=" r.id IN (SELECT recipe_id FROM ingredients i WHERE i.name " +
+                                    ingredientsQuery + " AND i.recipe_id = r.id)" + logicalSeparator;
+                        }
+
+                        if (tags.size() > 0) {
+                            String tagsQuery = "~* '("+tags.get(0);
+                            for (int i = 1; i < tags.size(); i++)
+                            {
+                                tagsQuery += "|"+tags.get(i);
+                            }
+                            tagsQuery += ")'";
+                            query+=" r.id IN (SELECT recipe_id FROM tag t WHERE t.tag_name " +
+                                    tagsQuery + " AND t.recipe_id = r.id)" + logicalSeparator;
+                        }
+
+                        query = query.substring(0, query.lastIndexOf(' '));
+
+                        if (category >= 0) {
+                            // if at least one of titles, directions, ingredients or tags list is
+                            // not empty
+                            if (!query.substring(query.lastIndexOf(" ")+1).equals("WHERE")) {
+                                query += " AND";
+                            }
+
+                            query+=" r.category_name = '" + String.valueOf(category) + "'";
+                        }
+
+                        // if all of the attributes are empty, remove "WHERE" from the query
+                        if (query.substring(query.lastIndexOf(" ")+1).equals("WHERE")) {
+                            query = query.substring(0, query.lastIndexOf(' '));
+                        }
+
+                        Log.println(Log.INFO, "query", query);
+
+                        stmt = conn.prepareStatement(query);
+                        rs = stmt.executeQuery();
+                        if (!rs.isBeforeFirst()) {
+                            throw new SQLException("No data found");
+                        }
+
+                        while (rs.next()) {
+
+                            id = rs.getInt("id");
+                            title = rs.getString("title");
+                            duration= rs.getInt("durtion_min");
+                            if (rs.getObject("image_icon") != null && !rs.wasNull()) {
+                                image_icon = rs.getBytes("image_icon");
+                                image = DbBitmapUtility.getImage(image_icon);
+                            }
+
+                            recipeShortInfo = new RecipeShortInfo(id, title, image, duration);
+                            Log.println(Log.INFO, "discover Recipes", recipeShortInfo.toString());
+                            list.add(recipeShortInfo);
+                        }
+                        stmt.close();
+
+                    }
+                    catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+        //start the thread
+        thread.start();
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
 
     /**
      * Remove duplicate rows in a table with filelds
@@ -961,9 +1078,217 @@ public class UserDao {
             System.out.println("SQL error");
             e.printStackTrace();
         }
-
     }
 
+    /**
+     * Get all links saved in user's collection
+     * @param userID
+     * @return linked list of links
+     */
+    public List<WebpageInfo> getLinks(final int userID) {
 
+        links = null;
 
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    connect();
+                    PreparedStatement stmt = null;
+                    ResultSet rs = null;
+
+                    try {
+
+                        links = new LinkedList<>();
+                        WebpageInfo webpageInfo = null;
+
+                        int id = -1;
+                        String title = null;
+                        String url = null;
+                        String website = null;
+                        byte[] image_icon = null;
+                        Bitmap image = null;
+
+                        String query = "SELECT id, title, web_add, website, image FROM links WHERE " +
+                                "user_id = " + userID;
+                        Log.println(Log.INFO, "query", query);
+
+                        stmt = conn.prepareStatement(query);
+                        rs = stmt.executeQuery();
+                        if (!rs.isBeforeFirst()) {
+                            throw new SQLException("No data found");
+                        }
+                        while (rs.next()) {
+                            id = rs.getInt("id");
+                            title = rs.getString("title");
+                            url = rs.getString("web_add");
+                            website = rs.getString("website");
+                            if (rs.getObject("image") != null && !rs.wasNull()) {
+                                image_icon = rs.getBytes("image");
+                                image = DbBitmapUtility.getImage(image_icon);
+                            }
+
+                            webpageInfo = new WebpageInfo(id, title,url,website, "", image);
+                            Log.println(Log.INFO, "getLinks", webpageInfo.toString());
+                            links.add(webpageInfo);
+                        }
+                        stmt.close();
+
+                    } catch (SQLException e) {
+                        System.out.println("SQL ERROR for discover recipes");
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            if (conn != null)
+                                conn.close();
+                        } catch (SQLException e) {}
+                    }
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        //start the thread
+        thread.start();
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return links;
+    }
+
+    /**
+     * Add a link to user's collection
+     * @param userID
+     * @param webpageInfo
+     * @return
+     */
+    public int addLink(final int userID, final WebpageInfo webpageInfo) {
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    connect();
+                    PreparedStatement stmt = null;
+                    ResultSet rs = null;
+
+                    try {
+
+                        String title = webpageInfo.getTitle();
+                        String url = webpageInfo.getUrl();
+                        String website = webpageInfo.getWebsiteName();
+                        Bitmap image = webpageInfo.getImage();
+                        byte[] image_icon = null;
+
+                        if (image != null) {
+                            image_icon = DbBitmapUtility.getBytes(image);
+                        }
+
+                        String query;
+                        query = "INSERT INTO links (title, web_add, website, image, user_id) VALUES " +
+                                "(?, ?, ?, ?, ?)  RETURNING id";
+                        // insert all recipe info into recipes table
+                        stmt = conn.prepareStatement(query);
+                        stmt.setString(1, title);
+                        stmt.setString(2, url);
+                        stmt.setString(3, website);
+                        stmt.setBytes(4, image_icon);
+                        stmt.setInt(5, userID);
+
+                        rs = stmt.executeQuery();
+                        if (rs.next()) {
+                            linkID = rs.getInt("id");
+                        }
+
+                        stmt.close();
+
+                    } catch (SQLException e) {
+                        System.out.println("SQL ERROR for discover recipes");
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            if (conn != null)
+                                conn.close();
+                        } catch (SQLException e) {}
+                    }
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        //start the thread
+        thread.start();
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return this.linkID;
+    }
+
+    /**
+     * Delete specified link from user's collection
+     * @param linkID
+     */
+    public void deleteLink(final int linkID) {
+
+        links = null;
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    connect();
+                    PreparedStatement stmt = null;
+                    ResultSet rs = null;
+
+                    try {
+
+                        String query = "DELETE FROM links WHERE id = " + linkID;
+                        Log.println(Log.INFO, "query", query);
+
+                        stmt = conn.prepareStatement(query);
+                        if (stmt.executeUpdate() <= 0) {
+                            throw new SQLException("No link deleted");
+                        }
+                        stmt.close();
+
+                    } catch (SQLException e) {
+                        System.out.println("SQL ERROR for discover recipes");
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            if (conn != null)
+                                conn.close();
+                        } catch (SQLException e) {}
+                    }
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        //start the thread
+        thread.start();
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }

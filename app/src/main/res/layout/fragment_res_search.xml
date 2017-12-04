@@ -5,9 +5,9 @@
              android:id="@+id/categories_main_layout">
 
     <LinearLayout
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <SearchView
             android:id="@+id/searchView"
@@ -15,10 +15,20 @@
             android:layout_height="wrap_content"
             android:background="?attr/colorControlHighlight"/>
 
+        <Button
+            android:id="@+id/buttonAdvancedSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/colorButtonNormal"
+            android:paddingRight="@dimen/small_margin"
+            android:text="Advanced Search"
+            android:textAlignment="textEnd"/>
+
         <RelativeLayout
             android:id="@+id/noItemsLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

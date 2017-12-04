@@ -15,43 +15,46 @@ import com.feasymax.cookbook.view.fragment.ToolsVolumeFragment;
 
 /**
  * Created by Olya on 2017-09-21.
+ * Adapter for tabs in ToolsActivity
  */
 
 public class ToolsAdapter extends FragmentStatePagerAdapter {
-    private Context mContext;
+    /**
+     * List of tabs
+     */
     private String[] titles ={"ACCOUNT","MASS", "VOLUME", "TEMPERATURE", "MASS-VOLUME"};
+    private Fragment[] fragments = {new ToolsAccountFragment(),new ToolsMassFragment(),
+            new ToolsVolumeFragment(), new ToolsTemperatureFragment(), new ToolsMassVolumeFragment()};
 
     public ToolsAdapter(FragmentManager fm, Context c){
         super(fm);
     }
 
+    /**
+     * Get the fragment corresponding to the selected tab
+     * @param position the tab number
+     * @return the fragment
+     */
     @Override
     public Fragment getItem(int position) {
-        Fragment frag= null;
-
-        if(position ==0){
-            frag = new ToolsAccountFragment();
-        }else if(position == 1){
-            frag = new ToolsMassFragment();
-        }else if(position == 2){
-            frag = new ToolsVolumeFragment();
-        }else if(position == 3){
-            frag = new ToolsTemperatureFragment();
-        }else if(position == 4){
-            frag = new ToolsMassVolumeFragment();
-        }
-
-        Bundle b = new Bundle();
-        b.putInt("position", position);
-        frag.setArguments(b);
+        Fragment frag = fragments[position];
         return frag;
     }
 
+    /**
+     * Get the number of tabs
+     * @return
+     */
     @Override
     public int getCount() {
         return titles.length;
     }
 
+    /**
+     * Get the tab title from its position
+     * @param position
+     * @return
+     */
     public CharSequence getPageTitle(int position){
         return titles[position];
     }

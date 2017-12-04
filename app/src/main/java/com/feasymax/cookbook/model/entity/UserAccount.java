@@ -4,6 +4,7 @@ import java.util.List;
 
 /**
  * Created by Olya on 2017-10-08.
+ * User information.
  */
 
 public class UserAccount {
@@ -26,6 +27,22 @@ public class UserAccount {
      */
     private String email;
 
+    /**
+     * Public constructor setting username
+     * @param username
+     */
+    public UserAccount(String username) {
+        this.userID = -1;
+        this.username = username;
+        this.email = "";
+    }
+
+    /**
+     * Public constructor setting all attributes
+     * @param userID
+     * @param username
+     * @param email
+     */
     public UserAccount(int userID, String username, String email) {
         this.userID = userID;
         this.username = username;
@@ -72,18 +89,34 @@ public class UserAccount {
                 '}';
     }
 
+    /**
+     * Set username
+     * @param username
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
+    /**
+     * Set email address
+     * @param email
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * Get username
+     * @return
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Get email address
+     * @return
+     */
     public String getEmail() {
         return email;
     }

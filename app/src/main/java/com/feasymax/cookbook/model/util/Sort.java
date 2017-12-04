@@ -1,7 +1,7 @@
 package com.feasymax.cookbook.model.util;
 
 
-import com.feasymax.cookbook.view.list.RecipeListModel;
+import com.feasymax.cookbook.model.entity.RecipeShortInfo;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public class Sort {
 
     private Sort() {}
 
-    public List<RecipeListModel> sortRecipes(List<RecipeListModel> list) {
+    public List<RecipeShortInfo> sortRecipes(List<RecipeShortInfo> list) {
         // TODO: write sort function
         return list;
     }

@@ -13,12 +13,14 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
+import com.feasymax.cookbook.model.entity.WebpageInfo;
+import com.feasymax.cookbook.model.util.WebSearch;
 import com.feasymax.cookbook.view.DiscoverActivity;
 import com.feasymax.cookbook.view.RecipesActivity;
-import com.feasymax.cookbook.view.ViewTransactions;
 
 /**
  * Created by Olya on 2017-10-12.
@@ -31,9 +33,10 @@ public class WebPageViewFragment extends Fragment {
     private WebView webView;
     private Button btnBack;
 
-    public WebPageViewFragment() {
-        // Required empty public constructor
-    }
+    /**
+     * Required empty public constructor
+     */
+    public WebPageViewFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,11 +59,25 @@ public class WebPageViewFragment extends Fragment {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                enterPrevFragment();
+                if (getActivity() instanceof RecipesActivity) {
+                    enterLinksFragment();
+                }
+                else if (getActivity() instanceof DiscoverActivity) {
+                    enterPrevFragment();
+                }
             }
         });
 
         return view;
+    }
+
+    protected void enterLinksFragment() {
+        RecipeLinksFragment a2Fragment = new RecipeLinksFragment();
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+
+        // Store the Fragment in stack
+        transaction.addToBackStack(null);
+        transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
 
     /**
@@ -69,7 +86,6 @@ public class WebPageViewFragment extends Fragment {
     protected void enterPrevFragment() {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         // Store the Fragment in stack
-        ViewTransactions.getViews().add(FRAGMENT_ID);
         transaction.addToBackStack(null);
         transaction.detach(this).commit();
     }
@@ -77,19 +93,25 @@ public class WebPageViewFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
-        if (getActivity() instanceof DiscoverActivity) {
-            inflater.inflate(R.menu.menu_webpage, menu);
-        }
-        else {
-            Log.println(Log.ERROR, "MENU","unexpected activity");
-        }
+        inflater.inflate(R.menu.menu_webpage, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
-        if (!Application.isUserSignedIn()) {
-            menu.findItem(R.id.action_link_add).setEnabled(false);
+        if (!Application.isUserSignedIn() || (Application.isUserSignedIn() && Application.getUserCollection().
+                containsLink(Application.getDiscoverCollection().getWebsearchResult()))) {
+            MenuItem item = menu.findItem(R.id.action_link_add);
+            if (item != null) {
+                item.setEnabled(false);
+            }
+        }
+        if (!Application.isUserSignedIn() || !Application.getUserCollection().
+                containsLink(Application.getDiscoverCollection().getWebsearchResult())) {
+            MenuItem item = menu.findItem(R.id.action_link_delete);
+            if (item != null) {
+                item.setEnabled(false);
+            }
         }
     }
 
@@ -101,7 +123,19 @@ public class WebPageViewFragment extends Fragment {
                 return true;
             case R.id.action_link_add:
                 Log.println(Log.INFO, "MENU","action_link_add was clicked");
-                // TODO: call add link function
+                WebpageInfo webpageInfo = WebSearch.parsePageHeaderInfo(Application.
+                        getDiscoverCollection().getWebsearchResult());
+                if (webpageInfo != null) {
+                    if (!Application.addLink(webpageInfo)) {
+                        Toast.makeText(getContext(), "The link has already been " +
+                                "added before", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+                }
+                return true;
+            case R.id.action_link_delete:
+                Log.println(Log.INFO, "MENU","action_link_delete was clicked");
+                Application.deleteLink(Application.getUserCollection().getCurLink());
                 return true;
             default:
                 break;

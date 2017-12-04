@@ -4,6 +4,7 @@ import android.util.Log;
 
 /**
  * Created by Chase on 2017-10-12.
+ * Basic unit conversion functions (mass, volume and temperature)
  */
 
 public class UnitConverters {

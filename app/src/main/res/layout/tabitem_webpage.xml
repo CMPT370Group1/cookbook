@@ -1,43 +1,68 @@
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/recipe_layout"
-    android:layout_width="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/tiny_margin">
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/webpageTitle"
-        android:layout_width="match_parent"
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardview"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Recipe Title"
-        android:textSize="24sp"
-        android:textAllCaps="true"
-        android:maxLines="2"/>
+        android:elevation="100dp"
+        card_view:cardBackgroundColor="@android:color/white"
+        card_view:cardCornerRadius="8dp"
+        android:layout_margin="@dimen/tiny_margin"
+        android:padding="@dimen/tiny_margin"
+        >
 
-    <pl.charmas.android.tagview.TagView
-        android:id="@+id/webpageWebsite"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/tiny_margin"
-        android:layout_below="@id/webpageTitle"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:padding="@dimen/tiny_margin"
+            android:layout_margin="@dimen/tiny_margin">
 
-    <View
-        android:id="@+id/webpageDivider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/webpageWebsite"
-        android:layout_marginBottom="@dimen/tiny_margin"
-        android:layout_marginTop="@dimen/tiny_margin"
-        android:background="@android:color/darker_gray"/>
+            <TextView
+                android:id="@+id/webpageTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Recipe Title"
+                android:textSize="24sp"
+                android:textAllCaps="true"
+                android:maxLines="2"/>
 
-    <TextView
-        android:id="@+id/webpageDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/webpageDivider"
-        android:text="Some sentenses about the recipe."
-        android:maxLines="2"
-        android:layout_marginBottom="@dimen/tiny_margin"/>
+            <pl.charmas.android.tagview.TagView
+                android:id="@+id/webpageWebsite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/tiny_margin"
+                android:layout_below="@id/webpageTitle"/>
 
-</RelativeLayout>
+            <View
+                android:id="@+id/webpageDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/webpageWebsite"
+                android:layout_marginBottom="@dimen/tiny_margin"
+                android:layout_marginTop="@dimen/tiny_margin"
+                android:background="@android:color/darker_gray"/>
+
+            <TextView
+                android:id="@+id/webpageDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/webpageDivider"
+                android:text="Some sentenses about the recipe."
+                android:maxLines="2"
+                android:layout_marginBottom="@dimen/tiny_margin"/>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
+
+
+

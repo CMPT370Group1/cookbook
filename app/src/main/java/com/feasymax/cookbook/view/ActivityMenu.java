@@ -6,6 +6,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,10 +17,14 @@ import com.feasymax.cookbook.model.Application;
 
 /**
  * Created by Olya on 2017-10-08.
+ * Abstruct class for activities with navigation menu
  */
 
-public abstract class                                             ActivityMenu extends AppCompatActivity {
+public abstract class ActivityMenu extends AppCompatActivity {
 
+    /**
+     * Navigation menu buttons
+     */
     protected Button btnRecipes;
     protected Button btnDiscover;
     protected Button btnTools;
@@ -32,24 +37,26 @@ public abstract class                                             ActivityMenu e
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * Initialize activity components
+     */
     public void initializeActivity() {
-        /*
+        initializeDrawer();
+        setButtons();
+    }
 
-         */
+    /**
+     * Initialize navigation menu drawer
+     */
+    public void initializeDrawer() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        setTitle("");
 
-        /*
-
-         */
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.setDrawerListener(toggle);
         toggle.syncState();
-
-        setButtons();
     }
 
     @Override
@@ -61,19 +68,22 @@ public abstract class                                             ActivityMenu e
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+        // App Info was selected
         if (id == R.id.action_appinfo) {
+            Log.d("Menu", "action_appinfo was pressed");
+            Intent intent = new Intent(getApplicationContext(), IntroActivity.class);
+            startActivity(intent);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Set navigation menu buttons
+     */
     public void setButtons() {
         btnRecipes = (Button) findViewById(R.id.button1);
         btnDiscover = (Button) findViewById(R.id.button2);

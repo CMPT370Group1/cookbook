@@ -16,12 +16,6 @@ import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
 import com.feasymax.cookbook.view.DiscoverActivity;
 import com.feasymax.cookbook.view.RecipesActivity;
-import com.feasymax.cookbook.view.ViewTransactions;
-import com.feasymax.cookbook.view.fragment.RecipesFragment;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 /**
@@ -40,9 +34,8 @@ public class CategoriesFragment extends Fragment{
     /**
      * Required empty public constructor
      */
-    public CategoriesFragment() {
+    public CategoriesFragment() {}
 
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,6 +44,7 @@ public class CategoriesFragment extends Fragment{
 
         setHasOptionsMenu(true);
 
+        // find all category buttons
         categoryButtons = new ArrayList<>();
         categoryButtons.add(0, (ImageButton) view.findViewById(R.id.ib_breakfast));
         categoryButtons.add(1, (ImageButton) view.findViewById(R.id.ib_snack));
@@ -90,17 +84,18 @@ public class CategoriesFragment extends Fragment{
         return view ;
     }
 
-    // open a category fragment that shows all recipes in that category
+    /**
+     * Open a category fragment that shows all recipes in that category
+     */
     protected void enterRecipesFragment() {
         RecipesFragment a2Fragment = new RecipesFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
         // Store the Fragment in stack
-        ViewTransactions.getViews().add(FRAGMENT_ID);
         transaction.addToBackStack(null);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
-
+/*
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
@@ -121,4 +116,5 @@ public class CategoriesFragment extends Fragment{
 
         return false;
     }
+    */
 }
