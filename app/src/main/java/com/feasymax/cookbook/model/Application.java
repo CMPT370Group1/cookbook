@@ -16,6 +16,7 @@ import com.feasymax.cookbook.model.entity.RecipeShortInfo;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -57,7 +58,7 @@ public class Application {
      * @param password the password of the existing user
      * @return true on success, false on failure to sign in
      */
-    public static boolean userSignIn(String username, String password, Context context){
+    public static boolean userSignIn(String username, String password, Context context) throws SQLException{
         // verify that a user with username and password exists
         // get the userID and recipes from database
         UserDao userDao = new UserDao();
@@ -95,7 +96,7 @@ public class Application {
      * @return true on success, false on failure to register
      */
     public static boolean userRegister(String username, String password, String email,
-                                       String firstName, String lastName, Context context){
+                                       String firstName, String lastName, Context context) throws SQLException{
         UserDao userDao = new UserDao();
         int userID = userDao.registerUser(username, password, email, firstName, lastName);
         if (userID != 0) {

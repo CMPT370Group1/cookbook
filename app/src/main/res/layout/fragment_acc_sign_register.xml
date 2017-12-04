@@ -2,9 +2,9 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-             android:id="@+id/account_main_layout">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/account_main_layout">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,14 +43,20 @@
             android:visibility="gone"/>
 
         <TextView
-            android:id="@+id/signInErrorText"
+            android:id="@+id/tv_signin_error"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:text="Username or password is incorrect"
+            android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@android:color/holo_red_light"
-            android:visibility="gone"/>
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/pb_signin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/buttonSignin"

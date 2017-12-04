@@ -12,6 +12,14 @@
     <string name="action_recipe_add">Save Recipe</string>
     <string name="action_link_add">Save Link</string>
     <string name="action_link_delete">Delete Link</string>
+    <string name="username_required">Username is required</string>
+    <string name="password_required">Password is required</string>
+    <string name="invalid_credentials">Invalid Username and/or Password</string>
+    <string name="network_error">A network connection error occured. Please check your network connection and try again.</string>
+    <string name="firstname_required">Firstname Required</string>
+    <string name="lastname_required">Lastname Required</string>
+    <string name="email_required">Email Required</string>
+    <string name="user_already_exists">User already exists.</string>
 
     <string-array name="search_categories">
         <item>Any</item>
