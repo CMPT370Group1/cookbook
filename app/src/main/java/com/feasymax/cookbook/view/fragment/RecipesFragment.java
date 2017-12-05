@@ -153,8 +153,7 @@ public class RecipesFragment extends ShowRecipesFragment{
         RecipeViewFragment a2Fragment = new RecipeViewFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
-        // Store the Fragment in stack
-        transaction.addToBackStack(null);
+        list.setAdapter(null);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
 
@@ -162,8 +161,7 @@ public class RecipesFragment extends ShowRecipesFragment{
         CategoriesFragment a2Fragment = new CategoriesFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
-        // Store the Fragment in stack
-        transaction.addToBackStack(null);
+        list.setAdapter(null);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
 

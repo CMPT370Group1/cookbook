@@ -88,6 +88,7 @@ public class ToolsAccountFragment extends Fragment {
 
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     startActivity(intent);
+                    getActivity().finish();
                 }
             });
 
@@ -179,6 +180,7 @@ public class ToolsAccountFragment extends Fragment {
                 public void onClick(View view) {
                     Intent intent = new Intent(getActivity(), RegisterActivity.class);
                     startActivity(intent);
+                    getActivity().finish();
                 }
             });
         }
@@ -222,6 +224,7 @@ public class ToolsAccountFragment extends Fragment {
                 // Start main activity
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
+                getActivity().finish();
             } else if (result.equals(SIGNIN_INCORRECT)) {
                 // Show error text with error message
                 tvSigninError.setText(getString(R.string.invalid_credentials));

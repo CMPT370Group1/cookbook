@@ -64,7 +64,8 @@ public class RecipeSearchViewFragment extends RecipeViewFragment {
         RecipeSearchFragment a2Fragment = new RecipeSearchFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
-        transaction.addToBackStack(null);
+        recipeImage.setImageBitmap(null);
+        recipeImage.destroyDrawingCache();
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
 

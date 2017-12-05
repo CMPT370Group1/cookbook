@@ -85,8 +85,9 @@ public class RecipeEditFragment extends RecipeAddFragment {
      */
     protected void enterPrevFragment() {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        // Store the Fragment in stack
-        transaction.addToBackStack(null);
+
+        recipeImage.setImageBitmap(null);
+        recipeImage.destroyDrawingCache();
         transaction.detach(this).commit();
     }
 }

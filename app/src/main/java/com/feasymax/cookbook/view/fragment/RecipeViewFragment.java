@@ -308,23 +308,9 @@ public class RecipeViewFragment extends Fragment {
         RecipeEditFragment a2Fragment = new RecipeEditFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
-        transaction.addToBackStack(null);
+        recipeImage.setImageBitmap(null);
+        recipeImage.destroyDrawingCache();
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
-    }
-
-    /**
-     * Go back to all recipes in a category
-     */
-    protected void enterPrevFragment() {
-        if (getActivity() instanceof RecipesActivity) {
-            Application.getUserCollection().setCurRecipe(null);
-        } else {
-            Application.getDiscoverCollection().setCurRecipe(null);
-        }
-
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.addToBackStack(null);
-        transaction.remove(this).commit();
     }
 
 

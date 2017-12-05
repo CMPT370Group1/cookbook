@@ -248,7 +248,7 @@ public class RecipeSearchFragment extends ShowRecipesFragment {
         RecipeSearchViewFragment a2Fragment = new RecipeSearchViewFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
-        transaction.addToBackStack(null);
+        list.setAdapter(null);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
 

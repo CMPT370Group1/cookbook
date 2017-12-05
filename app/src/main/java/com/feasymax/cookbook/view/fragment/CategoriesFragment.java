@@ -120,8 +120,8 @@ public class CategoriesFragment extends Fragment{
         RecipesFragment a2Fragment = new RecipesFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
-        // Store the Fragment in stack
-        transaction.addToBackStack(null);
+        // Remove all image bitmaps
+        clearFragment();
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
 
@@ -151,5 +151,12 @@ public class CategoriesFragment extends Fragment{
         }
 
         return false;
+    }
+
+    protected void clearFragment() {
+        for (ImageButton button: categoryButtons) {
+            button.setImageBitmap(null);
+            button.destroyDrawingCache();
+        }
     }
 }

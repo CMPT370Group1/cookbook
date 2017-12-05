@@ -88,6 +88,7 @@ public class AccountSignRegisterFragment extends Fragment {
             public void onClick(View view2) {
                 Intent intent = new Intent(getActivity(), RegisterActivity.class);
                 startActivity(intent);
+                getActivity().finish();
             }
         });
 
@@ -128,6 +129,7 @@ public class AccountSignRegisterFragment extends Fragment {
                 // Start main activity
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
+                getActivity().finish();
             } else if (result.equals(SIGNIN_INCORRECT)) {
                 // Show error text with error message
                 tvSigninError.setText(getString(R.string.invalid_credentials));

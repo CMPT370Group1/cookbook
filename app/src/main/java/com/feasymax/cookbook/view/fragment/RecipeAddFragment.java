@@ -476,6 +476,8 @@ public class RecipeAddFragment extends Fragment {
      * Go to fragment that displays recipe
      */
     protected void enterRecipeViewFragment() {
+        recipeImage.setImageBitmap(null);
+        recipeImage.destroyDrawingCache();
         ((RecipesActivity)getActivity()).navigateFragment(0, FRAGMENT_ID);
     }
 }

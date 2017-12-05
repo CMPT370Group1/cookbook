@@ -57,8 +57,7 @@ public abstract class ShowWebpagesFragment extends Fragment {
         WebPageViewFragment a2Fragment = new WebPageViewFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
-        // Store the Fragment in stack
-        transaction.addToBackStack(null);
+        list.setAdapter(null);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
 
