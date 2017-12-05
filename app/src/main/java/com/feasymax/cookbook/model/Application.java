@@ -205,6 +205,7 @@ public class Application {
         UserDao userDao = new UserDao();
         int userID = getUser().getUserID();
         String res = userDao.updateUserAccount(userID, username, userEmail, oldPassword, newPassword);
+        Log.d("res", res);
         if (res.contains("USERNAME")) {
             user.setUsername(username);
             user.setEmail(userEmail);
@@ -253,8 +254,8 @@ public class Application {
                                                              final int userID, int category) {
         if (isUserCollection) {
             // if list exist, just return it
-            if (getUserCollection().getCategoryRecipes(category) != null) {
-                return getUserCollection().getCategoryRecipes(category);
+            if (getUserCollection().getCategory() == category && getUserCollection().getRecipes() != null) {
+                return getUserCollection().getRecipes();
             }
             // otherwise, obtain from database
             else {
@@ -263,8 +264,8 @@ public class Application {
         }
         else {
             // if list exist, just return it
-            if (getDiscoverCollection().getCategoryRecipes(category) != null) {
-                return getDiscoverCollection().getCategoryRecipes(category);
+            if (getDiscoverCollection().getCategory() == category && getDiscoverCollection().getRecipes() != null) {
+                return getDiscoverCollection().getRecipes();
             }
             // otherwise, obtain from database
             else {
@@ -286,10 +287,12 @@ public class Application {
         List<RecipeShortInfo> collectionRecipes = userDao.updateRecipeCollection(isUserCollection,
                 userID, category);
         if (isUserCollection){
-            getUserCollection().setRecipes(collectionRecipes, category);
+            getUserCollection().setRecipes(collectionRecipes);
+            getUserCollection().setCategory(category);
         }
         else {
-            getDiscoverCollection().setRecipes(collectionRecipes, category);
+            getDiscoverCollection().setRecipes(collectionRecipes);
+            getDiscoverCollection().setCategory(category);
         }
 
         return collectionRecipes;

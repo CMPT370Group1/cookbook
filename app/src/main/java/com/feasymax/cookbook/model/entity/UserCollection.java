@@ -22,7 +22,7 @@ public class UserCollection {
     /**
      * Lists of recipes for each category
      */
-    protected SparseArray<List<RecipeShortInfo>> recipes;
+    protected List<RecipeShortInfo> recipes;
     /**
      * Current recipe to display
      */
@@ -43,37 +43,22 @@ public class UserCollection {
     /**
      * Public constructor
      */
-    public UserCollection() {
-        recipes = new SparseArray<>(NUM_CATEGORIES);
-    }
+    public UserCollection() {}
 
     /**
      * Get all lists of recipes
      * @return
      */
-    public SparseArray<List<RecipeShortInfo>> getRecipes() {
+    public List<RecipeShortInfo> getRecipes() {
         return recipes;
-    }
-
-    /**
-     * Get recipes in a specific category
-     * @param category
-     * @return list of recipes
-     */
-    public List<RecipeShortInfo> getCategoryRecipes(int category) {
-        return this.recipes.get(category);
     }
 
     /**
      * Set the list of recipes
      * @param recipes
-     * @param category
      */
-    public void setRecipes(List<RecipeShortInfo> recipes, int category) {
-        if (this.recipes.get(category) != null) {
-            this.recipes.delete(category);
-        }
-        this.recipes.put(category, recipes);
+    public void setRecipes(List<RecipeShortInfo> recipes) {
+        this.recipes = recipes;
     }
 
     /**
@@ -81,17 +66,13 @@ public class UserCollection {
      * @param category
      */
     public void updateRecipes(int category) {
-        if (this.recipes.get(category) != null) {
-            this.recipes.delete(category);
-        }
-
         boolean isUserCollection = false;
         int userID = -1;
         if (this.getClass() == UserCollection.class) {
             isUserCollection = true;
             userID = Application.getUser().getUserID();
         }
-        this.recipes.put(category, Application.getRecipesFromDB(isUserCollection, userID, category));
+        this.recipes = Application.getRecipesFromDB(isUserCollection, userID, category);
     }
 
     /**
@@ -133,28 +114,28 @@ public class UserCollection {
      */
     public void addNewRecipe(RecipeShortInfo recipeInfo, int category) {
         // if the list of recipes has not been obtained from the database yet, obtain it
-        if (this.recipes.get(category) == null) {
+        if (this.recipes == null) {
             boolean isUserCollection = false;
             int userID = -1;
             if (this.getClass() == UserCollection.class) {
                 isUserCollection = true;
                 userID = Application.getUser().getUserID();
             }
-            this.recipes.put(category, Application.getRecipesFromDB(isUserCollection, userID, category));
+            this.recipes = Application.getRecipesFromDB(isUserCollection, userID, category);
             Log.println(Log.INFO, "addNewRecipe: recipes", this.recipes.get(category).toString());
         }
         // if the list of recipes exists
         else {
             // if recipe is already in the list, updateUserAccount it
-            for (RecipeShortInfo recipe: this.recipes.get(category)) {
+            for (RecipeShortInfo recipe: this.recipes) {
                 if (recipe.getRecipeId() == recipeInfo.getRecipeId()) {
-                    int index = this.recipes.get(category).indexOf(recipe);
-                    this.recipes.get(category).set(index, recipeInfo);
+                    int index = this.recipes.indexOf(recipe);
+                    this.recipes.set(index, recipeInfo);
                     return;
                 }
             }
             // otherwise, add it to the list
-            this.recipes.get(category).add(recipeInfo);
+            this.recipes.add(recipeInfo);
         }
     }
 
@@ -165,10 +146,10 @@ public class UserCollection {
      * @return
      */
     public boolean removeRecipe(int recipeId, int category) {
-        if (this.recipes.get(category) != null) {
-            for (RecipeShortInfo recipe: this.recipes.get(category)) {
+        if (this.recipes != null) {
+            for (RecipeShortInfo recipe: this.recipes) {
                 if (recipe.getRecipeId() == recipeId) {
-                    return this.recipes.get(category).remove(recipe);
+                    return this.recipes.remove(recipe);
                 }
             }
         }

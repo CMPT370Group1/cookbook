@@ -19,7 +19,7 @@ import com.feasymax.cookbook.view.fragment.CategoriesFragment;
  * Adapter for tabs in RecipesActivity
  */
 
-public class RecipeAdapter extends FragmentStatePagerAdapter {
+public class RecipeAdapter extends FragmentPagerAdapter {
     /**
      * List of tabs
      */

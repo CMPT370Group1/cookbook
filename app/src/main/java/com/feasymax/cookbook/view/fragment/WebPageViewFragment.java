@@ -1,5 +1,6 @@
 package com.feasymax.cookbook.view.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -10,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -93,12 +95,14 @@ public class WebPageViewFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
-        inflater.inflate(R.menu.menu_webpage, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
+        menu.clear();
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.menu_webpage, menu);
         if (!Application.isUserSignedIn() || (Application.isUserSignedIn() && Application.getUserCollection().
                 containsLink(Application.getDiscoverCollection().getWebsearchResult()))) {
             MenuItem item = menu.findItem(R.id.action_link_add);
@@ -131,11 +135,21 @@ public class WebPageViewFragment extends Fragment {
                                 "added before", Toast.LENGTH_SHORT).show();
                         return false;
                     }
+                    else {
+                        Toast.makeText(getContext(), "The link has been added",
+                                Toast.LENGTH_SHORT).show();
+                    }
                 }
+                // hide keyboard
+                InputMethodManager imm = (InputMethodManager)getActivity().
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getActivity().getWindow().getCurrentFocus().getWindowToken(), 0);
                 return true;
             case R.id.action_link_delete:
                 Log.println(Log.INFO, "MENU","action_link_delete was clicked");
                 Application.deleteLink(Application.getUserCollection().getCurLink());
+                Toast.makeText(getContext(), "The link has been deleted",
+                        Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 break;

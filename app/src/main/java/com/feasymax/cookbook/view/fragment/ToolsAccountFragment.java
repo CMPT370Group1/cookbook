@@ -3,6 +3,7 @@ package com.feasymax.cookbook.view.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,7 +106,6 @@ public class ToolsAccountFragment extends Fragment {
                         btnSignOut.setVisibility(View.GONE);
                         isAccountEdited = true;
 
-
                     }
                     // user is viewing account info
                     else {
@@ -113,6 +113,8 @@ public class ToolsAccountFragment extends Fragment {
                         String res = Application.userEditAccount(avUserName.getText().toString(),
                                 avUserEmail.getText().toString(), oldPassword.getText().toString(),
                                 newPassword.getText().toString());
+                        Log.d("newPassword", newPassword.getText().toString());
+                        Log.d("oldPassword", oldPassword.getText().toString());
                         if (!newPassword.getText().toString().isEmpty() && !res.contains("PASS")) {
                             // old password is incorrect
                             oldPassErrorText.setVisibility(View.VISIBLE);

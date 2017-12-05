@@ -18,8 +18,11 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.feasymax.cookbook.R;
+import com.feasymax.cookbook.model.Application;
+import com.feasymax.cookbook.view.RecipesActivity;
 
 /**
  * Created by Olya on 2017-09-21.
@@ -50,10 +53,27 @@ public class RecipeSearchViewFragment extends RecipeViewFragment {
         btnCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                enterPrevFragment();
+                enterSearchFragment();
             }
         });
 
         return view ;
+    }
+
+    protected void enterSearchFragment() {
+        RecipeSearchFragment a2Fragment = new RecipeSearchFragment();
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+
+        transaction.addToBackStack(null);
+        transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
+    }
+
+    protected void deleteRecipe() {
+        if (getActivity() instanceof RecipesActivity) {
+            Application.deleteRecipe(Application.getUserCollection().getCurRecipe());
+            enterSearchFragment();
+            Toast.makeText(getContext(), "The recipe has been deleted",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 }

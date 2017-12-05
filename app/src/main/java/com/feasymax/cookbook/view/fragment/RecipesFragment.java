@@ -110,12 +110,10 @@ public class RecipesFragment extends ShowRecipesFragment{
     public void setListData()
     {
         if (getActivity() instanceof RecipesActivity){
-            CustomListViewValuesArr = Application.getCollectionRecipes(true,
-                    Application.getUser().getUserID(), Application.getUserCollection().getCategory());
+            CustomListViewValuesArr = Application.getUserCollection().getRecipes();
         }
         else if (getActivity() instanceof DiscoverActivity) {
-            CustomListViewValuesArr = Application.getCollectionRecipes(false, -1,
-                    Application.getDiscoverCollection().getCategory());
+            CustomListViewValuesArr = Application.getDiscoverCollection().getRecipes();
         }
         Log.println(Log.INFO, "setListData: recipes", CustomListViewValuesArr.toString());
     }
@@ -168,12 +166,19 @@ public class RecipesFragment extends ShowRecipesFragment{
         transaction.addToBackStack(null);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
-/*
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.menu_fragment, menu);
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.clear();
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.menu_fragment, menu);
     }
 
     @Override
@@ -189,7 +194,7 @@ public class RecipesFragment extends ShowRecipesFragment{
 
         return false;
     }
-*/
+
     @Override
     public void onResume() {
         super.onResume();
@@ -202,4 +207,7 @@ public class RecipesFragment extends ShowRecipesFragment{
             setAdapter();
         }
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {}
 }

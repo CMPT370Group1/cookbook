@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
@@ -406,10 +407,12 @@ public class RecipeAddFragment extends Fragment {
             if (Application.addNewRecipe(isNewRecipe, recipe, isOwner, recipeIconBitmap, category) != -1) {
                 Log.println(Log.INFO, "addRecipe", Application.getUserCollection().getCurRecipe().toString());
                 Log.println(Log.INFO, "addRecipe", Application.getUserCollection().
-                        getCategoryRecipes(recipe.getCategory()).toString());
+                        getRecipes().toString());
 
                 emptyFragment();
                 enterRecipeViewFragment();
+                Toast.makeText(getContext(), "The recipe has been added",
+                        Toast.LENGTH_SHORT).show();
             }
             else {
                 Log.println(Log.INFO, "addRecipe", "couldn't add recipe");
@@ -442,9 +445,31 @@ public class RecipeAddFragment extends Fragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.menu_fragment, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
     public void onPrepareOptionsMenu(Menu menu) {
         menu.clear();
-        super.onPrepareOptionsMenu(menu);
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.menu_fragment, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_info:
+                Log.println(Log.INFO, "MENU","action_info has clicked");
+                return true;
+            default:
+                Log.println(Log.INFO, "MENU","error");
+                break;
+        }
+
+        return false;
     }
 
     /**

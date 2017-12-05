@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
+import com.feasymax.cookbook.util.Graphics;
 import com.feasymax.cookbook.view.DiscoverActivity;
 import com.feasymax.cookbook.view.RecipesActivity;
 import java.util.ArrayList;
@@ -60,16 +61,44 @@ public class CategoriesFragment extends Fragment{
         categoryButtons.add(11, (ImageButton) view.findViewById(R.id.ib_vegetable));
         categoryButtons.add(12, (ImageButton) view.findViewById(R.id.ib_other));
 
+        categoryButtons.get(0).setImageBitmap(Graphics.decodeSampledBitmapFromResource(
+                getResources(), R.drawable.breakfast, 150, 150));
+        categoryButtons.get(1).setImageBitmap(Graphics.decodeSampledBitmapFromResource(
+                getResources(), R.drawable.snack, 150, 150));
+        categoryButtons.get(2).setImageBitmap(Graphics.decodeSampledBitmapFromResource(
+                getResources(), R.drawable.soup, 150, 150));
+        categoryButtons.get(3).setImageBitmap(Graphics.decodeSampledBitmapFromResource(
+                getResources(), R.drawable.appetizer, 150, 150));
+        categoryButtons.get(4).setImageBitmap(Graphics.decodeSampledBitmapFromResource(
+                getResources(), R.drawable.salad, 150, 150));
+        categoryButtons.get(5).setImageBitmap(Graphics.decodeSampledBitmapFromResource(
+                getResources(), R.drawable.bread, 150, 150));
+        categoryButtons.get(6).setImageBitmap(Graphics.decodeSampledBitmapFromResource(
+                getResources(), R.drawable.beverage, 150, 150));
+        categoryButtons.get(7).setImageBitmap(Graphics.decodeSampledBitmapFromResource(
+                getResources(), R.drawable.dessert, 150, 150));
+        categoryButtons.get(8).setImageBitmap(Graphics.decodeSampledBitmapFromResource(
+                getResources(), R.drawable.main_dish, 150, 150));
+        categoryButtons.get(9).setImageBitmap(Graphics.decodeSampledBitmapFromResource(
+                getResources(), R.drawable.side_dish, 150, 150));
+        categoryButtons.get(10).setImageBitmap(Graphics.decodeSampledBitmapFromResource(
+                getResources(), R.drawable.sauce, 150, 150));
+        categoryButtons.get(11).setImageBitmap(Graphics.decodeSampledBitmapFromResource(
+                getResources(), R.drawable.vegetable, 150, 150));
+        categoryButtons.get(12).setImageBitmap(Graphics.decodeSampledBitmapFromResource(
+                getResources(), R.drawable.vegetable, 150, 150));
+
         // user clicks on a category
         categoryOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (getActivity() instanceof RecipesActivity) {
-                    Application.getUserCollection().setCategory(categoryButtons.indexOf(v));
+                    Application.getCollectionRecipes(true, Application.getUser().getUserID(),
+                            categoryButtons.indexOf(v));
                     Log.println(Log.INFO, "category", ""+Application.getUserCollection().getCategory());
                 }
                 else if (getActivity() instanceof DiscoverActivity){
-                    Application.getDiscoverCollection().setCategory(categoryButtons.indexOf(v));
+                    Application.getCollectionRecipes(false, -1, categoryButtons.indexOf(v));
                     Log.println(Log.INFO, "category", ""+Application.getDiscoverCollection().getCategory());
                 }
                 enterRecipesFragment();
@@ -95,12 +124,19 @@ public class CategoriesFragment extends Fragment{
         transaction.addToBackStack(null);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
-/*
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.menu_fragment, menu);
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.clear();
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.menu_fragment, menu);
     }
 
     @Override
@@ -116,5 +152,4 @@ public class CategoriesFragment extends Fragment{
 
         return false;
     }
-    */
 }

@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.feasymax.cookbook.R;
 import com.feasymax.cookbook.model.Application;
@@ -55,7 +56,7 @@ public class RecipeViewFragment extends Fragment {
     /*
      * Format to display a fraction
      */
-    final DecimalFormat DF = new DecimalFormat("#.############");
+    final DecimalFormat DF = new DecimalFormat("#.####");
 
     /*
      * Buttons for the layout
@@ -210,7 +211,11 @@ public class RecipeViewFragment extends Fragment {
 
                         if (ingredient.getUnit() == 0 || ingredient.getQuantity() == 0.0) {
                             quantity.setVisibility(View.INVISIBLE);
-                            unit.setVisibility(View.INVISIBLE);
+                            unit.setVisibility(View.GONE);
+                        }
+
+                        if (ingredient.getUnit() == 1) {
+                            unit.setVisibility(View.GONE);
                         }
 
                         TextView name = tr.findViewById(R.id.name);
@@ -292,7 +297,6 @@ public class RecipeViewFragment extends Fragment {
         RecipesFragment a2Fragment = new RecipesFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
-        // Store the Fragment in stack
         transaction.addToBackStack(null);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
@@ -304,7 +308,6 @@ public class RecipeViewFragment extends Fragment {
         RecipeEditFragment a2Fragment = new RecipeEditFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
-        // Store the Fragment in stack
         transaction.addToBackStack(null);
         transaction.replace(R.id.categories_main_layout, a2Fragment).commit();
     }
@@ -320,9 +323,8 @@ public class RecipeViewFragment extends Fragment {
         }
 
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        // Store the Fragment in stack
         transaction.addToBackStack(null);
-        transaction.detach(this).commit();
+        transaction.remove(this).commit();
     }
 
 
@@ -404,6 +406,8 @@ public class RecipeViewFragment extends Fragment {
         if (getActivity() instanceof RecipesActivity) {
             Application.deleteRecipe(Application.getUserCollection().getCurRecipe());
             enterRecipesFragment();
+            Toast.makeText(getContext(), "The recipe has been deleted",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -412,6 +416,8 @@ public class RecipeViewFragment extends Fragment {
             if (Application.isUserSignedIn()) {
                 Application.addNewRecipe(true, Application.getDiscoverCollection().getCurRecipe(),
                         false, null, -1);
+                Toast.makeText(getContext(), "The recipe has been added",
+                        Toast.LENGTH_SHORT).show();
             } else {
                 Log.println(Log.INFO, "addRecipe", "user is not signed in");
             }
@@ -426,11 +432,14 @@ public class RecipeViewFragment extends Fragment {
             Log.d("ratio", ratio + "");
             for (View tr : ingredientRows) {
                 EditText quantity = tr.findViewById(R.id.quantity);
-                if (quantity != editedView) {
+                if (quantity != editedView && quantity.getVisibility() == View.VISIBLE) {
                     quantity.setText(DF.format(currentRecipe.getIngredients().get((int) quantity.
                             getTag()).getQuantity() * ratio));
                 }
             }
         }
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {}
 }

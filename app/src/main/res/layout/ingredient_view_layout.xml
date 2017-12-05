@@ -9,6 +9,7 @@
         android:layout_marginRight="@dimen/tiny_margin"
         android:inputType="numberDecimal"
         android:textAlignment="viewEnd"
+        android:selectAllOnFocus="true"
         android:textSize="16sp"/>
 
     <Spinner

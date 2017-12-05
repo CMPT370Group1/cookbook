@@ -209,7 +209,10 @@ public class UserDao {
                         if (rs.next()) {
                             // if oldPassword and newPassword are being changed
                             if (!oldPassword.isEmpty() && !newPassword.isEmpty()) {
+                                Log.d("oldPassword", oldPassword);
+                                Log.d("newPassword", newPassword);
                                 String password = rs.getString("passwords");
+                                Log.d("password", password);
                                 if (password.equals(oldPassword)) {
                                     query = "UPDATE users SET passwords = '" + newPassword + "' " +
                                             "WHERE id = " + userID;
@@ -887,7 +890,7 @@ public class UserDao {
                                     "WHERE user_id = " + userID + ") AND ";
                         }
 
-                        query+="r.title " + searchQuery + " OR r.recipe_description " + searchQuery;
+                        query+="(r.title " + searchQuery + " OR r.recipe_description " + searchQuery + ")";
                         Log.println(Log.INFO, "query", query);
 
                         stmt = conn.prepareStatement(query);
