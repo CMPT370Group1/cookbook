@@ -3,36 +3,48 @@ package com.feasymax.cookbook.model.util;
 
 import android.content.Context;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import com.feasymax.cookbook.model.entity.ConversionFactor;
 
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Created by Olya on 2017-10-12.
- * Advanced unit converter from mass to volume and vice versa
  */
 
-public class MassVolumeUnitConverter {
+public class MassVolumeUnitConverter{
 
-    /**
-     * For representing stored substance conversions factors to the view screen
-     */
-    public static List<ConversionFactor> makeListFromFile(String filename, Context context){
-        String toParse = "";
-        try{
-            FileInputStream fis = context.openFileInput(filename);
-            int c;
-            while( (c = fis.read()) != -1){
-                toParse.concat(Character.toString((char) c));
-            }
 
+
+    //For representing stored substance conversions factors to the view screen
+    public static List<ConversionFactor> makeListFromFile(Context context)throws IOException{
+        String baseConversions = "Butter:1.04\n";
+        FileInputStream fis;
+        try {
+            fis = context.openFileInput("conversionFactors.txt");
+        } catch (IOException e){
+            OutputStreamWriter osw = new OutputStreamWriter(context.openFileOutput("conversionFactors.txt",Context.MODE_PRIVATE));
+            osw.write(baseConversions);
+            osw.close();
+            return makeListFromFile(context);
         }
-        catch(IOException e){
-            throw new RuntimeException("No file found for makeListFromFile in MassVolumeConverter");
+        InputStreamReader inputStreamReader = new InputStreamReader(fis);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = bufferedReader.readLine()) != null) {
+            sb.append(line);
         }
+        fis.close();
+        String toParse = sb.toString();
         List<ConversionFactor> toReturn = new LinkedList<>();
         String[] arrayOfConversionFactors = toParse.split(";");
         for (String s:arrayOfConversionFactors) {
@@ -41,14 +53,18 @@ public class MassVolumeUnitConverter {
         return toReturn;
     }
 
+    public static void AddConversionFactor(String name, double factor, Context context) throws IOException{
+        OutputStreamWriter osw = new OutputStreamWriter(context.openFileOutput("conversionFactors.txt",Context.MODE_PRIVATE));
+        String toAdd = name + ":"+factor+";\n";
+        osw.write(toAdd);
+        osw.close();
+    }
+
     private static ConversionFactor ConversionFactorFromString(String s){
         String[] splitString = s.split(":");
         return new ConversionFactor(splitString[0],Double.parseDouble(splitString[1]));
     }
-
-    /**
-     * The actual conversion tool
-     */
+    //the actual conversion tool
     public static double MassToVolume(double quanA, int unitA, int unitB, double substance, String unitAType){
         if(unitAType.equals("Mass")) {
             double massToGrams = UnitConverters.MassToMass(quanA, unitA, 1);

@@ -46,22 +46,15 @@ public class UserDao {
      * Get a connection to database
      * @return Connection object
      */
-    private void connect() {
+    private void connect() throws SQLException{
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
             System.out.println("No Postgre driver.");
             e.printStackTrace();
         }
-        try  {
-
-            conn = DriverManager.getConnection("jdbc:" + DBMS + "://" + SERVER_NAME
-                    + ":" + PORT_NUMBER + "/" + DB_NAME, USERNAME, PASSWORD);
-
-        } catch (SQLException ex) {
-            throw new RuntimeException("Error connecting to the database", ex);
-
-        }
+        conn = DriverManager.getConnection("jdbc:" + DBMS + "://" + SERVER_NAME
+                + ":" + PORT_NUMBER + "/" + DB_NAME, USERNAME, PASSWORD);
     }
 
     /**
@@ -70,49 +63,25 @@ public class UserDao {
      * @param password
      * @return
      */
-    public int signInUser(final UserAccount user, final String password) {
+    public int signInUser(final UserAccount user, final String password) throws SQLException{
         userID = 0;
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try  {
-                    connect();
-                    Statement stmt = null;
-                    ResultSet rs = null;
-                    try {
-                        String query = "SELECT id, email_add FROM users u WHERE u.username = '" +
-                                user.getUsername() + "' AND passwords = '" + password + "'";
-                        stmt = conn.createStatement();
-                        rs = stmt.executeQuery(query);
-                        // if the username is not already taken
-                        if (rs.next()) {
-                            userID = rs.getInt("id");
-                            user.setUserID(userID);
-                            user.setEmail(rs.getString("email_add"));
-                        }
-                    } catch(SQLException e) {
-                        System.out.println("SQL error");
-                        e.printStackTrace();
-                    } finally {
-                        try {
-                            if (conn != null)
-                                conn.close();
-                        }
-                        catch(SQLException e) {
-
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        thread.start();
+        connect();
+        Statement stmt = null;
+        ResultSet rs = null;
         try {
-            Thread.sleep(1800);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            String query = "SELECT id, email_add FROM users u WHERE u.username = '" +
+                    user.getUsername() + "' AND passwords = '" + password + "'";
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(query);
+            // if the username is not already taken
+            if (rs.next()) {
+                userID = rs.getInt("id");
+                user.setUserID(userID);
+                user.setEmail(rs.getString("email_add"));
+            }
+        } finally {
+            if (conn != null)
+                conn.close();
         }
         return userID;
     }
@@ -126,58 +95,34 @@ public class UserDao {
      * @param lastName
      * @return
      */
-    public int registerUser(final String user, final String password, final String email, final String firstName, final String lastName) {
+    public int registerUser(final String user, final String password, final String email, final String firstName, final String lastName) throws SQLException {
         userID = 0;
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try  {
-                    connect();
-                    Statement stmt = null;
-                    ResultSet rs = null;
-                    try {
-                        String query = "SELECT * FROM users u WHERE u.username = '"
-                                + user + "'";
-                        stmt = conn.createStatement();
-                        rs = stmt.executeQuery(query);
-                        // if the username is not already taken
-                        if (!rs.next()) {
-                            
-                            rs = stmt.executeQuery("SELECT MAX(id) AS id FROM users");
-                            int autoID = 1;
-                            if (rs.next()) {
-                                autoID = rs.getInt("id") + 1;
-                            }
-                            query = "INSERT INTO users (id, username, passwords, email_add, first_name, last_name) VALUES ("
-                                    + autoID + ", '" + user + "', '" + password + "', '"
-                                    + email + "', '" + firstName + "', '" + lastName + "')";
-                            stmt = conn.createStatement();
-                            stmt.execute(query);
-                            userID = autoID;
-                        }
-                    } catch(SQLException e) {
-                        System.out.println("SQL error");
-                        e.printStackTrace();
-                    } finally {
-                        try {
-                            if (conn != null)
-                                conn.close();
-                        }
-                        catch(SQLException e) {
-
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        thread.start();
+        connect();
+        Statement stmt = null;
+        ResultSet rs = null;
         try {
-            Thread.sleep(1800);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            String query = "SELECT * FROM users u WHERE u.username = '"
+                    + user + "'";
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(query);
+            // if the username is not already taken
+            if (!rs.next()) {
+
+                rs = stmt.executeQuery("SELECT MAX(id) AS id FROM users");
+                int autoID = 1;
+                if (rs.next()) {
+                    autoID = rs.getInt("id") + 1;
+                }
+                query = "INSERT INTO users (id, username, passwords, email_add, first_name, last_name) VALUES ("
+                        + autoID + ", '" + user + "', '" + password + "', '"
+                        + email + "', '" + firstName + "', '" + lastName + "')";
+                stmt = conn.createStatement();
+                stmt.execute(query);
+                userID = autoID;
+            }
+        } finally {
+            if (conn != null)
+                conn.close();
         }
         return userID;
     }
@@ -770,7 +715,7 @@ public class UserDao {
 
                                 // insert a tag
                                 query = "INSERT INTO tag (tag_name, recipe_id) " +
-                                            "VALUES (?, ?)";
+                                        "VALUES (?, ?)";
                                 stmt = conn.prepareStatement(query);
                                 stmt.setString(1, tag);
                                 stmt.setInt(2, recipeID);
@@ -1349,10 +1294,4 @@ public class UserDao {
             e.printStackTrace();
         }
     }
-
-
-
 }
-
-
-

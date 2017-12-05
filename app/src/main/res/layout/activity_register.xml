@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:openDrawer="start"
-             android:id="@+id/drawer_layout">
+    android:id="@+id/drawer_layout">
 
     <include
         layout="@layout/app_bar_register"
@@ -72,16 +72,21 @@
             android:inputType="textPersonName"
             android:hint="Last Name"/>
 
-
         <TextView
-            android:id="@+id/regErrorText"
+            android:id="@+id/tv_reg_error"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:text="This username is already taken"
+            android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@android:color/holo_red_light"
-            android:visibility="gone"/>
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/pb_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/buttonRegister"
